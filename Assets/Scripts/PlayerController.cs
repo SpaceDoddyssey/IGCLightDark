@@ -22,7 +22,6 @@ public class PlayerController : MonoBehaviour
     }
 
     void HandleMovement(){
-        prevTargetGridPos = targetGridPos;
         Vector3 targetPosition = targetGridPos;
     
         //Keep the rotation values in bound
@@ -38,24 +37,42 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private float scalar = 2; //Right now the grid is such that the player should move 2 units. That may change.
+    private float scalar = 2; //Right now the grid is scaled such that the player should move 2 unity units. That may change.
     public void MoveForward(){
-        if (AtRest) { targetGridPos += transform.forward * scalar; }
+        if (AtRest) {
+            prevTargetGridPos = targetGridPos; 
+            targetGridPos += transform.forward * scalar; 
+        }
     }
     public void MoveBackward(){
-        if (AtRest) { targetGridPos -= transform.forward * scalar; }
+        if (AtRest) { 
+            prevTargetGridPos = targetGridPos;
+            targetGridPos -= transform.forward * scalar; 
+        }
     }
     public void MoveLeft(){
-        if (AtRest) { targetGridPos -= transform.right * scalar; }
+        if (AtRest) { 
+            prevTargetGridPos = targetGridPos;
+            targetGridPos -= transform.right * scalar; 
+        }
     }
     public void MoveRight(){
-        if (AtRest) { targetGridPos += transform.right * scalar; }
+        if (AtRest) { 
+            prevTargetGridPos = targetGridPos;
+            targetGridPos += transform.right * scalar; 
+        }
     }
     public void RotateLeft(){ 
-        if (AtRest) { targetRotation -= Vector3.up * 90f; }
+        if (AtRest) { 
+            prevTargetGridPos = targetGridPos;
+            targetRotation -= Vector3.up * 90f; 
+        }
     }
     public void RotateRight(){ 
-        if (AtRest) { targetRotation += Vector3.up * 90f; }
+        if (AtRest) {
+            prevTargetGridPos = targetGridPos; 
+            targetRotation += Vector3.up * 90f; 
+        }
     }
 
     bool AtRest {
@@ -68,6 +85,13 @@ public class PlayerController : MonoBehaviour
                } else { 
                 return false;
             }
+        }
+    }
+
+    void OnTriggerEnter(Collider other){
+        Debug.Log(other.gameObject.name);
+        if(other.gameObject.name == "block"){
+            (targetGridPos, prevTargetGridPos) = (prevTargetGridPos, targetGridPos); //Swaps the two values, sending you back to where you started
         }
     }
 }
