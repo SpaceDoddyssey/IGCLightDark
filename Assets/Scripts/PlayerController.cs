@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +15,14 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         targetGridPos = Vector3Int.RoundToInt(transform.position);
+
+        Tilemap tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+        Debug.Log(tilemap);
+        TileBase[] tileArray = tilemap.GetTilesBlock(new BoundsInt(-10, -10, -10, 20, 20, 20));
+        for (int index = 0; index < tileArray.Length; index++)
+        {
+            Debug.Log(tileArray[index]);
+        }
     }
 
     // Update is called once per frame
@@ -38,6 +47,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private float scalar = 2; //Right now the grid is scaled such that the player should move 2 unity units. That may change.
+    //All move functions store where you were coming from so you can move back there if you hit an obstacle, and then set your target to the appropriate location
     public void MoveForward(){
         if (AtRest) {
             prevTargetGridPos = targetGridPos; 
@@ -63,16 +73,10 @@ public class PlayerController : MonoBehaviour
         }
     }
     public void RotateLeft(){ 
-        if (AtRest) { 
-            prevTargetGridPos = targetGridPos;
-            targetRotation -= Vector3.up * 90f; 
-        }
+        if (AtRest) targetRotation -= Vector3.up * 90f; 
     }
     public void RotateRight(){ 
-        if (AtRest) {
-            prevTargetGridPos = targetGridPos; 
-            targetRotation += Vector3.up * 90f; 
-        }
+        if (AtRest) targetRotation += Vector3.up * 90f; 
     }
 
     bool AtRest {
