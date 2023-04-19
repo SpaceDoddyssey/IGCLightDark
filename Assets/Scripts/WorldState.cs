@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class WorldState : MonoBehaviour
 {
-    public int timeOnClock; //Replace this with the actual clock when the code is merged
-    public int polarity {
-        get; private set;
-    }
+    public ClockHand hand;
+    public PolarityBarTicker ticker;
+
+
 
     void Start(){
-        polarity = 0;
+    }
+    
+    public void ChangePolarity(int offset)
+    {
+        ticker.SetTickerOffset(offset);
+        hand.RotateClockHand(0.20f * Mathf.Abs(offset));
     }
 
-    public void changePolarity(int delta){
-        if(polarity + delta < -100){
-            polarity = -100;
-        } else if(polarity + delta > 100){
-            polarity = 100; 
-        } else {
-            polarity += delta;
-        }
-
-        Debug.Log("Polarity = " + polarity);
+    public void TurnClock(float amount)
+    {
+        hand.RotateClockHand(amount);
     }
+
+
 }

@@ -5,15 +5,21 @@ using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour
 {
+
     public bool smoothTransition = true;
     public float transitionSpeed = 10f;
     public float transitionRotationSpeed = 500f;
 
+
     //Private variables
     Vector3 targetGridPos, prevTargetGridPos, targetRotation;
+    private WorldState worldManager;
 
     // Start is called before the first frame update
     void Start() {
+
+        worldManager = GameObject.Find("World Manager").GetComponent<WorldState>();
+
         targetGridPos = Vector3Int.RoundToInt(transform.position);
 
         Tilemap tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
@@ -51,32 +57,44 @@ public class PlayerController : MonoBehaviour
     public void MoveForward(){
         if (AtRest) {
             prevTargetGridPos = targetGridPos; 
-            targetGridPos += transform.forward * scalar; 
+            targetGridPos += transform.forward * scalar;
+            worldManager.TurnClock(0.25f);
         }
     }
     public void MoveBackward(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
-            targetGridPos -= transform.forward * scalar; 
+            targetGridPos -= transform.forward * scalar;
+            worldManager.TurnClock(0.25f);
         }
     }
     public void MoveLeft(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
-            targetGridPos -= transform.right * scalar; 
+            targetGridPos -= transform.right * scalar;
+            worldManager.TurnClock(0.25f);
         }
     }
     public void MoveRight(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
-            targetGridPos += transform.right * scalar; 
+            targetGridPos += transform.right * scalar;
+            worldManager.TurnClock(0.25f);
         }
     }
-    public void RotateLeft(){ 
-        if (AtRest) targetRotation -= Vector3.up * 90f; 
+    public void RotateLeft(){
+        if (AtRest)
+        {
+            targetRotation -= Vector3.up * 90f;
+            worldManager.TurnClock(0.1f);
+        }
     }
-    public void RotateRight(){ 
-        if (AtRest) targetRotation += Vector3.up * 90f; 
+    public void RotateRight(){
+        if (AtRest)
+        {
+            targetRotation += Vector3.up * 90f;
+            worldManager.TurnClock(0.1f);
+        }
     }
 
     bool AtRest {
