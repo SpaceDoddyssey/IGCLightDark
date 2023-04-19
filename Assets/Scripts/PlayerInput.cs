@@ -20,6 +20,7 @@ public class PlayerInput : MonoBehaviour
 
     private void Awake(){
         controller = GetComponent<PlayerController>();
+        worldManager = GameObject.Find("World Manager").GetComponent<WorldState>();
     }
 
     private void Update(){
