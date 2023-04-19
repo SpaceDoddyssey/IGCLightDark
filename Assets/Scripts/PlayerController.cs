@@ -112,8 +112,11 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other){
         Debug.Log(other.gameObject.name);
-        if(other.gameObject.name == "block"){
+        if(other.gameObject.name == "ph_block" || other.gameObject.name == "ph_enemy"){
             (targetGridPos, prevTargetGridPos) = (prevTargetGridPos, targetGridPos); //Swaps the two values, sending you back to where you started
+        }
+        if(other.gameObject.name == "ph_enemy"){
+            other.gameObject.GetComponent<EnemyScript>().takeDamage(1);
         }
     }
 }

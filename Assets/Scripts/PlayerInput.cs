@@ -24,12 +24,12 @@ public class PlayerInput : MonoBehaviour
     }
 
     private void Update(){
-        if (Input.GetKeyDown(forward)) controller.MoveForward();
-        if (Input.GetKeyDown(back)) controller.MoveBackward();
-        if (Input.GetKeyDown(left)) controller.MoveLeft();
-        if (Input.GetKeyDown(right)) controller.MoveRight();
-        if (Input.GetKeyDown(turnLeft)) controller.RotateLeft();
-        if (Input.GetKeyDown(turnRight)) controller.RotateRight();
+        if (Input.GetKeyDown(forward))  { controller.MoveForward();  }
+        if (Input.GetKeyDown(back))     { controller.MoveBackward(); }
+        if (Input.GetKeyDown(left))     { controller.MoveLeft();     }
+        if (Input.GetKeyDown(right))    { controller.MoveRight();    }
+        if (Input.GetKeyDown(turnLeft)) { controller.RotateLeft();   }
+        if (Input.GetKeyDown(turnRight)){ controller.RotateRight();  }
 
         if (Input.GetKeyDown(addDark)) worldManager.ChangePolarity(-1);
         if (Input.GetKeyDown(addLight)) worldManager.ChangePolarity(1);
