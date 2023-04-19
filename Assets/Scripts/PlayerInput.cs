@@ -12,10 +12,15 @@ public class PlayerInput : MonoBehaviour
     public KeyCode turnLeft = KeyCode.Q;
     public KeyCode turnRight = KeyCode.E;
 
+    public KeyCode addDark = KeyCode.Comma;
+    public KeyCode addLight = KeyCode.Period;
+
     PlayerController controller;
+    WorldState worldManager;
 
     private void Awake(){
         controller = GetComponent<PlayerController>();
+        worldManager = GameObject.Find("World Manager").GetComponent<WorldState>();
     }
 
     private void Update(){
@@ -25,5 +30,8 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyDown(right)) controller.MoveRight();
         if (Input.GetKeyDown(turnLeft)) controller.RotateLeft();
         if (Input.GetKeyDown(turnRight)) controller.RotateRight();
+
+        if (Input.GetKeyDown(addDark)) worldManager.changePolarity(-10);
+        if (Input.GetKeyDown(addLight)) worldManager.changePolarity(10);
     }
 }
