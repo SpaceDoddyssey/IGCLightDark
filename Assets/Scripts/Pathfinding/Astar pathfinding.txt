@@ -1,0 +1,39 @@
+G = Walking cost from the Start Node
+H = Heuristic cost to reach End Node
+
+F = G + H
+
+Prioritize nodes with lower F
+
+
+G
+	F
+		H
+		
+Then path is traced back from final node
+	
+OPEN //The set of nodes to be evaluated
+CLOSED // the set of nodes already evaluated
+add the start of the node to OPEN
+
+loop
+	current = node in OPEN with the lowest f_cost
+	remove current from OPEN
+	add current to CLOSED
+	
+	if current is the target node
+		return
+		
+	foreach neighbour of the current node
+		if neighbour is not traversable or neighbour is in CLOSED
+		skip to the next neighbour
+		
+	if new path to neighbour is shorter OR neighbour is not in OPEN
+		set f_cost of neighbour
+		set parent of neighbour to current
+		if neighbour is not in OPEN
+			add neighbour to OPEN
+			  
+https://youtu.be/nhiFx28e7JY?t=372
+
+			  
