@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ClockHand : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class ClockHand : MonoBehaviour
 
     private bool isTicking = false;
     private Vector3 rot = new Vector3(0f, 0f, 0f);
+
+    public UnityEvent OnClockStrikesEvent;
 
     // Start is called before the first frame update
     private void Start()
@@ -36,6 +39,7 @@ public class ClockHand : MonoBehaviour
             // requiring the clock to strike twice.
 
             print("Clock strikes twelve!");
+            OnClockStrikesEvent.Invoke();
         }
     }
 
