@@ -12,11 +12,18 @@ public class EnemyScript : MonoBehaviour
 
         GameObject spritechild = gameObject.transform.GetChild(0).gameObject;
         spriteRender = spritechild.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+
+        //Establish player target
+        GetComponent<AStarPathfinding>().seeker = transform;
+        GetComponent<AStarPathfinding>().target = GameObject.Find("Player").transform;
+
         // var outline = gameObject.AddComponent<Outline>();
 
         // outline.OutlineMode = Outline.Mode.OutlineAll;
         // outline.OutlineColor = Color.red;
         // outline.OutlineWidth = 30f;
+
+
     }
 
     public void Outline(bool outl){
@@ -35,4 +42,11 @@ public class EnemyScript : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    // Activated whenever the clock hits twelve.
+    public void OnClockTwelve()
+    {
+        //Pathfind and move.
+    }
+
 }
