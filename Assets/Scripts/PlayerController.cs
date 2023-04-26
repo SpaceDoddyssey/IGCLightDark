@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
             (targetGridPos, prevTargetGridPos) = (prevTargetGridPos, targetGridPos); //Swaps the two values, sending you back to where you started
         }
         if(other.gameObject.name == "ph_enemy"){
-            other.gameObject.GetComponent<EnemyScript>().takeDamage(1);
+            other.gameObject.GetComponent<EnemyScript>().TakeDamage(1);
         }
     }
 }

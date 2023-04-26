@@ -15,7 +15,7 @@ public class PolarityBarTicker : MonoBehaviour
     {
         get; private set;
     }
-    private int targetPolarity;
+    private int targetPolarity, prevPolarity;
 
     // Right now the values for where the ticker should be are hard-coded.
     // In the future, I'm going to change these to be scaled values of the 
@@ -48,14 +48,11 @@ public class PolarityBarTicker : MonoBehaviour
             // If currently in a lerp, add to the lerp and divide it by how quickly the lerp should happen.
             lerpAmt += Time.deltaTime / lerpSpeed;
             // Change the transform's local position based on the dict of screen tick positions and the lerp amount.
-            transform.localPosition = new Vector3(Mathf.Lerp(screenTickPositions[polarity], screenTickPositions[targetPolarity], lerpAmt), 0, 0);
+            transform.localPosition = new Vector3(Mathf.Lerp(screenTickPositions[prevPolarity], screenTickPositions[targetPolarity], lerpAmt), 0, 0);
             // If the lerp is done, reset everything.
             if (lerpAmt > 1f)
             {
                 isLerping = false;
-                polarity = targetPolarity;
-                targetPolarity = 0;
-                Debug.Log("Polarity = " + polarity);
             }
 
         }
@@ -76,6 +73,9 @@ public class PolarityBarTicker : MonoBehaviour
         else
         {
             targetPolarity =  polarity + delta;
+            prevPolarity = polarity;
+            polarity = targetPolarity;
+            Debug.Log("Target:" + targetPolarity + "  prev:" + prevPolarity + "  pol:"+polarity);
         }
         
         if (interpolate == true)
@@ -89,7 +89,6 @@ public class PolarityBarTicker : MonoBehaviour
             transform.localPosition = new Vector3(screenTickPositions[polarity], transform.position.y, transform.position.z);
             // Kill any lerping that's happening.
             isLerping = false;
-            targetPolarity = 0;
         }
 
 
@@ -121,7 +120,8 @@ public class PolarityBarTicker : MonoBehaviour
         transform.position = new Vector3(screenTickPositions[polarity], transform.position.y, transform.position.z);
         // Kill any lerping that's happening.
         isLerping = false;
-        targetPolarity = 0;
+        targetPolarity = polarity;
+        prevPolarity = polarity;
 
         Debug.Log("Polarity = " + polarity);
     }
