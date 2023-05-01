@@ -8,25 +8,26 @@ public class AStarPathfinding : MonoBehaviour
     public Transform seeker, target;
 
     AStarGrid grid;
+    public List<AStarNode> path = new List<AStarNode>();
 
     private void Awake()
     {
-        grid = GetComponent<AStarGrid>(); 
+        grid = GameObject.Find("World Manager").GetComponent<AStarGrid>(); 
     }
 
     private void Update()
     {
-        if (Input.GetButtonDown("Jump")){
-            FindPath(seeker.position, target.position);
-        }
+
     }
 
-    void FindPath(Vector3 startPos, Vector3 targetPos)
+    public void FindPath()
     {
+
+
         Stopwatch sw = new Stopwatch();
         sw.Start();
-        AStarNode startNode = grid.AStartNodeFromWorldPoint(startPos);
-        AStarNode targetNode = grid.AStartNodeFromWorldPoint(targetPos);
+        AStarNode startNode = grid.AStartNodeFromWorldPoint(seeker.position);
+        AStarNode targetNode = grid.AStartNodeFromWorldPoint(target.position);
 
         Heap<AStarNode> openSet = new Heap<AStarNode>(grid.MaxSize);
         HashSet<AStarNode> closedSet = new HashSet<AStarNode>();
@@ -41,6 +42,7 @@ public class AStarPathfinding : MonoBehaviour
             {
                 sw.Stop();
                 print("Path found: " + sw.ElapsedMilliseconds + "ms");
+
                 // Then the path has been found
                 RetracePath(startNode, targetNode);
                 return;
@@ -68,10 +70,9 @@ public class AStarPathfinding : MonoBehaviour
         }
     }
 
-
     void RetracePath(AStarNode startNode, AStarNode endNode)
     {
-        List<AStarNode> path = new List<AStarNode>();
+        path.Clear();
         AStarNode currentNode = endNode;
 
         while (currentNode != startNode)
@@ -90,7 +91,7 @@ public class AStarPathfinding : MonoBehaviour
         int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
         int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
         
-        //TODO: Change this for orthogonal-only movement
+
         if (dstX > dstY)
             return 14 * dstY + 10 * (dstX - dstY);
         return 14 * dstX + 10 * (dstY - dstX);

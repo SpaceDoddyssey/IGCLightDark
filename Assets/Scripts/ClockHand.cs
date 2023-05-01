@@ -17,6 +17,10 @@ public class ClockHand : MonoBehaviour
     private void Start()
     {
         ToggleTick();
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
+        {
+            OnClockStrikesEvent.AddListener(g.GetComponent<EnemyScript>().OnClockTwelve);
+        }
     }
 
     // Update is called once per frame

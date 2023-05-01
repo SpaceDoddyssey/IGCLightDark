@@ -13,6 +13,8 @@ public class AStarGrid : MonoBehaviour
     int gridSizeX, gridSizeY;
 
     public bool onlyDisplayPathGizmos;
+    public bool displayTargetGizmos;
+    public Transform target;
 
     private void Awake()
     {
@@ -46,6 +48,8 @@ public class AStarGrid : MonoBehaviour
 
             }
         }
+
+        
     }
 
     public List<AStarNode> GetNeighbours(AStarNode node)
@@ -61,7 +65,6 @@ public class AStarGrid : MonoBehaviour
 
                 if (Mathf.Abs(x) == Mathf.Abs(y))
                 {
-
                     continue;
 
                 }
@@ -82,12 +85,13 @@ public class AStarGrid : MonoBehaviour
     public AStarNode AStartNodeFromWorldPoint(Vector3 worldPosition)
     {
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
-        float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
-        percentX = Mathf.Clamp01(percentX);
-        percentY = Mathf.Clamp01(percentY);
 
-        int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
-        int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+        float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
+
+        int x = Mathf.FloorToInt(Mathf.Clamp((gridSizeX - 1) * percentX, 0, gridSizeX ));
+
+        int y = Mathf.FloorToInt((gridSizeY - 1) * percentY);
+
         return grid[x, y];
     }
 
@@ -103,9 +107,15 @@ public class AStarGrid : MonoBehaviour
                 foreach (AStarNode n in path)
                 {
                     Gizmos.color = Color.black;
+                    if (displayTargetGizmos)
+                    {
+                        if (n == AStartNodeFromWorldPoint(target.position))
+                            Gizmos.color = Color.blue;
+                    }
                     Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
                 }
             }
+
         }
         else
         {
@@ -118,6 +128,12 @@ public class AStarGrid : MonoBehaviour
                     if (path != null)
                         if (path.Contains(n))
                             Gizmos.color = Color.black;
+                    if (displayTargetGizmos)
+                    {
+
+                        if (n == AStartNodeFromWorldPoint(target.position))
+                            Gizmos.color = Color.blue;
+                    }
                     Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
                 }
             }

@@ -18,14 +18,6 @@ public class WorldState : MonoBehaviour
     {
         ticker.SetTickerOffset(offset);
 
-        //remove this later
-        if(ticker.polarity < 1){
-            enemy.Outline(false);
-        } else {
-            enemy.Outline(true);
-        }
-        //----------
-
         hand.RotateClockHand(0.20f * Mathf.Abs(offset));
     }
 

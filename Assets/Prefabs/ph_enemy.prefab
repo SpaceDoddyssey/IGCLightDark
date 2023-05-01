@@ -72,6 +72,7 @@ MonoBehaviour:
   spriteRender: {fileID: 0}
   defaultSprite: {fileID: 21300000, guid: e4d96497dfcdb14449b9840a324a5901, type: 3}
   outlineSprite: {fileID: 0}
+  pathfinding: {fileID: -2596188944360712596}
 --- !u!114 &-2596188944360712596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62856a116d61d534ba38358061e4cb97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seeker: {fileID: 0}
+  seeker: {fileID: 7925753457780426082}
   target: {fileID: 0}
 --- !u!1 &7925753458431618291
 GameObject:

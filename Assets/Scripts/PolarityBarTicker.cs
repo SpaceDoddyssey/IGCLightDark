@@ -12,10 +12,7 @@ public class PolarityBarTicker : MonoBehaviour
     // Lower values make faster lerps.
     public float lerpSpeed;
     // An int value between -4 and 4.
-    public int polarity
-    {
-        get; private set;
-    }
+    public int polarity;
     private int targetPolarity, prevPolarity;
 
     // Right now the values for where the ticker should be are hard-coded.
@@ -38,7 +35,6 @@ public class PolarityBarTicker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        polarity = 0;
     }
 
     // Update is called once per frame
@@ -56,6 +52,11 @@ public class PolarityBarTicker : MonoBehaviour
                 isLerping = false;
             }
 
+        }
+        else
+        {
+            polarity = (int)Mathf.Clamp((float)polarity, -4f, 4f);
+            transform.localPosition = new Vector3(screenTickPositions[polarity], 0, 0);
         }
     }
 

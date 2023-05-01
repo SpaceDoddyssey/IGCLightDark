@@ -25,10 +25,10 @@ public class PlayerController : MonoBehaviour
         Tilemap tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         Debug.Log(tilemap);
         TileBase[] tileArray = tilemap.GetTilesBlock(new BoundsInt(-10, -10, -10, 20, 20, 20));
-        for (int index = 0; index < tileArray.Length; index++)
-        {
-            Debug.Log(tileArray[index]);
-        }
+        //for (int index = 0; index < tileArray.Length; index++)
+        //{
+        //    Debug.Log(tileArray[index]);
+        //}
     }
 
     // Update is called once per frame
