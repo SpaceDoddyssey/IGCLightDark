@@ -13,12 +13,12 @@ public class PlayerController : MonoBehaviour
 
     //Private variables
     Vector3 targetGridPos, prevTargetGridPos, targetRotation;
-    private WorldState worldManager;
+    private GameState worldManager;
 
     // Start is called before the first frame update
     void Start() {
 
-        worldManager = GameObject.Find("World Manager").GetComponent<WorldState>();
+        worldManager = GameObject.Find("Game World Manager").GetComponent<GameState>();
 
         targetGridPos = Vector3Int.RoundToInt(transform.position);
 
@@ -111,12 +111,17 @@ public class PlayerController : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other){
-        Debug.Log(other.gameObject.name);
-        if(other.gameObject.name == "ph_block" || other.gameObject.name == "ph_enemy"){
+        //Debug.Log(other.gameObject.name);
+        if(other.gameObject.name == "ph_block")
+        {
             (targetGridPos, prevTargetGridPos) = (prevTargetGridPos, targetGridPos); //Swaps the two values, sending you back to where you started
         }
-        if(other.gameObject.name == "ph_enemy"){
-            other.gameObject.GetComponent<EnemyScript>().TakeDamage(1);
+        else if(other.gameObject.tag == "Enemy"){
+            if (other.gameObject.GetComponent<EnemyScript>().inPlayerDimension)
+            {
+                other.gameObject.GetComponent<EnemyScript>().TakeDamage((int)(10 * worldManager.GetDamageModifier()));
+                (targetGridPos, prevTargetGridPos) = (prevTargetGridPos, targetGridPos);
+            }
         }
     }
 }

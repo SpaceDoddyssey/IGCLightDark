@@ -12,7 +12,7 @@ public class AStarPathfinding : MonoBehaviour
 
     private void Awake()
     {
-        grid = GameObject.Find("World Manager").GetComponent<AStarGrid>(); 
+        grid = GameObject.Find("Game World Manager").GetComponent<AStarGrid>(); 
     }
 
     private void Update()

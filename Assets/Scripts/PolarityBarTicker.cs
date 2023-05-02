@@ -7,12 +7,12 @@ public class PolarityBarTicker : MonoBehaviour
 {
     private bool isLerping = false;
     private float lerpAmt;
+    private GameState stateObject;
 
     // This is a modifier determining how long it takes to interpolate between ticks.
     // Lower values make faster lerps.
     public float lerpSpeed;
     // An int value between -4 and 4.
-    public int polarity;
     private int targetPolarity, prevPolarity;
 
     // Right now the values for where the ticker should be are hard-coded.
@@ -35,6 +35,7 @@ public class PolarityBarTicker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        stateObject = GameObject.Find("Game World Manager").GetComponent<GameState>();
     }
 
     // Update is called once per frame
@@ -55,8 +56,8 @@ public class PolarityBarTicker : MonoBehaviour
         }
         else
         {
-            polarity = (int)Mathf.Clamp((float)polarity, -4f, 4f);
-            transform.localPosition = new Vector3(screenTickPositions[polarity], 0, 0);
+            stateObject.polarity = (int)Mathf.Clamp((float)stateObject.polarity, -4f, 4f);
+            transform.localPosition = new Vector3(screenTickPositions[stateObject.polarity], 0, 0);
         }
     }
 
@@ -64,20 +65,20 @@ public class PolarityBarTicker : MonoBehaviour
     {
         if (delta == 0 || isLerping) return;
 
-        if (polarity + delta < -4)
+        if (stateObject.polarity + delta < -4)
         {
             targetPolarity = -4;
         }
-        else if (polarity + delta > 4)
+        else if (stateObject.polarity + delta > 4)
         {
             targetPolarity = 4;
         }
         else
         {
-            targetPolarity =  polarity + delta;
-            prevPolarity = polarity;
-            polarity = targetPolarity;
-            Debug.Log("Target:" + targetPolarity + "  prev:" + prevPolarity + "  pol:"+polarity);
+            targetPolarity = stateObject.polarity + delta;
+            prevPolarity = stateObject.polarity;
+            stateObject.polarity = targetPolarity;
+            Debug.Log("Target:" + targetPolarity + "  prev:" + prevPolarity + "  pol:"+ stateObject.polarity);
         }
         
         if (interpolate == true)
@@ -87,8 +88,8 @@ public class PolarityBarTicker : MonoBehaviour
         else
         {
             // Otherwise, instantly set the polarity and position
-            polarity = targetPolarity;
-            transform.localPosition = new Vector3(screenTickPositions[polarity], transform.position.y, transform.position.z);
+            stateObject.polarity = targetPolarity;
+            transform.localPosition = new Vector3(screenTickPositions[stateObject.polarity], transform.position.y, transform.position.z);
             // Kill any lerping that's happening.
             isLerping = false;
         }
@@ -107,25 +108,25 @@ public class PolarityBarTicker : MonoBehaviour
     {
         if (value < -4)
         {
-            polarity = -4;
+            stateObject.polarity = -4;
         }
-        else if (polarity > 4)
+        else if (stateObject.polarity > 4)
         {
-            polarity = 4;
+            stateObject.polarity = 4;
         }
         else
         {
-            polarity = value;
+            stateObject.polarity = value;
         }
 
         // Manual tick settings move the ticker immediately for now. 
-        transform.position = new Vector3(screenTickPositions[polarity], transform.position.y, transform.position.z);
+        transform.position = new Vector3(screenTickPositions[stateObject.polarity], transform.position.y, transform.position.z);
         // Kill any lerping that's happening.
         isLerping = false;
-        targetPolarity = polarity;
-        prevPolarity = polarity;
+        targetPolarity = stateObject.polarity;
+        prevPolarity = stateObject.polarity;
 
-        Debug.Log("Polarity = " + polarity);
+        Debug.Log("Polarity = " + stateObject.polarity);
     }
 
     //Possibly useless?

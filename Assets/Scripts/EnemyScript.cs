@@ -4,13 +4,25 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
-    int hp = 3;
+    public enum HomeWorld
+    {
+        Light,
+        Dark
+    }
+    public int health = 50;
+    public int baseDamage = 15;
+    public HomeWorld homeWorld = HomeWorld.Light;
+
     public SpriteRenderer spriteRender;
     public Sprite defaultSprite, outlineSprite;
     public AStarPathfinding pathfinding;
+    public bool inPlayerDimension = true;
+
+    private GameState stateObject;
 
     void Start() {
 
+        stateObject = GameObject.Find("Game World Manager").GetComponent<GameState>();
         GameObject spritechild = gameObject.transform.GetChild(0).gameObject;
         spriteRender = spritechild.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
 
@@ -29,6 +41,26 @@ public class EnemyScript : MonoBehaviour
 
     }
 
+
+    void Update()
+    {
+            if (homeWorld == HomeWorld.Light && stateObject.polarity >= 1 ||
+           (homeWorld == HomeWorld.Dark && stateObject.polarity <= -1))
+        {
+            // Entity is active, player is in their "world" or dimension.
+            inPlayerDimension = true;
+            spriteRender.enabled = true;
+
+        }
+        else if (homeWorld == HomeWorld.Light && stateObject.polarity <= 0 ||
+                (homeWorld == HomeWorld.Dark  && stateObject.polarity >=  0))
+        {
+            // Entity is inactive since the player does not inhabit their world.
+            inPlayerDimension = false;
+            spriteRender.enabled = false;
+        }
+    }
+
     public void Outline(bool outl){
         if(outl) {
             spriteRender.sprite = outlineSprite;
@@ -38,9 +70,9 @@ public class EnemyScript : MonoBehaviour
     }
 
     public void TakeDamage(int amount){
-        hp -= amount;
+        health -= amount;
         Debug.Log("The imp takes " + amount + " damage!");
-        if (hp < 0){
+        if (health < 0){
             Debug.Log("The imp dies!");
             Destroy(gameObject);
         }
@@ -49,16 +81,22 @@ public class EnemyScript : MonoBehaviour
     // Activated whenever the clock hits twelve, called from a UnityEvent.
     public void OnClockTwelve()
     {
-        pathfinding.FindPath();
-        if (pathfinding.path.Count > 1)
+        if (inPlayerDimension)
         {
-            transform.position = pathfinding.path[0].worldPosition;
-        }
-        else if (pathfinding.path.Count == 1)
-        {
+            pathfinding.FindPath();
+            if (pathfinding.path.Count > 1)
+            {
+                transform.position = pathfinding.path[0].worldPosition;
+            }
             // This is kind of a buggy check to see if the enemy is right next to the player.
-
+            else if (pathfinding.path.Count == 1)
+            {
+                // Attack the player.
+                int damageDirection = (homeWorld == HomeWorld.Light ? -1 : 1);
+                stateObject.DamagePlayer((int)(baseDamage * damageDirection * stateObject.GetDamageModifier()));
+            }
         }
+
     }
 
 }
