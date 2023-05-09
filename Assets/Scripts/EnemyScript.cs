@@ -11,6 +11,7 @@ public class EnemyScript : MonoBehaviour
     public HomeWorld homeWorld = HomeWorld.Light;
     public float moveSpeed = 0.5f;
     public float attackSpeed = 0.1f;
+    public float attackBounce;
     public enum HomeWorld
     {
         Light,
@@ -64,10 +65,15 @@ public class EnemyScript : MonoBehaviour
 
     }
 
-    void Update()
+    private void FixedUpdate()
     {
         MovementInterp();
         AttackInterp();
+    }
+
+    void Update()
+    {
+
 
         // Visibility code.
         if (homeWorld == HomeWorld.Light && stateObject.polarity >= 1 ||
@@ -127,7 +133,8 @@ public class EnemyScript : MonoBehaviour
                     }
                 }
 
-                // Otherwise if the node is not yet claimed, then
+                // Otherwise if the node is not yet claimed, then move!
+                prevPosition = transform.position;
                 nodeOfIntent = pathfinding.path[0];
                 movementInterp = new QuickInterpVec3(transform.position, pathfinding.path[0].worldPosition, moveSpeed, true);
                 currentState = State.Moving;
@@ -146,12 +153,23 @@ public class EnemyScript : MonoBehaviour
         if (movementInterp != null)
         {
 
-            // If we realize something's at where we're traveling, go back before we hit it.
-            // BROKEN
-            if (retreating == false && Physics.CheckSphere(movementInterp.endValue, 0.1f, LayerMask.GetMask("Player")))
+            RaycastHit hit = new RaycastHit();
+
+            // More adjustment for origin fuckery
+            Vector3 originAdjusted = new Vector3(movementInterp.startValue.x, movementInterp.startValue.y, movementInterp.startValue.z);
+            originAdjusted.y += 1f;
+
+            Vector3 dir = movementInterp.endValue - movementInterp.startValue;
+
+            Debug.DrawRay(originAdjusted, dir.normalized);
+
+            if (retreating == false && Physics.Raycast(originAdjusted, dir.normalized, out hit, 2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal))
             {
-                movementInterp = new QuickInterpVec3(transform.position, prevPosition, moveSpeed / 2, false);
-                retreating = true;
+                if (hit.collider.name == "Player")
+                {
+                    movementInterp = new QuickInterpVec3(transform.position, prevPosition, moveSpeed / 2, false);
+                    retreating = true;
+                }
 
             }
 
@@ -178,8 +196,14 @@ public class EnemyScript : MonoBehaviour
         prevPosition = spriteRender.transform.position;
         currentState = State.Attacking;
 
+        //This is a fix for a glitch involving origins.
+        targetPos.y += 1f;
+
+        // Add a bit of extra bump so the imp goes out more.
+        Vector3 difference = targetPos - spriteRender.transform.position;
+
         // Start an interp here.
-        attackInterp = new QuickInterpVec3(spriteRender.transform.position, targetPos, attackSpeed, true);
+        attackInterp = new QuickInterpVec3(spriteRender.transform.position, targetPos - (difference.normalized) + (difference.normalized * attackBounce), attackSpeed, true);
     }
 
     private void AttackInterp()
@@ -195,6 +219,7 @@ public class EnemyScript : MonoBehaviour
                     attackInterp = null;
                     currentState = State.Idle;
                     retreating = false;
+                    spriteRender.transform.position = prevPosition;
                     return;
                 }
             }
@@ -203,15 +228,20 @@ public class EnemyScript : MonoBehaviour
                 // Otherwise, we must be on the ATTACKING part of the attack interp, moving forward basically.
                 // However, if that's done, then DAMAGE THE PLAYER and start retreating.
                 // Don't do the full interp because we don't want the imp going all the way into the square.
-                if (attackInterp.duration >= 0.25f)
+                if (attackInterp.duration >= 0.80)
                 {
-                    // If the player is still there, get your attack in.
-                    // BROKEN
-                    if (Physics.CheckSphere(attackInterp.endValue, 0.1f, LayerMask.GetMask("Player")))
+                    RaycastHit hit = new RaycastHit();
+                    Vector3 dir = attackInterp.endValue - attackInterp.startValue;
+                    Debug.DrawRay(attackInterp.startValue, dir);
+                    if (Physics.Raycast(attackInterp.startValue, dir.normalized, out hit, 2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal))
                     {
-                        // Attack the player. Damage direction indicates whether the damage is positive or negative
-                        int damageDirection = (homeWorld == HomeWorld.Light ? -1 : 1);
-                        stateObject.DamagePlayer((int)(baseDamage * damageDirection * stateObject.GetDamageModifier()));
+                        if (hit.collider.name == "Player")
+                        {
+                            // Attack the player. Damage direction indicates whether the damage is positive or negative
+                            int damageDirection = (homeWorld == HomeWorld.Light ? -1 : 1);
+                            stateObject.DamagePlayer((int)(baseDamage * damageDirection * stateObject.GetDamageModifier()));
+
+                        }
 
                     }
 

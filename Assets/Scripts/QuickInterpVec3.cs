@@ -37,6 +37,8 @@ public class QuickInterpVec3
         endValue = _end;
         timeItTakes = _time;
         smooth = _smooth;
+
+        status = startValue;
     }
 
     public void InterpUpdate()
