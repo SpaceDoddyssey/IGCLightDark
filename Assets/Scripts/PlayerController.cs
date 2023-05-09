@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     public bool smoothTransition = true;
     public float transitionSpeed = 10f;
     public float transitionRotationSpeed = 500f;
+    public float movementCost = 0.5f;
+    public float turnCost = 0.1f;
+    public float attackCost = 0.5f;
 
 
     //Private variables
@@ -58,42 +61,42 @@ public class PlayerController : MonoBehaviour
         if (AtRest) {
             prevTargetGridPos = targetGridPos; 
             targetGridPos += transform.forward * scalar;
-            worldManager.TurnClock(0.25f);
+            worldManager.TurnClock(movementCost);
         }
     }
     public void MoveBackward(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.forward * scalar;
-            worldManager.TurnClock(0.25f);
+            worldManager.TurnClock(movementCost);
         }
     }
     public void MoveLeft(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.right * scalar;
-            worldManager.TurnClock(0.25f);
+            worldManager.TurnClock(movementCost);
         }
     }
     public void MoveRight(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
             targetGridPos += transform.right * scalar;
-            worldManager.TurnClock(0.25f);
+            worldManager.TurnClock(movementCost);
         }
     }
     public void RotateLeft(){
         if (AtRest)
         {
             targetRotation -= Vector3.up * 90f;
-            worldManager.TurnClock(0.1f);
+            worldManager.TurnClock(turnCost);
         }
     }
     public void RotateRight(){
         if (AtRest)
         {
             targetRotation += Vector3.up * 90f;
-            worldManager.TurnClock(0.1f);
+            worldManager.TurnClock(turnCost);
         }
     }
 

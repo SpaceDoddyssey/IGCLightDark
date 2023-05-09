@@ -57,8 +57,9 @@ public class GameState : MonoBehaviour
         print("Player takes " + damage + " damage!");
         if (playerHealth > playerMaxAbsoluteHealth || playerHealth < playerMaxAbsoluteHealth * -1)
         {
+            playerHealth = Mathf.Clamp(playerHealth, playerMaxAbsoluteHealth * -1, playerMaxAbsoluteHealth);
             print("Threshhold broken! Game over!");
-            Application.Quit();
+            GameObject.Find("Player").GetComponent<PlayerController>().enabled = false;
         }
 
     }

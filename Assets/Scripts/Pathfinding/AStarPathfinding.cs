@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Diagnostics;
 
 public class AStarPathfinding : MonoBehaviour
 {
@@ -15,17 +14,9 @@ public class AStarPathfinding : MonoBehaviour
         grid = GameObject.Find("Game World Manager").GetComponent<AStarGrid>(); 
     }
 
-    private void Update()
-    {
-
-    }
 
     public void FindPath()
     {
-
-
-        Stopwatch sw = new Stopwatch();
-        sw.Start();
         AStarNode startNode = grid.AStartNodeFromWorldPoint(seeker.position);
         AStarNode targetNode = grid.AStartNodeFromWorldPoint(target.position);
 
@@ -40,8 +31,6 @@ public class AStarPathfinding : MonoBehaviour
             closedSet.Add(currentNode);
             if (currentNode == targetNode)
             {
-                sw.Stop();
-                print("Path found: " + sw.ElapsedMilliseconds + "ms");
 
                 // Then the path has been found
                 RetracePath(startNode, targetNode);
