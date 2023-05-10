@@ -7,6 +7,7 @@ public class HealthBar : MonoBehaviour
     private RectTransform myTransform;
     private RectTransform childTransform;
     private GameState stateObject;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,5 +21,7 @@ public class HealthBar : MonoBehaviour
     {
         float newX = ((float)stateObject.playerHealth / (float)stateObject.playerMaxAbsoluteHealth) * (myTransform.rect.width / 2f);
         childTransform.localPosition = new Vector3(newX, 0, 0);
+
+
     }
 }

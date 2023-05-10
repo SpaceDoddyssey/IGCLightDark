@@ -18,6 +18,15 @@ public class GameState : MonoBehaviour
     void Start(){
     }
 
+    private void FixedUpdate()  
+    {
+
+    }
+    void Update()
+    {
+
+    }
+
     public float GetDamageModifier()
     {
         switch(Mathf.Abs(polarity))
@@ -37,6 +46,25 @@ public class GameState : MonoBehaviour
         }
 
 
+    }
+
+    public float GetSlowdownFactor()
+    {
+        switch(Mathf.Abs(polarity))
+        {
+            case 0:
+                return 1f;
+            case 1:
+                return 1f;
+            case 2:
+                return .9f;
+            case 3:
+                return .75f;
+            case 4:
+                return .5f;
+            default:
+                return 1f;
+        }
     }
     
     public void ChangePolarity(int offset)

@@ -28,7 +28,7 @@ public class ClockHand : MonoBehaviour
     private void Update()
     {
         // Rotate clock hand
-        stateObject.clockRotation.z += idleSpeed * Time.deltaTime * -360f;
+        stateObject.clockRotation.z += idleSpeed * Time.deltaTime * -360f * stateObject.GetSlowdownFactor();
         CheckClockOverflow();
 
         transform.rotation = Quaternion.Euler(stateObject.clockRotation);

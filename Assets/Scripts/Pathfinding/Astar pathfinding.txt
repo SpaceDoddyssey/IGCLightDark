@@ -12,7 +12,7 @@ G
 		
 Then path is traced back from final node
 	
-OPEN //The set of nodes to be evaluated
+OPEN // The set of nodes to be evaluated
 CLOSED // the set of nodes already evaluated
 add the start of the node to OPEN
 

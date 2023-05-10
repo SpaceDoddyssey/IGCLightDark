@@ -61,42 +61,42 @@ public class PlayerController : MonoBehaviour
         if (AtRest) {
             prevTargetGridPos = targetGridPos; 
             targetGridPos += transform.forward * scalar;
-            worldManager.TurnClock(movementCost);
+            worldManager.TurnClock(movementCost * worldManager.GetSlowdownFactor());
         }
     }
     public void MoveBackward(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.forward * scalar;
-            worldManager.TurnClock(movementCost);
+            worldManager.TurnClock(movementCost * worldManager.GetSlowdownFactor());
         }
     }
     public void MoveLeft(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.right * scalar;
-            worldManager.TurnClock(movementCost);
+            worldManager.TurnClock(movementCost * worldManager.GetSlowdownFactor());
         }
     }
     public void MoveRight(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
             targetGridPos += transform.right * scalar;
-            worldManager.TurnClock(movementCost);
+            worldManager.TurnClock(movementCost * worldManager.GetSlowdownFactor());
         }
     }
     public void RotateLeft(){
         if (AtRest)
         {
             targetRotation -= Vector3.up * 90f;
-            worldManager.TurnClock(turnCost);
+            worldManager.TurnClock(turnCost * worldManager.GetSlowdownFactor());
         }
     }
     public void RotateRight(){
         if (AtRest)
         {
             targetRotation += Vector3.up * 90f;
-            worldManager.TurnClock(turnCost);
+            worldManager.TurnClock(turnCost * worldManager.GetSlowdownFactor());
         }
     }
 
