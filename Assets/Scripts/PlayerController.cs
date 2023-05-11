@@ -115,9 +115,14 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other){
         //Debug.Log(other.gameObject.name);
-        if(other.gameObject.name == "ph_block")
+        //Task: Clean up this whole system
+        if(other.gameObject.layer == LayerMask.NameToLayer("Unwalkable"))
         {
             (targetGridPos, prevTargetGridPos) = (prevTargetGridPos, targetGridPos); //Swaps the two values, sending you back to where you started
+        }
+        LeverScript lever = other.gameObject.GetComponent<LeverScript>();
+        if(lever != null){
+            lever.Pull();
         }
         else if(other.gameObject.tag == "Enemy"){
             if (other.gameObject.GetComponent<EnemyScript>().inPlayerDimension)
