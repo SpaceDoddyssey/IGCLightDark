@@ -52,7 +52,7 @@ public class AStarGrid : MonoBehaviour
         
     }
 
-    public List<AStarNode> GetNeighbours(AStarNode node)
+    public List<AStarNode> GetNeighbours(AStarNode node, bool treatEnemiesAsUnwalkable)
     {
         List<AStarNode> neighbours = new List<AStarNode>();
 
@@ -71,6 +71,10 @@ public class AStarGrid : MonoBehaviour
 
                 int checkX = node.gridX + x;
                 int checkY = node.gridY + y;
+
+                // Here we filter out the unwalkable enemies, if need be.
+                if (treatEnemiesAsUnwalkable && (Physics.CheckSphere(grid[checkX, checkY].worldPosition, 0.1f, LayerMask.GetMask("Physical"))))
+                    continue;
 
                 if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                 {
@@ -138,5 +142,51 @@ public class AStarGrid : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    public AStarNode BFS(AStarNode node)
+    {
+
+        // Abysmal time complexity, n squared. But whatever. Best idea I have right now as we slapdash this together.
+        for (int x = 0; x < gridSizeX; x++) 
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                grid[x, y].BFSNode = new AStarNode.BFSObject();
+            }
+        }
+
+        // Discover the source s
+        node.BFSNode.color = 'g';
+        node.BFSNode.depth = 0;
+        node.BFSNode.parent = null;
+
+        Queue<AStarNode> Q = new Queue<AStarNode>();
+        Q.Enqueue(node);
+
+        while (!(Q.Count == 0))
+        {
+            AStarNode current = Q.Dequeue();
+            foreach (AStarNode n in GetNeighbours(current, true))
+            {
+                if (n.BFSNode.color == 'w')
+                {
+                    n.BFSNode.color = 'g';
+                    n.BFSNode.depth = current.BFSNode.depth + 1;
+                    n.BFSNode.parent = current.BFSNode;
+
+                    // If that particular node we're looking at is empty, then we're good :3
+                    if (!Physics.CheckSphere(n.worldPosition, 0.1f, LayerMask.GetMask("Physical")))
+                    {
+                        return n;
+                    }
+
+                }
+                current.BFSNode.color = 'b';
+            }
+        }
+
+        return null;
     }
 }

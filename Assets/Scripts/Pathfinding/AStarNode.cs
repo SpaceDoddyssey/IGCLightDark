@@ -16,6 +16,18 @@ public class AStarNode : IHeapItem<AStarNode>
 
     int heapIndex;
 
+    public class BFSObject
+    {
+        public char color = 'w';
+        public int depth = 9999;
+        public BFSObject parent = null;
+    }
+
+    public BFSObject BFSNode;
+    
+
+
+
     public AStarNode(bool _walkable, Vector3 _worldPos, int gridX, int gridY)
     {
         walkable = _walkable;
