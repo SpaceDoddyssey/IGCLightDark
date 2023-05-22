@@ -105,7 +105,7 @@ public class EnemyScript : MonoBehaviour
 
         health -= amount;
         Debug.Log("The imp takes " + amount + " damage!");
-        if (health < 0){
+        if (health <= 0){
             Debug.Log("The imp dies!");
             Destroy(gameObject);
         }
