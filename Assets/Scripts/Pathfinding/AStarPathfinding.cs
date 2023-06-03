@@ -17,8 +17,11 @@ public class AStarPathfinding : MonoBehaviour
     }
 
 
-    public void FindPath()
+    public void FindPath(Vector3 start, Vector3 target)
     {
+        seekerPos = start;
+        targetPos = target;
+
         // First, try to find the path with enemies set as unwalkable.
         if (!AStarAlgorithm(targetPos, true))
         {

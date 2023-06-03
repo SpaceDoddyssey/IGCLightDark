@@ -52,9 +52,6 @@ public class EnemyScript : MonoBehaviour
 
         pathfinding = GetComponent<AStarPathfinding>();
 
-        //Establish player target
-        pathfinding.seeker = transform;
-        pathfinding.target = GameObject.Find("Player").transform;
 
         // var outline = gameObject.AddComponent<Outline>();
 
@@ -116,7 +113,7 @@ public class EnemyScript : MonoBehaviour
     {
         if (inPlayerDimension && currentState == State.Idle)
         {
-            pathfinding.FindPath();
+            pathfinding.FindPath(transform.position, GameObject.Find("Player").transform.position);
 
             if (pathfinding.path.Count > 1)
             {
