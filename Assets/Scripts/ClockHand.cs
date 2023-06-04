@@ -32,7 +32,7 @@ public class ClockHand : MonoBehaviour
         stateObject.clockRotation.z += idleSpeed * Time.deltaTime * -360f * stateObject.GetSlowdownFactor();
         CheckClockOverflow();
 
-        transform.rotation = Quaternion.Euler(stateObject.clockRotation);
+        transform.localRotation = Quaternion.Euler(stateObject.clockRotation);
         
     }
 

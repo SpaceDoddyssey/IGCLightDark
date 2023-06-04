@@ -14,6 +14,36 @@ public class GameState : MonoBehaviour
 
     public Vector3 clockRotation = new Vector3(0f, 0f, 0f);
 
+    public GameObject ActionTextPrefab;
+
+    private string[] goodWords =
+    {
+        "LOVES",
+        "ADORES",
+        "CHERISHES",
+        "COMFORTS",
+        "AIDS",
+        "DESIRES",
+        "INDULGES",
+        "MENDS",
+        "HEALS",
+        "RESTORES",
+        "ACCEPTS"
+    };
+
+    private string[] badWords =
+    {
+        "HATES",
+        "SCORNS",
+        "SPURNS",
+        "LOATHES",
+        "DETESTS",
+        "ABHORS",
+        "CURSES",
+        "ANTAGONIZES",
+        "TRIVIALIZES",
+        "NEUTRALIZES",
+    };
 
     void Start(){
     }
@@ -79,10 +109,31 @@ public class GameState : MonoBehaviour
         hand.RotateClockHand(amount);
     }
 
-    public void DamagePlayer(int damage)
+    public void DamagePlayer(int damage, string name)
     {
         playerHealth += damage;
-        print("Player takes " + damage + " damage!");
+        string desiredString = name + " " + (name == "Lightener" ? findGoodWords() : findBadWords()) + " Player for " + damage + " damage!";
+
+        // Put this on the text on the screen.
+
+        Transform textSpot = GameObject.Find("TextSpot").transform;
+        GameObject findExistingText = GameObject.Find("ActionText(Clone)");
+        if (findExistingText != null)
+        {
+            string existingText = findExistingText.GetComponent<ActionText>().Text;
+            existingText = existingText.Insert(0, desiredString + "\n");
+            findExistingText.GetComponent<ActionText>().Text = existingText;
+        }
+        else
+        {
+            GameObject text = Instantiate(ActionTextPrefab, textSpot);
+            text.GetComponent<ActionText>().Text = desiredString;
+        }
+
+
+
+
+
         if (playerHealth > playerMaxAbsoluteHealth || playerHealth < playerMaxAbsoluteHealth * -1)
         {
             playerHealth = Mathf.Clamp(playerHealth, playerMaxAbsoluteHealth * -1, playerMaxAbsoluteHealth);
@@ -90,6 +141,37 @@ public class GameState : MonoBehaviour
             GameObject.Find("Player").GetComponent<PlayerController>().enabled = false;
         }
 
+    }
+
+    public string findGoodWords()
+    {
+        return goodWords[(int)Random.Range(0f, goodWords.Length - 1)];
+    }
+
+    public string findBadWords()
+    {
+        return badWords[(int)Random.Range(0f, goodWords.Length - 1)];
+    }
+
+    public void PrintEnemyDamageText(int amount, string enemyName)
+    {
+        string desiredString = "Player hits " + enemyName + " for " + amount + " damage!";
+
+        // Put this on the text on the screen.
+
+        Transform textSpot = GameObject.Find("TextSpot").transform;
+        GameObject findExistingText = GameObject.Find("ActionText(Clone)");
+        if (findExistingText != null)
+        {
+            string existingText = findExistingText.GetComponent<ActionText>().Text;
+            existingText = existingText.Insert(0, desiredString + "\n");
+            findExistingText.GetComponent<ActionText>().Text = existingText;
+        }
+        else
+        {
+            GameObject text = Instantiate(ActionTextPrefab, textSpot);
+            text.GetComponent<ActionText>().Text = desiredString;
+        }
     }
 
 }

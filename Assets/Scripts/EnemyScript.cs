@@ -106,6 +106,7 @@ public class EnemyScript : MonoBehaviour
 
         health -= amount;
         Debug.Log("The imp takes " + amount + " damage!");
+        stateObject.PrintEnemyDamageText(amount, name);
         if (health <= 0){
             Debug.Log("The imp dies!");
             Destroy(gameObject);
@@ -240,7 +241,7 @@ public class EnemyScript : MonoBehaviour
                         {
                             // Attack the player. Damage direction indicates whether the damage is positive or negative
                             int damageDirection = (homeWorld == HomeWorld.Light ? 1 : -1);
-                            stateObject.DamagePlayer((int)(baseDamage * damageDirection * stateObject.GetDamageModifier()));
+                            stateObject.DamagePlayer((int)(baseDamage * damageDirection * stateObject.GetDamageModifier()), name);
 
                         }
 

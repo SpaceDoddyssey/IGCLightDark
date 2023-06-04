@@ -92,8 +92,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62856a116d61d534ba38358061e4cb97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seeker: {fileID: 7925753457780426082}
-  target: {fileID: 0}
+  seekerPos: {x: 0, y: 0, z: 0}
+  targetPos: {x: 0, y: 0, z: 0}
 --- !u!1 &7925753458431618291
 GameObject:
   m_ObjectHideFlags: 0

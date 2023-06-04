@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 4158103}
   - component: {fileID: 4158105}
   - component: {fileID: 4158104}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: PolarityBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1219,7 +1219,7 @@ GameObject:
   - component: {fileID: 158732840}
   - component: {fileID: 158732839}
   - component: {fileID: 158732838}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1276,14 +1276,14 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_Camera: {fileID: 664531764}
+  m_PlaneDistance: 0.5
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -1302,6 +1302,7 @@ RectTransform:
   - {fileID: 2025638323}
   - {fileID: 4158103}
   - {fileID: 1032531539}
+  - {fileID: 214541021}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1725,7 +1726,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7925753457780426094, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
       propertyPath: m_Name
-      value: Lightner
+      value: Lightener
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
@@ -1786,6 +1787,42 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38fb4c3b33585734b84fe97e4fc38db7, type: 3}
+--- !u!1 &214541020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 214541021}
+  m_Layer: 11
+  m_Name: TextSpot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &214541021
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214541020}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 158732841}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -187.7}
+  m_SizeDelta: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &220688403 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5824515095873055196, guid: 38fb4c3b33585734b84fe97e4fc38db7, type: 3}
@@ -2314,7 +2351,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7925753457780426094, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
       propertyPath: m_Name
-      value: Lightner
+      value: Lightener
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
@@ -4116,10 +4153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59d08242f71a2841ab22effbf6c3bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fogShader: {fileID: 4800000, guid: 63f3fc209fa23ef40b278ad6ff01230c, type: 3}
-  fogColor: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 0}
-  fogDensity: 0.253
-  fogOffset: 57
 --- !u!114 &664531762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4127,7 +4160,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 664531752}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
   m_Name: 
@@ -4135,7 +4168,7 @@ MonoBehaviour:
   volumeTrigger: {fileID: 664531758}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2048
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
   antialiasingMode: 0
@@ -4180,6 +4213,11 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!20 &664531764 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 4858262926309872857, guid: a8768e953189c034f9e548fd6dc6b5b9, type: 3}
+  m_PrefabInstance: {fileID: 4858262925926693290}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &667457873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5080,7 +5118,7 @@ GameObject:
   - component: {fileID: 847783443}
   - component: {fileID: 847783445}
   - component: {fileID: 847783446}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Game World Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5105,6 +5143,7 @@ MonoBehaviour:
   playerMaxAbsoluteHealth: 100
   polarity: 0
   clockRotation: {x: 0, y: 0, z: 0}
+  ActionTextPrefab: {fileID: 3391205265706243682, guid: d0a657d016b47c84bacade0d335ea641, type: 3}
 --- !u!4 &847783444
 Transform:
   m_ObjectHideFlags: 0
@@ -5147,12 +5186,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 847783442}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: 650fe31f571bd2345a4fb7d0b112470e, type: 2}
+  sharedProfile: {fileID: 11400000, guid: d3d20fd165318b74a9d65218011764eb, type: 2}
   isGlobal: 1
   blendDistance: 0
   weight: 1
@@ -6289,7 +6328,7 @@ GameObject:
   - component: {fileID: 1032531541}
   - component: {fileID: 1032531540}
   - component: {fileID: 1032531542}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6315,7 +6354,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 111}
-  m_SizeDelta: {x: 600, y: 100}
+  m_SizeDelta: {x: 600, y: 27.92}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1032531540
 MonoBehaviour:
@@ -6557,6 +6596,7 @@ Transform:
   - {fileID: 847029877}
   - {fileID: 1354024875}
   - {fileID: 904328020}
+  - {fileID: 863233565}
   - {fileID: 2040724893}
   - {fileID: 1777588940}
   - {fileID: 1108824461}
@@ -6564,7 +6604,6 @@ Transform:
   - {fileID: 430770204}
   - {fileID: 1702803758}
   - {fileID: 1163408831}
-  - {fileID: 863233565}
   - {fileID: 272335415}
   - {fileID: 1076234638}
   - {fileID: 409683953}
@@ -7176,7 +7215,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7925753457780426094, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
       propertyPath: m_Name
-      value: Lightner
+      value: Lightener
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
@@ -7429,7 +7468,7 @@ GameObject:
   - component: {fileID: 1132858462}
   - component: {fileID: 1132858465}
   - component: {fileID: 1132858464}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: HealthBarTicker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8440,7 +8479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7925753457780426094, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
       propertyPath: m_Name
-      value: Lightner
+      value: Lightener
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
@@ -9226,7 +9265,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7925753457780426094, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
       propertyPath: m_Name
-      value: Lightner
+      value: Lightener
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
@@ -10890,7 +10929,7 @@ GameObject:
   - component: {fileID: 1621274184}
   - component: {fileID: 1621274183}
   - component: {fileID: 1621274185}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: PolarityBarTicker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11212,7 +11251,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7925753457780426094, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
       propertyPath: m_Name
-      value: Lightner
+      value: Lightener
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
@@ -11763,7 +11802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7925753457780426094, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
       propertyPath: m_Name
-      value: Lightner
+      value: Lightener
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
@@ -12078,7 +12117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7925753457780426094, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
       propertyPath: m_Name
-      value: Lightner
+      value: Lightener
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}

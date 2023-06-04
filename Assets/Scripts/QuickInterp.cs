@@ -8,6 +8,7 @@ public class QuickInterp
 
     private bool smooth;
 
+    // The value we care about while interping.
     public float status
     {
         get; private set; 
@@ -42,11 +43,11 @@ public class QuickInterp
     {
         if (smooth)
         {
-            status = Mathf.SmoothStep(startValue, endValue, status);
+            status = Mathf.SmoothStep(startValue, endValue, duration);
         }
         else if (!smooth)
         {
-            status = Mathf.Lerp(startValue, endValue, status);
+            status = Mathf.Lerp(startValue, endValue, duration);
         }
 
         if (duration < 1f)
