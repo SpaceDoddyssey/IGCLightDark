@@ -4,29 +4,50 @@ using UnityEngine;
 
 public class QuickInterp
 {
+    private float timeItTakes;
+
+    private bool smooth;
+
     public float status
     {
         get; private set; 
     }
-    private float startValue;
-    private float endValue;
-    private float timeItTakes;
-    private float duration = 0.0f;
+    public float startValue
+    { 
+        get; private set; 
+    }
+    public float endValue
+    { 
+        get; private set; 
+    }
     public bool isDone
     {
-        get { return duration >= 1f; } private set { }
+        get { return duration >= 1f; }
+        private set { }
     }
+    public float duration
+    {
+        get; private set;
+    } = 0.0f;
 
-    public QuickInterp(float _start, float _end, float _time)
+    public QuickInterp(float _start, float _end, float _time, bool _smooth = false)
     {
         startValue = _start;
         endValue = _end;
         timeItTakes = _time;
+        smooth = _smooth;
     }
 
-    private void Update()
+    public void InterpUpdate()
     {
-        status = Mathf.SmoothStep(startValue, endValue, status);
+        if (smooth)
+        {
+            status = Mathf.SmoothStep(startValue, endValue, status);
+        }
+        else if (!smooth)
+        {
+            status = Mathf.Lerp(startValue, endValue, status);
+        }
 
         if (duration < 1f)
         {

@@ -11,6 +11,7 @@ public class ClockHand : MonoBehaviour
 
     private GameState stateObject;
     private bool isTicking = false;
+    private QuickInterp handInterp;
 
 
     // Start is called before the first frame update
@@ -61,5 +62,12 @@ public class ClockHand : MonoBehaviour
         // gone past 12 o' clock in the update function.
         stateObject.clockRotation.z += -360f * fraction;
     }
+
+
+    // When the clock is rotated by any amount, there should be a "target" rotation.
+    // If that target rotation is less than -360 degrees,then add 360 degrees to both the clock's current rotation AND the target rotation,
+    // then set the interp. But to the target, ADD the time that would have been added from ticking, and only re-enable ticking when the lerp is done.
+
+    // Gotta be a better way to do this.
     
 }
