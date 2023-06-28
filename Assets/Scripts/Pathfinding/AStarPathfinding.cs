@@ -120,12 +120,9 @@ public class AStarPathfinding : MonoBehaviour
                 return true;
             }
 
-            // This may be weird that we're asking GetNeighbours to NOT filter out the nodes with enemies on them
-            // But it's because we're doing that filtering ourselves in this function.
-            // And also, BFS needs to filter out enemy nodes in GetNeighbours
-            // Otherwise we'd just get rid of that second bool argument in GetNeighbours
             foreach (AStarNode neighbour in grid.GetNeighbours(currentNode, false))
             {
+                // Code to check if the node is already in the closed set, if the node is walkable, or if the node is an enemy and we're treating as unwalkable.
                 if (!(neighbour.walkable) || closedSet.Contains(neighbour) 
                 || (treatEnemiesAsUnwalkables && Physics.CheckSphere(neighbour.worldPosition, 0.1f, LayerMask.GetMask("Physical"))))
                 {
