@@ -9,11 +9,12 @@ public class AStarPathfinding : MonoBehaviour
     AStarGrid grid;
     public List<AStarNode> path = new List<AStarNode>();
 
-    private bool avoidEnemyMode;
+    private GameObject owner;
 
     private void Awake()
     {
         grid = GameObject.Find("Game World Manager").GetComponent<AStarGrid>(); 
+        owner = gameObject;
     }
 
 
@@ -25,12 +26,10 @@ public class AStarPathfinding : MonoBehaviour
         // First, try to find the path with enemies set as unwalkable.
         if (!AStarAlgorithm(targetPos, true))
         {
-
             // If that doesn't work, let's see if an enemy was blocking.
             bool enemyBlocking = false;
             foreach (AStarNode n in path)
             {
-
                 if (Physics.CheckSphere(n.worldPosition, 0.1f, LayerMask.GetMask("Physical")))
                 {
                     enemyBlocking = true;
@@ -114,7 +113,6 @@ public class AStarPathfinding : MonoBehaviour
             closedSet.Add(currentNode);
             if (currentNode == targetNode)
             {
-
                 // Then the path has been found
                 RetracePath(startNode, targetNode);
                 return true;
@@ -123,10 +121,26 @@ public class AStarPathfinding : MonoBehaviour
             foreach (AStarNode neighbour in grid.GetNeighbours(currentNode, false))
             {
                 // Code to check if the node is already in the closed set, if the node is walkable, or if the node is an enemy and we're treating as unwalkable.
-                if (!(neighbour.walkable) || closedSet.Contains(neighbour) 
-                || (treatEnemiesAsUnwalkables && Physics.CheckSphere(neighbour.worldPosition, 0.1f, LayerMask.GetMask("Physical"))))
+                if (!(neighbour.walkable) || closedSet.Contains(neighbour))
                 {
                     continue;
+                }
+                else if (treatEnemiesAsUnwalkables)
+                {
+                    RaycastHit hit;
+                    Vector3 newPos = neighbour.worldPosition - new Vector3(0f, 4f, 0f);
+                    Debug.DrawRay(newPos, Vector3.up * 5f, Color.white, 1f);
+                    if (Physics.Raycast(newPos, Vector3.up * 5f, out hit, 5f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal))
+                    {
+                        EnemyScript e = hit.collider.GetComponent<EnemyScript>();
+                        if (e != null) { 
+                            // If the enemy you're looking at is in your dimension, then you can't pass thru them
+                            if (e.homeWorld == gameObject.GetComponent<EnemyScript>().homeWorld)
+                            {
+                                continue;
+                            }
+                        }
+                    }
                 }
 
                 int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);

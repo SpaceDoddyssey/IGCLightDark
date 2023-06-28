@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class EnemyScript : MonoBehaviour
 {
@@ -124,7 +125,26 @@ public class EnemyScript : MonoBehaviour
             {
                 // There's a bug around here... Where some enemies just won't pathfind and cancel themselves when they shouldn't.
                 // this Checksphere can PROBABLY stay?
-                if (Physics.CheckSphere(pathfinding.path[0].worldPosition, 0.01f, LayerMask.GetMask("Physical"))) return;
+                //if (Physics.CheckSphere(pathfinding.path[0].worldPosition, 0.01f, LayerMask.GetMask("Physical"))) return;
+
+                // Check to see if enemy in the same dimension is blocking you.
+
+                {
+                    RaycastHit hit;
+                    if (Physics.Raycast(transform.position, pathfinding.path[0].worldPosition - transform.position, out hit, 2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal))
+                    {
+                        EnemyScript e = hit.collider.GetComponent<EnemyScript>();
+                        if (e != null)
+                        {
+                            // If the enemy you're looking at is in your dimension, then you can't pass thru them
+                            if (e.homeWorld == gameObject.GetComponent<EnemyScript>().homeWorld)
+                            {
+                                return;
+                            }
+                        }
+
+                    }
+                }
 
                 // Check all other enemy scripts to see if the node is claimed.
                 foreach (EnemyScript e in transform.parent.GetComponentsInChildren<EnemyScript>())
