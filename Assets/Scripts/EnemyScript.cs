@@ -123,10 +123,6 @@ public class EnemyScript : MonoBehaviour
 
             if (pathfinding.path.Count > 1)
             {
-                // There's a bug around here... Where some enemies just won't pathfind and cancel themselves when they shouldn't.
-                // this Checksphere can PROBABLY stay?
-                //if (Physics.CheckSphere(pathfinding.path[0].worldPosition, 0.01f, LayerMask.GetMask("Physical"))) return;
-
                 // Check to see if enemy in the same dimension is blocking you.
 
                 {

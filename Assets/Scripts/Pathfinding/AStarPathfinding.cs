@@ -128,9 +128,9 @@ public class AStarPathfinding : MonoBehaviour
                 else if (treatEnemiesAsUnwalkables)
                 {
                     RaycastHit hit;
-                    Vector3 newPos = neighbour.worldPosition - new Vector3(0f, 4f, 0f);
-                    Debug.DrawRay(newPos, Vector3.up * 5f, Color.white, 1f);
-                    if (Physics.Raycast(newPos, Vector3.up * 5f, out hit, 5f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal))
+
+                    Debug.DrawRay(currentNode.worldPosition, neighbour.worldPosition, Color.white, 1f);
+                    if (Physics.Raycast(currentNode.worldPosition, neighbour.worldPosition - currentNode.worldPosition, out hit, 2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal))
                     {
                         EnemyScript e = hit.collider.GetComponent<EnemyScript>();
                         if (e != null) { 
