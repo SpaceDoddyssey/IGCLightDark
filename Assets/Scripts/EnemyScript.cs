@@ -23,6 +23,7 @@ public class EnemyScript : MonoBehaviour
 
 
     public SpriteRenderer spriteRender;
+    public SpriteRenderer minimapRender;
     public Sprite defaultSprite, outlineSprite;
     public AStarPathfinding pathfinding;
     public bool inPlayerDimension = true;
@@ -54,6 +55,7 @@ public class EnemyScript : MonoBehaviour
         stateObject = GameObject.Find("Game World Manager").GetComponent<GameState>();
         GameObject spritechild = gameObject.transform.GetChild(0).gameObject;
         spriteRender = spritechild.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+        minimapRender = spritechild.transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
 
         pathfinding = GetComponent<AStarPathfinding>();
 
@@ -84,6 +86,7 @@ public class EnemyScript : MonoBehaviour
             // Entity is active, player is in their "world" or dimension.
             inPlayerDimension = true;
             spriteRender.enabled = true;
+            minimapRender.color = new Color(minimapRender.color.r, minimapRender.color.g, minimapRender.color.b, 1f);
 
         }
         else if (homeWorld == HomeWorld.Light && stateObject.polarity <= 0 ||
@@ -92,6 +95,7 @@ public class EnemyScript : MonoBehaviour
             // Entity is inactive since the player does not inhabit their world.
             inPlayerDimension = false;
             spriteRender.enabled = false;
+            minimapRender.color = new Color(minimapRender.color.r, minimapRender.color.g, minimapRender.color.b, 0.2f);
         }
     }
 
