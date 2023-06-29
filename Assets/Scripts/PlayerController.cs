@@ -100,6 +100,25 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void AttemptShiftPolarity(int offset)
+    {
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, Vector3.down, 2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal);
+        foreach (RaycastHit hit in hits)
+        {
+            EnemyScript e = hit.collider.GetComponent<EnemyScript>();
+            if (e != null && worldManager.polarity == 0)
+            {
+                if ((offset > 0 && e.homeWorld == EnemyScript.HomeWorld.Light) || (offset < 0 && e.homeWorld == EnemyScript.HomeWorld.Dark))
+                // If you're standing in the same spot as an enemy, then don't shift polarity
+                //if (e.inPlayerDimension)
+                return;
+            }
+
+        }
+
+        worldManager.ShiftPolarity(offset);
+    }
+
     bool AtRest {
         get {
             //Note to future self: Worry that allowing some variance here may cause the player to get slightly misaligned with the grid.

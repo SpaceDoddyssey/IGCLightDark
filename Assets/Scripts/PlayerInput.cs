@@ -31,7 +31,7 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyDown(turnLeft)) { controller.RotateLeft();   }
         if (Input.GetKeyDown(turnRight)){ controller.RotateRight();  }
 
-        if (Input.GetKeyDown(addDark)) gameWorldManager.ChangePolarity(-1);
-        if (Input.GetKeyDown(addLight)) gameWorldManager.ChangePolarity(1);
+        if (Input.GetKeyDown(addDark)) controller.AttemptShiftPolarity(-1);
+        if (Input.GetKeyDown(addLight)) controller.AttemptShiftPolarity(1);
     }
 }

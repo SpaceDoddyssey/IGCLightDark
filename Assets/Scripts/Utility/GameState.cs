@@ -97,7 +97,7 @@ public class GameState : MonoBehaviour
         }
     }
     
-    public void ChangePolarity(int offset)
+    public void ShiftPolarity(int offset)
     {
         ticker.SetTickerOffset(offset);
         // TODO: Look into this
