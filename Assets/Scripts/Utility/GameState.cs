@@ -16,6 +16,8 @@ public class GameState : MonoBehaviour
 
     public GameObject ActionTextPrefab;
 
+    public GameObject dialogueWindow;
+
     private string[] goodWords =
     {
         "LOVES",
@@ -54,7 +56,11 @@ public class GameState : MonoBehaviour
     }
     void Update()
     {
-
+        if (Input.GetKeyDown("o")) {
+            DisplayDialogueWindow(dialogueWindow);
+        } else if (Input.GetKeyDown("p")) {
+            CloseDialogueWindow(dialogueWindow);
+        }
     }
 
     public float GetDamageModifier()
@@ -172,6 +178,26 @@ public class GameState : MonoBehaviour
             GameObject text = Instantiate(ActionTextPrefab, textSpot);
             text.GetComponent<ActionText>().Text = desiredString;
         }
+    }
+
+    //
+
+    void PauseGame() {
+        Time.timeScale = 0;
+    }
+
+    void UnPauseGame() {
+        Time.timeScale = 1;
+    }
+
+    void DisplayDialogueWindow (GameObject dialogueWindow) {
+        PauseGame();
+        dialogueWindow.SetActive(true);
+    }
+
+    void CloseDialogueWindow(GameObject dialogueWindow) {
+        UnPauseGame();
+        dialogueWindow.SetActive(false);
     }
 
 }
