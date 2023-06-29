@@ -8,6 +8,7 @@ public class GameState : MonoBehaviour
     public ClockHand hand;
     public PolarityBarTicker ticker;
     public int playerHealth = 0;
+    public BaseItem curHeldItem;
 
     public int playerMaxAbsoluteHealth = 100;
     public int polarity;

@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     public float turnCost = 0.1f;
     public float attackCost = 0.5f;
 
-
     //Private variables
     Vector3 targetGridPos, prevTargetGridPos, targetRotation;
     private GameState worldManager;
