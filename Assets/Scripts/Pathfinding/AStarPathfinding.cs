@@ -129,7 +129,6 @@ public class AStarPathfinding : MonoBehaviour
                 {
                     RaycastHit hit;
 
-                    Debug.DrawRay(currentNode.worldPosition, neighbour.worldPosition, Color.white, 1f);
                     if (Physics.Raycast(currentNode.worldPosition, neighbour.worldPosition - currentNode.worldPosition, out hit, 2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal))
                     {
                         EnemyScript e = hit.collider.GetComponent<EnemyScript>();

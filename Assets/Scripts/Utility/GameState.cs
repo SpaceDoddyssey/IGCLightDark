@@ -100,7 +100,7 @@ public class GameState : MonoBehaviour
     public void ChangePolarity(int offset)
     {
         ticker.SetTickerOffset(offset);
-
+        // TODO: Look into this
         hand.RotateClockHand(0.20f * Mathf.Abs(offset));
     }
 
