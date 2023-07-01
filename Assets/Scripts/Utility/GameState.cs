@@ -8,7 +8,8 @@ public class GameState : MonoBehaviour
     public ClockHand hand;
     public PolarityBarTicker ticker;
     public int playerHealth = 0;
-    public BaseItem curHeldItem;
+    public ItemType curHeldItem = ItemType.None;
+    public GameObject curHeldItemPrefab = null;
 
     public int playerMaxAbsoluteHealth = 100;
     public int polarity;
@@ -61,6 +62,17 @@ public class GameState : MonoBehaviour
             DisplayDialogueWindow(dialogueWindow);
         } else if (Input.GetKeyDown("p")) {
             CloseDialogueWindow(dialogueWindow);
+        }
+
+        if (Input.GetKeyDown("j")){
+            if(curHeldItem == ItemType.None){
+                print("No item to use!");
+            } else {
+                if(Item.Use(curHeldItem)){ //If the item is successfully used
+                    curHeldItem = ItemType.None;
+                    curHeldItemPrefab = null;
+                }
+            } 
         }
     }
 

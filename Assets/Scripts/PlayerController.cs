@@ -15,12 +15,12 @@ public class PlayerController : MonoBehaviour
 
     //Private variables
     Vector3 targetGridPos, prevTargetGridPos, targetRotation;
-    private GameState worldManager;
+    private GameState gameState;
 
     // Start is called before the first frame update
     void Start() {
 
-        worldManager = GameObject.Find("Game World Manager").GetComponent<GameState>();
+        gameState = GameObject.Find("Game World Manager").GetComponent<GameState>();
 
         targetGridPos = Vector3Int.RoundToInt(transform.position);
 
@@ -60,42 +60,42 @@ public class PlayerController : MonoBehaviour
         if (AtRest) {
             prevTargetGridPos = targetGridPos; 
             targetGridPos += transform.forward * scalar;
-            worldManager.TurnClock(movementCost * worldManager.GetSlowdownFactor());
+            gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
         }
     }
     public void MoveBackward(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.forward * scalar;
-            worldManager.TurnClock(movementCost * worldManager.GetSlowdownFactor());
+            gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
         }
     }
     public void MoveLeft(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.right * scalar;
-            worldManager.TurnClock(movementCost * worldManager.GetSlowdownFactor());
+            gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
         }
     }
     public void MoveRight(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
             targetGridPos += transform.right * scalar;
-            worldManager.TurnClock(movementCost * worldManager.GetSlowdownFactor());
+            gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
         }
     }
     public void RotateLeft(){
         if (AtRest)
         {
             targetRotation -= Vector3.up * 90f;
-            worldManager.TurnClock(turnCost * worldManager.GetSlowdownFactor());
+            gameState.TurnClock(turnCost * gameState.GetSlowdownFactor());
         }
     }
     public void RotateRight(){
         if (AtRest)
         {
             targetRotation += Vector3.up * 90f;
-            worldManager.TurnClock(turnCost * worldManager.GetSlowdownFactor());
+            gameState.TurnClock(turnCost * gameState.GetSlowdownFactor());
         }
     }
 
@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
         foreach (RaycastHit hit in hits)
         {
             EnemyScript e = hit.collider.GetComponent<EnemyScript>();
-            if (e != null && worldManager.polarity == 0)
+            if (e != null && gameState.polarity == 0)
             {
                 if ((offset > 0 && e.homeWorld == EnemyScript.HomeWorld.Light) || (offset < 0 && e.homeWorld == EnemyScript.HomeWorld.Dark))
                 // If you're standing in the same spot as an enemy, then don't shift polarity
@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        worldManager.ShiftPolarity(offset);
+        gameState.ShiftPolarity(offset);
     }
 
     bool AtRest {
@@ -145,9 +145,16 @@ public class PlayerController : MonoBehaviour
         else if(other.gameObject.tag == "Enemy"){
             if (other.gameObject.GetComponent<EnemyScript>().inPlayerDimension)
             {
-                other.gameObject.GetComponent<EnemyScript>().TakeDamage((int)(10 * worldManager.GetDamageModifier()));
+                other.gameObject.GetComponent<EnemyScript>().TakeDamage((int)(10 * gameState.GetDamageModifier()));
                 (targetGridPos, prevTargetGridPos) = (prevTargetGridPos, targetGridPos);
             }
+        } else if(other.gameObject.tag == "Item"){
+            if(gameState.curHeldItemPrefab != null){
+                Instantiate(gameState.curHeldItemPrefab, other.gameObject.transform);
+            }
+            gameState.curHeldItem = other.gameObject.GetComponent<Item>().itemType;
+            gameState.curHeldItemPrefab = other.gameObject.GetComponent<Item>().itemPrefab;
+            GameObject.Destroy(other.gameObject);
         }
     }
 }
