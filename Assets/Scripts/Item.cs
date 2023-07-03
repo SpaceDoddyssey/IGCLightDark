@@ -11,6 +11,7 @@ public enum ItemType
 
 public class Item : MonoBehaviour
 {
+    public Sprite itemSprite;
     public GameObject itemPrefab;
     public ItemType itemType;
 

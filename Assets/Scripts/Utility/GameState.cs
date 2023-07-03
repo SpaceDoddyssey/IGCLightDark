@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class GameState : MonoBehaviour
@@ -10,6 +11,7 @@ public class GameState : MonoBehaviour
     public int playerHealth = 0;
     public ItemType curHeldItem = ItemType.None;
     public GameObject curHeldItemPrefab = null;
+    public Image curHeldItemSprite;
 
     public int playerMaxAbsoluteHealth = 100;
     public int polarity;
@@ -17,7 +19,6 @@ public class GameState : MonoBehaviour
     public Vector3 clockRotation = new Vector3(0f, 0f, 0f);
 
     public GameObject ActionTextPrefab;
-
     public GameObject dialogueWindow;
 
     private string[] goodWords =
@@ -50,6 +51,8 @@ public class GameState : MonoBehaviour
     };
 
     void Start(){
+        curHeldItemSprite = GameObject.Find("ItemSprite").GetComponent<Image>();
+        curHeldItemSprite.enabled = false;
     }
 
     private void FixedUpdate()  
@@ -71,6 +74,7 @@ public class GameState : MonoBehaviour
                 if(Item.Use(curHeldItem)){ //If the item is successfully used
                     curHeldItem = ItemType.None;
                     curHeldItemPrefab = null;
+                    curHeldItemSprite.enabled = false;
                 }
             } 
         }

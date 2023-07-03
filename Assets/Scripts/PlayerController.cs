@@ -152,8 +152,11 @@ public class PlayerController : MonoBehaviour
             if(gameState.curHeldItemPrefab != null){
                 Instantiate(gameState.curHeldItemPrefab, other.gameObject.transform);
             }
-            gameState.curHeldItem = other.gameObject.GetComponent<Item>().itemType;
-            gameState.curHeldItemPrefab = other.gameObject.GetComponent<Item>().itemPrefab;
+            Item item = other.gameObject.GetComponent<Item>();
+            gameState.curHeldItem = item.itemType;
+            gameState.curHeldItemPrefab = item.itemPrefab;
+            gameState.curHeldItemSprite.enabled = true;
+            gameState.curHeldItemSprite.sprite = item.itemSprite;
             GameObject.Destroy(other.gameObject);
         }
     }
