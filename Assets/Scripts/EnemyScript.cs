@@ -36,6 +36,7 @@ public class EnemyScript : MonoBehaviour
     private bool retreating;
     private Vector3 prevPosition;
     private State currentState;
+    private Animator animator;
     
 
     private enum State
@@ -56,6 +57,7 @@ public class EnemyScript : MonoBehaviour
         GameObject spritechild = gameObject.transform.GetChild(0).gameObject;
         spriteRender = spritechild.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         minimapRender = spritechild.transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
+        animator = spritechild.transform.GetChild(0).gameObject.GetComponent<Animator>();
 
         pathfinding = GetComponent<AStarPathfinding>();
 
@@ -160,6 +162,7 @@ public class EnemyScript : MonoBehaviour
                 nodeOfIntent = pathfinding.path[0];
                 movementInterp = new QuickInterpVec3(transform.position, pathfinding.path[0].worldPosition, moveSpeed, true);
                 currentState = State.Moving;
+                animator.Play("enemy_move");
             }
             // This is kind of a buggy check to see if the enemy is right next to the player.
             else if (pathfinding.path.Count == 1)
@@ -217,6 +220,7 @@ public class EnemyScript : MonoBehaviour
     {
         prevPosition = spriteRender.transform.position;
         currentState = State.Attacking;
+        animator.Play("enemy_bite");
 
         //This is a fix for a glitch involving origins.
         targetPos.y += 1f;

@@ -46,6 +46,11 @@ public class ClockHand : MonoBehaviour
 
             print("Clock strikes twelve!");
             OnClockStrikesEvent.Invoke();
+
+            Animator clock = transform.parent.GetComponent<Animator>();
+            clock.Play("clock_glow");
+            
+
         }
     }
 
@@ -61,6 +66,8 @@ public class ClockHand : MonoBehaviour
         // This gives the player a single frame before the clock recognizes it's potentially
         // gone past 12 o' clock in the update function.
         stateObject.clockRotation.z += -360f * fraction;
+        Animator hand = GetComponent<Animator>();
+        hand.Play("hand_glow");
     }
 
 
