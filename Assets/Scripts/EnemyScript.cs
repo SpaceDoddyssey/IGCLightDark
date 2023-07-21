@@ -97,7 +97,7 @@ public class EnemyScript : MonoBehaviour
             // Entity is inactive since the player does not inhabit their world.
             inPlayerDimension = false;
             spriteRender.enabled = false;
-            minimapRender.color = new Color(minimapRender.color.r, minimapRender.color.g, minimapRender.color.b, 0.2f);
+            minimapRender.color = new Color(minimapRender.color.r, minimapRender.color.g, minimapRender.color.b, 0.5f);
         }
     }
 

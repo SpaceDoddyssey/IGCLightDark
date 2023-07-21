@@ -6,12 +6,14 @@ using UnityEngine.UI;
 
 public class GameState : MonoBehaviour
 {
+    public bool isDebug = true;
     public ClockHand hand;
     public PolarityBarTicker ticker;
     public int playerHealth = 0;
     public ItemType curHeldItem = ItemType.None;
     public GameObject curHeldItemPrefab = null;
     public Image curHeldItemSprite;
+    public GameObject player;
 
     public int playerMaxAbsoluteHealth = 100;
     public int polarity;
@@ -20,6 +22,14 @@ public class GameState : MonoBehaviour
 
     public GameObject ActionTextPrefab;
     public GameObject dialogueWindow;
+
+    private AStarGrid grid;
+
+
+    private GameObject clock;
+    private GameObject polarityBar;
+    private GameObject healthBar;
+    private GameObject minimap;
 
     private string[] goodWords =
     {
@@ -51,8 +61,24 @@ public class GameState : MonoBehaviour
     };
 
     void Start(){
-        curHeldItemSprite = GameObject.Find("ItemSprite").GetComponent<Image>();
-        curHeldItemSprite.enabled = false;
+        //curHeldItemSprite = GameObject.Find("ItemSprite").GetComponent<Image>();
+        //curHeldItemSprite.enabled = false;
+
+        clock = GameObject.Find("Clock");
+        polarityBar = GameObject.Find("PolarityBar");
+        healthBar = GameObject.Find("HealthBar");
+        minimap = GameObject.Find("MinimapMask");
+
+        grid = GetComponent<AStarGrid>();
+
+        if (!isDebug)
+        {
+            clock.SetActive(false);
+            polarityBar.SetActive(false);
+            healthBar.SetActive(false);
+            minimap.SetActive(false);
+        }
+
     }
 
     private void FixedUpdate()  
@@ -61,6 +87,20 @@ public class GameState : MonoBehaviour
     }
     void Update()
     {
+
+        if (grid.AStartNodeFromWorldPoint(player.transform.position).gridX == 10 && grid.AStartNodeFromWorldPoint(player.transform.position).gridY == 11)
+        {
+            if (minimap.activeSelf == false) 
+                minimap.SetActive(true);
+        }
+
+        if (grid.AStartNodeFromWorldPoint(player.transform.position).gridX == 1 && grid.AStartNodeFromWorldPoint(player.transform.position).gridY == 8)
+        {
+            if (polarityBar.activeSelf == false)
+                polarityBar.SetActive(true);
+        }
+
+
         if (Input.GetKeyDown("o")) {
             DisplayDialogueWindow(dialogueWindow);
         } else if (Input.GetKeyDown("p")) {
@@ -78,6 +118,9 @@ public class GameState : MonoBehaviour
                 }
             } 
         }
+
+
+
     }
 
     public float GetDamageModifier()
@@ -129,7 +172,8 @@ public class GameState : MonoBehaviour
 
     public void TurnClock(float amount)
     {
-        hand.RotateClockHand(amount);
+        if (hand.isActiveAndEnabled)
+            hand.RotateClockHand(amount);
     }
 
     public void DamagePlayer(int damage, string name)

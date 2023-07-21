@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -13,6 +14,8 @@ public class PlayerController : MonoBehaviour
     public float turnCost = 0.1f;
     public float attackCost = 0.5f;
 
+    private bool isMoving;
+
     //Private variables
     Vector3 targetGridPos, prevTargetGridPos, targetRotation;
     private GameState gameState;
@@ -22,19 +25,26 @@ public class PlayerController : MonoBehaviour
 
         gameState = GameObject.Find("Game World Manager").GetComponent<GameState>();
 
-        targetGridPos = Vector3Int.RoundToInt(transform.position);
-
         Tilemap tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        Debug.Log(tilemap);
+        print(tilemap);
         TileBase[] tileArray = tilemap.GetTilesBlock(new BoundsInt(-10, -10, -10, 20, 20, 20));
         //for (int index = 0; index < tileArray.Length; index++)
         //{
         //    Debug.Log(tileArray[index]);
         //}
+
+        if (!gameState.isDebug)
+        {
+            transform.position = GameObject.Find("ReleaseSpawn").transform.position;
+        }
+
+        targetGridPos = Vector3Int.RoundToInt(transform.position);
+
     }
 
     // Update is called once per frame
     void FixedUpdate() {
+    if (isMoving)
         HandleMovement();
     }
 
@@ -61,6 +71,7 @@ public class PlayerController : MonoBehaviour
             prevTargetGridPos = targetGridPos; 
             targetGridPos += transform.forward * scalar;
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
+            isMoving = true;
         }
     }
     public void MoveBackward(){
@@ -68,6 +79,7 @@ public class PlayerController : MonoBehaviour
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.forward * scalar;
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
+            isMoving = true;
         }
     }
     public void MoveLeft(){
@@ -75,6 +87,7 @@ public class PlayerController : MonoBehaviour
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.right * scalar;
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
+            isMoving = true;
         }
     }
     public void MoveRight(){
@@ -82,6 +95,7 @@ public class PlayerController : MonoBehaviour
             prevTargetGridPos = targetGridPos;
             targetGridPos += transform.right * scalar;
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
+            isMoving = true;
         }
     }
     public void RotateLeft(){
@@ -89,6 +103,7 @@ public class PlayerController : MonoBehaviour
         {
             targetRotation -= Vector3.up * 90f;
             gameState.TurnClock(turnCost * gameState.GetSlowdownFactor());
+            isMoving = true;
         }
     }
     public void RotateRight(){
@@ -96,6 +111,7 @@ public class PlayerController : MonoBehaviour
         {
             targetRotation += Vector3.up * 90f;
             gameState.TurnClock(turnCost * gameState.GetSlowdownFactor());
+            isMoving = true;
         }
     }
 

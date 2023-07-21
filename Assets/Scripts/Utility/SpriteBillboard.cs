@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class SpriteBillboard : MonoBehaviour
 {
+    public bool miniMap = false;
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = Quaternion.Euler(0f, Camera.main.transform.rotation.eulerAngles.y, 0f);
+        if (miniMap)
+        {
+            transform.rotation = Quaternion.Euler(90f, Camera.current.transform.rotation.eulerAngles.y, 0f);
+        }
+        else
+            transform.rotation = Quaternion.Euler(0f, Camera.current.transform.rotation.eulerAngles.y, 0f);
+
     }
 }
