@@ -13,7 +13,7 @@ public class SpriteBillboard : MonoBehaviour
             transform.rotation = Quaternion.Euler(90f, Camera.current.transform.rotation.eulerAngles.y, 0f);
         }
         else
-            transform.rotation = Quaternion.Euler(0f, Camera.current.transform.rotation.eulerAngles.y, 0f);
+            transform.rotation = Quaternion.Euler(0f, Camera.main.transform.rotation.eulerAngles.y, 0f);
 
     }
 }

@@ -25,11 +25,15 @@ public class GameState : MonoBehaviour
 
     private AStarGrid grid;
 
+    private GameObject gradient;
 
     private GameObject clock;
     private GameObject polarityBar;
     private GameObject healthBar;
     private GameObject minimap;
+
+    private GameObject darkEnemies;
+    private GameObject lightEnemies;
 
     private string[] goodWords =
     {
@@ -64,10 +68,13 @@ public class GameState : MonoBehaviour
         //curHeldItemSprite = GameObject.Find("ItemSprite").GetComponent<Image>();
         //curHeldItemSprite.enabled = false;
 
+        darkEnemies = GameObject.Find("Dark Enemies");
+        lightEnemies = GameObject.Find("Light Enemies");
         clock = GameObject.Find("Clock");
         polarityBar = GameObject.Find("PolarityBar");
         healthBar = GameObject.Find("HealthBar");
         minimap = GameObject.Find("MinimapMask");
+        gradient = GameObject.Find("BG");
 
         grid = GetComponent<AStarGrid>();
 
@@ -77,6 +84,8 @@ public class GameState : MonoBehaviour
             polarityBar.SetActive(false);
             healthBar.SetActive(false);
             minimap.SetActive(false);
+            darkEnemies.SetActive(false);
+            lightEnemies.SetActive(false);
         }
 
     }
@@ -98,6 +107,19 @@ public class GameState : MonoBehaviour
         {
             if (polarityBar.activeSelf == false)
                 polarityBar.SetActive(true);
+        }
+
+
+        if (GameObject.Find("TutRoom1Enemies").transform.childCount == 0)
+        {
+            GameObject.Find("PolarityTutDoor").GetComponent<DoorScript>().Open();
+        }
+
+
+        if (grid.AStartNodeFromWorldPoint(player.transform.position).gridX == 3 && grid.AStartNodeFromWorldPoint(player.transform.position).gridY == 14)
+        {
+            if (healthBar.activeSelf == false)
+                healthBar.SetActive(true);
         }
 
 
@@ -136,7 +158,7 @@ public class GameState : MonoBehaviour
             case 3:
                 return 1.25f;
             case 4:
-                return 2f;
+                return 1.5f;
             default:
                 return 1f;
         }
@@ -157,7 +179,7 @@ public class GameState : MonoBehaviour
             case 3:
                 return .75f;
             case 4:
-                return .5f;
+                return .66f;
             default:
                 return 1f;
         }

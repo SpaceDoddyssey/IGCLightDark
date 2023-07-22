@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Scripting;
 
 public class PolarityBarTicker : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class PolarityBarTicker : MonoBehaviour
     public float lerpSpeed;
     // An int value between -4 and 4.
     private int targetPolarity, prevPolarity;
+    private GameObject gradient;
 
     // Right now the values for where the ticker should be are hard-coded.
     // In the future, I'm going to change these to be scaled values of the 
@@ -31,11 +33,24 @@ public class PolarityBarTicker : MonoBehaviour
         {  4,  256f }
     };
 
+    private Dictionary<int, float> gradientPositions = new Dictionary<int, float>()
+    {
+        { -4, 31.5f },
+        { -3, 24f },
+        { -2, 19f },
+        { -1, 10f },
+        {  0,  0f },
+        {  1,  -10f },
+        {  2,  -19f },
+        {  3,  -24f },
+        {  4,  -31f }
+    };
 
     // Start is called before the first frame update
     void Start()
     {
         stateObject = GameObject.Find("Game World Manager").GetComponent<GameState>();
+        gradient = GameObject.Find("BG");
     }
 
     // Update is called once per frame
@@ -47,6 +62,7 @@ public class PolarityBarTicker : MonoBehaviour
             lerpAmt += Time.deltaTime / lerpSpeed;
             // Change the transform's local position based on the dict of screen tick positions and the lerp amount.
             transform.localPosition = new Vector3(Mathf.Lerp(screenTickPositions[prevPolarity], screenTickPositions[targetPolarity], lerpAmt), 0, 0);
+            gradient.transform.localPosition = new Vector3(0, Mathf.SmoothStep(gradientPositions[prevPolarity], gradientPositions[targetPolarity], lerpAmt), gradient.transform.localPosition.z);
             // If the lerp is done, reset everything.
             if (lerpAmt > 1f)
             {
@@ -58,6 +74,7 @@ public class PolarityBarTicker : MonoBehaviour
         {
             stateObject.polarity = (int)Mathf.Clamp((float)stateObject.polarity, -4f, 4f);
             transform.localPosition = new Vector3(screenTickPositions[stateObject.polarity], 0, 0);
+            gradient.transform.localPosition = new Vector3(gradient.transform.localPosition.x, gradientPositions[stateObject.polarity], gradient.transform.localPosition.z);
         }
     }
 
@@ -90,6 +107,8 @@ public class PolarityBarTicker : MonoBehaviour
             // Otherwise, instantly set the polarity and position
             stateObject.polarity = targetPolarity;
             transform.localPosition = new Vector3(screenTickPositions[stateObject.polarity], transform.position.y, transform.position.z);
+            gradient.transform.localPosition = new Vector3(transform.localPosition.x, gradientPositions[stateObject.polarity], transform.localPosition.z);
+
             // Kill any lerping that's happening.
             isLerping = false;
         }
@@ -121,6 +140,7 @@ public class PolarityBarTicker : MonoBehaviour
 
         // Manual tick settings move the ticker immediately for now. 
         transform.position = new Vector3(screenTickPositions[stateObject.polarity], transform.position.y, transform.position.z);
+        gradient.transform.localPosition = new Vector3(transform.position.x, gradientPositions[stateObject.polarity], transform.position.z);
         // Kill any lerping that's happening.
         isLerping = false;
         targetPolarity = stateObject.polarity;
