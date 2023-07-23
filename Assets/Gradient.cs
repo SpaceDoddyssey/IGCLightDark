@@ -11,8 +11,11 @@ public class Gradient : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        
+        transform.localPosition = new Vector3(
+            transform.localPosition.x + (Mathf.Sin(Time.timeSinceLevelLoad) * Time.deltaTime), 
+            transform.localPosition.y + (Mathf.Sin(Time.timeSinceLevelLoad) * Time.deltaTime), 
+            transform.localPosition.z);
     }
 }

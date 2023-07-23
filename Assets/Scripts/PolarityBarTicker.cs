@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Scripting;
@@ -46,6 +47,23 @@ public class PolarityBarTicker : MonoBehaviour
         {  4,  -31f }
     };
 
+    private Color mostDark = new Color(60f, 59f, 60f, 1f);
+
+    private Dictionary<int, Color> fogColors = new Dictionary<int, Color>()
+    {
+        { -4, new Color(60f, 59f, 60f, 1f) },
+        { -3, new Color(82f, 81f, 82f, 1f) },
+        { -2, new Color(96f, 97f, 96f, 1f) },
+        { -1, new Color(126f, 125f, 126f, 1f) },
+        { 0, new Color(128, 128, 128, 1f) },
+        { 1, new Color(126f, 125f, 126f, 1f) },
+        { 2, new Color(176f, 175f, 176f, 1f) },
+        { 3, new Color(195f, 196f, 195f, 1f) },
+        { 4, new Color(218f, 219f, 218f, 1f) }
+
+    };
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -62,7 +80,9 @@ public class PolarityBarTicker : MonoBehaviour
             lerpAmt += Time.deltaTime / lerpSpeed;
             // Change the transform's local position based on the dict of screen tick positions and the lerp amount.
             transform.localPosition = new Vector3(Mathf.Lerp(screenTickPositions[prevPolarity], screenTickPositions[targetPolarity], lerpAmt), 0, 0);
-            gradient.transform.localPosition = new Vector3(0, Mathf.SmoothStep(gradientPositions[prevPolarity], gradientPositions[targetPolarity], lerpAmt), gradient.transform.localPosition.z);
+            gradient.transform.localPosition = new Vector3(0, Mathf.SmoothStep(gradientPositions[prevPolarity], gradient.transform.localPosition.y + gradientPositions[targetPolarity], lerpAmt), gradient.transform.localPosition.z);
+            
+
             // If the lerp is done, reset everything.
             if (lerpAmt > 1f)
             {
@@ -74,7 +94,10 @@ public class PolarityBarTicker : MonoBehaviour
         {
             stateObject.polarity = (int)Mathf.Clamp((float)stateObject.polarity, -4f, 4f);
             transform.localPosition = new Vector3(screenTickPositions[stateObject.polarity], 0, 0);
-            gradient.transform.localPosition = new Vector3(gradient.transform.localPosition.x, gradientPositions[stateObject.polarity], gradient.transform.localPosition.z);
+            gradient.transform.localPosition = new Vector3(gradient.transform.localPosition.x, gradient.transform.localPosition.y + gradientPositions[stateObject.polarity], gradient.transform.localPosition.z);
+            //RenderSettings.fogColor = mostDark;
+            //print(fogColors[stateObject.polarity]);
+
         }
     }
 
@@ -107,7 +130,8 @@ public class PolarityBarTicker : MonoBehaviour
             // Otherwise, instantly set the polarity and position
             stateObject.polarity = targetPolarity;
             transform.localPosition = new Vector3(screenTickPositions[stateObject.polarity], transform.position.y, transform.position.z);
-            gradient.transform.localPosition = new Vector3(transform.localPosition.x, gradientPositions[stateObject.polarity], transform.localPosition.z);
+            gradient.transform.localPosition = new Vector3(transform.localPosition.x, gradient.transform.localPosition.y + gradientPositions[stateObject.polarity], transform.localPosition.z);
+            //RenderSettings.fogColor = Color.black;
 
             // Kill any lerping that's happening.
             isLerping = false;
@@ -140,7 +164,9 @@ public class PolarityBarTicker : MonoBehaviour
 
         // Manual tick settings move the ticker immediately for now. 
         transform.position = new Vector3(screenTickPositions[stateObject.polarity], transform.position.y, transform.position.z);
-        gradient.transform.localPosition = new Vector3(transform.position.x, gradientPositions[stateObject.polarity], transform.position.z);
+        gradient.transform.localPosition = new Vector3(transform.position.x, gradient.transform.localPosition.y + gradientPositions[stateObject.polarity], transform.position.z);
+        //RenderSettings.fogColor = fogColors[stateObject.polarity];
+
         // Kill any lerping that's happening.
         isLerping = false;
         targetPolarity = stateObject.polarity;

@@ -74,7 +74,6 @@ public class GameState : MonoBehaviour
         polarityBar = GameObject.Find("PolarityBar");
         healthBar = GameObject.Find("HealthBar");
         minimap = GameObject.Find("MinimapMask");
-        gradient = GameObject.Find("BG");
 
         grid = GetComponent<AStarGrid>();
 
