@@ -268,8 +268,7 @@ public class GameState : MonoBehaviour
         if (playerHealth > playerMaxAbsoluteHealth || playerHealth < playerMaxAbsoluteHealth * -1)
         {
             playerHealth = Mathf.Clamp(playerHealth, playerMaxAbsoluteHealth * -1, playerMaxAbsoluteHealth);
-            print("Threshhold broken! Game over!");
-            GameObject.Find("Player").GetComponent<PlayerController>().enabled = false;
+            PlayerDeath();
         }
 
 
@@ -307,6 +306,14 @@ public class GameState : MonoBehaviour
     }
 
     //
+
+    public void PlayerDeath()
+    {
+        print("Threshhold broken! Game over!");
+        GameObject.Find("Player").GetComponent<PlayerController>().enabled = false;
+        GameObject.Find("Player").GetComponent<PlayerInput>().enabled = false;
+        Time.timeScale = 0f;
+    }
 
     void PauseGame() {
         Time.timeScale = 0;

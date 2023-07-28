@@ -19,11 +19,11 @@ public class EffectShake : MonoBehaviour
         float fadeAffector = 120f;
         while (fadeAffector > 2)
         {
-            if (fadeAffector % 20 == 0) 
+            if (fadeAffector % 10 == 0) 
             {
                 float randomScalarX = Random.Range(-1.3f, 1.3f);
                 float randomScalarY = Random.Range(-1.3f, 1.3f);
-                transform.localPosition = new Vector3(oldPos.x + (fadeAffector * randomScalarX * 0.0005f * damage), oldPos.y + (fadeAffector * randomScalarY * 0.0005f * damage), oldPos.z);
+                transform.localPosition = new Vector3(oldPos.x + (fadeAffector * randomScalarX * 0.0002f * damage), oldPos.y + (fadeAffector * randomScalarY * 0.0002f * damage), oldPos.z);
 
 
             }

@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour
         gameState = GameObject.Find("Game World Manager").GetComponent<GameState>();
 
         Tilemap tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        print(tilemap);
         TileBase[] tileArray = tilemap.GetTilesBlock(new BoundsInt(-10, -10, -10, 20, 20, 20));
         //for (int index = 0; index < tileArray.Length; index++)
         //{

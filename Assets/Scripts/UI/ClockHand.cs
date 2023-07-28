@@ -13,6 +13,7 @@ public class ClockHand : MonoBehaviour
     private bool isTicking = false;
     private QuickInterp handInterp;
 
+    [SerializeField] private GameObject nullBarController;
 
     // Start is called before the first frame update
     private void Start()
@@ -23,6 +24,7 @@ public class ClockHand : MonoBehaviour
         {
             OnClockStrikesEvent.AddListener(g.GetComponent<EnemyScript>().OnClockTwelve);
         }
+        OnClockStrikesEvent.AddListener(nullBarController.GetComponent<NullBar>().OnClockTwelve);
     }
 
     // Update is called once per frame

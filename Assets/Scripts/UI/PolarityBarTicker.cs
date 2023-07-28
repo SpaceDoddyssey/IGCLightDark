@@ -54,9 +54,9 @@ public class PolarityBarTicker : MonoBehaviour
         { -2, new Color(96f/255f, 97f/255f, 96f/255f, 1f) },
         { -1, new Color(126f/255f, 125f/255f, 126f/255f, 1f) },
         { 0, new Color(128f/255f, 128f/255f, 128f/255f, 1f) },
-        { 1, new Color(126f/255f, 125f/255f, 126f/255f, 1f) },
-        { 2, new Color(176f/255f, 175f/255f, 176f/255f, 1f) },
-        { 3, new Color(195f/255f, 196f/255f, 195f/255f, 1f) },
+        { 1, new Color(140f/255f, 142f/255f, 140f/255f, 1f) },
+        { 2, new Color(173f/255f, 173f/255f, 173f/255f, 1f) },
+        { 3, new Color(193f/255f, 193f/255f, 193f/255f, 1f) },
         { 4, new Color(218f/255f, 219f/255f, 218f/255f, 1f) }
     };
 

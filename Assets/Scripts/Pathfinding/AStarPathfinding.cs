@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class AStarPathfinding : MonoBehaviour
@@ -96,6 +98,15 @@ public class AStarPathfinding : MonoBehaviour
         // Shoot, otherwise the enemy just can't move.
         return false;
     }
+
+
+    //public AStarNode RandomDirection(Vector3 start)
+    //{
+    //    AStarNode startNode = grid.AStartNodeFromWorldPoint(seekerPos);
+    //    List<AStarNode> neighbours = grid.GetNeighbours(startNode, true);
+    //    AStarNode randomNode = neighbours[Random.Range(0, neighbours.Count)];
+    //    return randomNode;
+    //}
 
     private bool AStarAlgorithm(Vector3 target, bool treatEnemiesAsUnwalkables)
     {
