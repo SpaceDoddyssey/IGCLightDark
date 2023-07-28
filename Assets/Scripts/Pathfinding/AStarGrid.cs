@@ -72,6 +72,8 @@ public class AStarGrid : MonoBehaviour
                 int checkX = node.gridX + x;
                 int checkY = node.gridY + y;
 
+               // if (checkX < 0 || checkY < 0 || checkX > grid.Length || checkY > grid.GetLength(0)) continue;
+
                 // Here we filter out the unwalkable enemies, if need be.
                 if (treatEnemiesAsUnwalkable && (Physics.CheckSphere(grid[checkX, checkY].worldPosition, 0.1f, LayerMask.GetMask("Physical"))))
                     continue;

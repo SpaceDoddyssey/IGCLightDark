@@ -52,10 +52,9 @@ public class EnemyScript : MonoBehaviour
 
     public AStarNode nodeOfIntent { get; private set; }
 
-
-
     void Start() 
     {
+        
         currentState = State.Idle;
         stateObject = GameObject.Find("Game World Manager").GetComponent<GameState>();
         GameObject spritechild = gameObject.transform.GetChild(0).gameObject;
@@ -139,8 +138,9 @@ public class EnemyScript : MonoBehaviour
                 // Check to see if enemy in the same dimension is blocking you.
 
                 {
-                    RaycastHit hit;
-                    if (Physics.Raycast(transform.position, pathfinding.path[0].worldPosition - transform.position, out hit, 2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal))
+                    RaycastHit[] hits = Physics.RaycastAll(transform.position, pathfinding.path[0].worldPosition - transform.position, 2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal);
+
+                    foreach (RaycastHit hit in hits)
                     {
                         EnemyScript e = hit.collider.GetComponent<EnemyScript>();
                         if (e != null)

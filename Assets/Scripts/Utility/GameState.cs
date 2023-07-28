@@ -76,7 +76,6 @@ public class GameState : MonoBehaviour
         minimap = GameObject.Find("MinimapMask");
 
         grid = GetComponent<AStarGrid>();
-
         
 
         if (!isDebug)
@@ -194,24 +193,44 @@ public class GameState : MonoBehaviour
         switch(Mathf.Abs(polarity))
         {
             case 0:
-                return 1f;
+                return .66f;
             case 1:
-                return 1f;
+                return .75f;
             case 2:
                 return .9f;
             case 3:
-                return .75f;
+                return 1f;
             case 4:
-                return .66f;
+                return 1.1f;
             default:
                 return 1f;
         }
     }
-    
+
+    public float GetGradientSpeed()
+    {
+        switch (Mathf.Abs(polarity))
+        {
+            case 0:
+                return 1f;
+            case 1:
+                return 1.25f;
+            case 2:
+                return 1.3f;
+            case 3:
+                return 1.4f;
+            case 4:
+                return 1.6f;
+            default:
+                return 1f;
+        }
+    }
+
+
     public void ShiftPolarity(int offset)
     {
         ticker.SetTickerOffset(offset);
-        // TODO: Look into this
+
         hand.RotateClockHand(0.20f * Mathf.Abs(offset));
     }
 

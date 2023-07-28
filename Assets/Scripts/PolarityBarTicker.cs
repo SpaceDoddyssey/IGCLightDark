@@ -47,20 +47,17 @@ public class PolarityBarTicker : MonoBehaviour
         {  4,  -31f }
     };
 
-    private Color mostDark = new Color(60f, 59f, 60f, 1f);
-
     private Dictionary<int, Color> fogColors = new Dictionary<int, Color>()
     {
-        { -4, new Color(60f, 59f, 60f, 1f) },
-        { -3, new Color(82f, 81f, 82f, 1f) },
-        { -2, new Color(96f, 97f, 96f, 1f) },
-        { -1, new Color(126f, 125f, 126f, 1f) },
-        { 0, new Color(128, 128, 128, 1f) },
-        { 1, new Color(126f, 125f, 126f, 1f) },
-        { 2, new Color(176f, 175f, 176f, 1f) },
-        { 3, new Color(195f, 196f, 195f, 1f) },
-        { 4, new Color(218f, 219f, 218f, 1f) }
-
+        { -4, new Color(60f/255f, 59f/255f, 60f/255f, 1f) },
+        { -3, new Color(82f/255f, 81f/255f, 82f/255f, 1f) },
+        { -2, new Color(96f/255f, 97f/255f, 96f/255f, 1f) },
+        { -1, new Color(126f/255f, 125f/255f, 126f/255f, 1f) },
+        { 0, new Color(128f/255f, 128f/255f, 128f/255f, 1f) },
+        { 1, new Color(126f/255f, 125f/255f, 126f/255f, 1f) },
+        { 2, new Color(176f/255f, 175f/255f, 176f/255f, 1f) },
+        { 3, new Color(195f/255f, 196f/255f, 195f/255f, 1f) },
+        { 4, new Color(218f/255f, 219f/255f, 218f/255f, 1f) }
     };
 
 
@@ -81,6 +78,7 @@ public class PolarityBarTicker : MonoBehaviour
             // Change the transform's local position based on the dict of screen tick positions and the lerp amount.
             transform.localPosition = new Vector3(Mathf.Lerp(screenTickPositions[prevPolarity], screenTickPositions[targetPolarity], lerpAmt), 0, 0);
             gradient.transform.localPosition = new Vector3(0, Mathf.SmoothStep(gradientPositions[prevPolarity], gradientPositions[targetPolarity], lerpAmt), gradient.transform.localPosition.z);
+            RenderSettings.fogColor = Color.Lerp(fogColors[prevPolarity], fogColors[targetPolarity], lerpAmt);
 
             // If the lerp is done, reset everything.
             if (lerpAmt > 1f)
@@ -93,16 +91,18 @@ public class PolarityBarTicker : MonoBehaviour
             stateObject.polarity = (int)Mathf.Clamp((float)stateObject.polarity, -4f, 4f);
             transform.localPosition = new Vector3(screenTickPositions[stateObject.polarity], 0, 0);
             gradient.transform.localPosition = new Vector3(gradient.transform.localPosition.x, gradientPositions[stateObject.polarity], gradient.transform.localPosition.z);
-            //RenderSettings.fog = false;
-            //RenderSettings.fog = true;
-            //RenderSettings.fogColor = fogColors[stateObject.polarity];
-            //print(fogColors[stateObject.polarity]);
+            RenderSettings.fogColor = fogColors[stateObject.polarity];
         }
     }
 
     public void SetTickerOffset(int delta, bool interpolate = true)
     {
         if (delta == 0 || isLerping) return;
+        SpriteRenderer bgSprite = gradient.GetComponent<SpriteRenderer>();
+        //if (stateObject.polarity == 0)
+        //{
+        //    bgSprite.size = new Vector2(Mathf.Abs(bgSprite.size.x) * Mathf.Sign(delta), bgSprite.size.y);
+        //}
 
         if (stateObject.polarity + delta < -4)
         {
@@ -130,7 +130,7 @@ public class PolarityBarTicker : MonoBehaviour
             stateObject.polarity = targetPolarity;
             transform.localPosition = new Vector3(screenTickPositions[stateObject.polarity], transform.position.y, transform.position.z);
             gradient.transform.localPosition = new Vector3(transform.localPosition.x, gradientPositions[stateObject.polarity], transform.localPosition.z);
-            //RenderSettings.fogColor = Color.black;
+            
 
             // Kill any lerping that's happening.
             isLerping = false;

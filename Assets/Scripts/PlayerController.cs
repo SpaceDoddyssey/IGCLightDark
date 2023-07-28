@@ -117,6 +117,8 @@ public class PlayerController : MonoBehaviour
 
     public void AttemptShiftPolarity(int offset)
     {
+        if (Mathf.Abs(gameState.polarity) >= 4 && (Mathf.Sign(gameState.polarity) == Mathf.Sign(offset))) return;
+
         RaycastHit[] hits = Physics.RaycastAll(transform.position, Vector3.down, 2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal);
         foreach (RaycastHit hit in hits)
         {
