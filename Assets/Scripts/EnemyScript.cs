@@ -72,6 +72,7 @@ public class EnemyScript : MonoBehaviour
         // outline.OutlineColor = Color.red;
         // outline.OutlineWidth = 30f;
 
+        animator.speed = UnityEngine.Random.Range(0.93f, 1.05f);
 
     }
 
@@ -112,20 +113,14 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
-    public void Outline(bool outl){
-        if(outl) {
-            spriteRender.sprite = outlineSprite;
-        } else {
-            spriteRender.sprite = defaultSprite;
-        }
-    }
+
 
     public void TakeDamage(int amount){
 
         health -= amount;
         Debug.Log("The imp takes " + amount + " damage!");
         stateObject.PrintEnemyDamageText(amount, name);
-        transform.GetChild(0).GetChild(0).GetComponent<ObjectShake>().StartCoroutine("DoShake", amount * 2);
+        transform.GetChild(0).GetChild(0).GetComponent<EffectShake>().DoShake(amount * 2, false);
         if (health <= 0){
             Debug.Log("The imp dies!");
             fade.FadeOut(true, 0.3f);
@@ -277,7 +272,7 @@ public class EnemyScript : MonoBehaviour
                         {
                             // Attack the player. Damage direction indicates whether the damage is positive or negative
                             int damageDirection = (homeWorld == HomeWorld.Light ? 1 : -1);
-                            stateObject.DamagePlayer((int)(baseDamage * damageDirection * stateObject.GetDamageModifier()), name);
+                            stateObject.DamagePlayer((int)(baseDamage * damageDirection * (stateObject.GetDamageModifier()) * UnityEngine.Random.Range(0.95f, 1.05f)), name);
 
                         }
 

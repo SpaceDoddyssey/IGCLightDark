@@ -10,7 +10,10 @@ public class SpriteBillboard : MonoBehaviour
     {
         if (miniMap)
         {
-            transform.rotation = Quaternion.Euler(90f, Camera.current.transform.rotation.eulerAngles.y, 0f);
+            if (Camera.current != null)
+            {
+                transform.rotation = Quaternion.Euler(90f, Camera.current.transform.rotation.eulerAngles.y, 0f);
+            }
         }
         else
             transform.rotation = Quaternion.Euler(0f, Camera.main.transform.rotation.eulerAngles.y, 0f);

@@ -10,9 +10,9 @@ public class PlayerController : MonoBehaviour
     public bool smoothTransition = true;
     public float transitionSpeed = 10f;
     public float transitionRotationSpeed = 500f;
-    public float movementCost = 0.5f;
+    public float movementCost = 0.4f;
     public float turnCost = 0.1f;
-    public float attackCost = 0.5f;
+    public float attackCost = 0.6f;
 
     private bool isMoving;
 
@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour
         else if(other.gameObject.tag == "Enemy"){
             if (other.gameObject.GetComponent<EnemyScript>().inPlayerDimension)
             {
-                other.gameObject.GetComponent<EnemyScript>().TakeDamage((int)(10 * gameState.GetDamageModifier()));
+                other.gameObject.GetComponent<EnemyScript>().TakeDamage((int)(gameState.GetDamageToEnemy() * UnityEngine.Random.Range(0.90f, 1.10f)));
                 (targetGridPos, prevTargetGridPos) = (prevTargetGridPos, targetGridPos);
             }
         } else if(other.gameObject.tag == "Item"){

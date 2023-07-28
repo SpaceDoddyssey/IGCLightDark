@@ -2,18 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectShake : MonoBehaviour
+public class EffectShake : MonoBehaviour
 {
    private Vector3 oldPos;
 
-   public void DoShake(int damage)
+   public void DoShake(int damage, bool player = false)
    {
         oldPos = transform.localPosition;
-        StartCoroutine("Shake", damage);
+        StartCoroutine(Shake(damage, player));
    }
 
-
-    private IEnumerator Shake(int damage)
+    private IEnumerator Shake(int damage, bool player = false)
     {
         oldPos = transform.localPosition;
         damage /= 7;
@@ -35,7 +34,14 @@ public class ObjectShake : MonoBehaviour
 
         }
 
-        transform.localPosition = oldPos;
+        if (player)
+        {
+            transform.localPosition = new Vector3(0, 0, transform.localPosition.z);
+        }
+        else
+        {
+            transform.localPosition = oldPos;
+        }
 
     }
 }

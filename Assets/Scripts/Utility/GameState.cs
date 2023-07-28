@@ -77,6 +77,8 @@ public class GameState : MonoBehaviour
 
         grid = GetComponent<AStarGrid>();
 
+        
+
         if (!isDebug)
         {
             clock.SetActive(false);
@@ -86,6 +88,7 @@ public class GameState : MonoBehaviour
             darkEnemies.SetActive(false);
             lightEnemies.SetActive(false);
         }
+
 
     }
 
@@ -157,7 +160,28 @@ public class GameState : MonoBehaviour
             case 3:
                 return 1.25f;
             case 4:
-                return 1.5f;
+                return 2f;
+            default:
+                return 1f;
+        }
+
+
+    }
+
+    public float GetDamageToEnemy()
+    {
+        switch (Mathf.Abs(polarity))
+        {
+            case 0:
+                return 0;
+            case 1:
+                return 15f;
+            case 2:
+                return 20f;
+            case 3:
+                return 30f;
+            case 4:
+                return 60;
             default:
                 return 1f;
         }
@@ -218,9 +242,7 @@ public class GameState : MonoBehaviour
             text.GetComponent<ActionText>().Text = desiredString;
         }
 
-
-
-        player.transform.Find("Main Camera").GetComponent<ObjectShake>().DoShake(damage);
+        player.transform.Find("Main Camera").GetComponent<EffectShake>().DoShake(damage, true);
 
 
 
