@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using static UnityEngine.RuleTile.TilingRuleOutput;
+using Unity.VisualScripting;
+using System;
 
 public class EnemyScript : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class EnemyScript : MonoBehaviour
     public float moveSpeed = 0.5f;
     public float attackSpeed = 0.1f;
     public float attackBounce;
+    public float fadeTime;
     public enum HomeWorld
     {
         Light,
@@ -37,6 +40,7 @@ public class EnemyScript : MonoBehaviour
     private Vector3 prevPosition;
     private State currentState;
     private Animator animator;
+    private EffectFade fade;
     
 
     private enum State
@@ -58,8 +62,8 @@ public class EnemyScript : MonoBehaviour
         spriteRender = spritechild.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         minimapRender = spritechild.transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
         animator = spritechild.transform.GetChild(0).gameObject.GetComponent<Animator>();
-
         pathfinding = GetComponent<AStarPathfinding>();
+        fade = GetComponent<EffectFade>();
 
 
         // var outline = gameObject.AddComponent<Outline>();
@@ -87,7 +91,11 @@ public class EnemyScript : MonoBehaviour
         {
             // Entity is active, player is in their "world" or dimension.
             inPlayerDimension = true;
-            spriteRender.enabled = true;
+            if (spriteRender.enabled == false)
+            {
+                spriteRender.enabled = true;
+                fade.FadeIn(fadeTime);
+            }
             minimapRender.color = new Color(minimapRender.color.r, minimapRender.color.g, minimapRender.color.b, 1f);
 
         }
@@ -96,7 +104,10 @@ public class EnemyScript : MonoBehaviour
         {
             // Entity is inactive since the player does not inhabit their world.
             inPlayerDimension = false;
-            spriteRender.enabled = false;
+            if (spriteRender.color.a == 1f)
+            {
+                fade.FadeOut(false, fadeTime);
+            }
             minimapRender.color = new Color(minimapRender.color.r, minimapRender.color.g, minimapRender.color.b, 0.5f);
         }
     }
@@ -114,9 +125,10 @@ public class EnemyScript : MonoBehaviour
         health -= amount;
         Debug.Log("The imp takes " + amount + " damage!");
         stateObject.PrintEnemyDamageText(amount, name);
+        transform.GetChild(0).GetChild(0).GetComponent<ObjectShake>().StartCoroutine("DoShake", amount * 2);
         if (health <= 0){
             Debug.Log("The imp dies!");
-            Destroy(gameObject);
+            fade.FadeOut(true, 0.3f);
         }
     }
 

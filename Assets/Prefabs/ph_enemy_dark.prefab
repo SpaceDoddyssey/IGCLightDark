@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 7925753457780426081}
   - component: {fileID: -5043124133294290103}
   - component: {fileID: -2596188944360712596}
+  - component: {fileID: 6545697549668967699}
   m_Layer: 9
   m_Name: ph_enemy_dark
   m_TagString: Enemy
@@ -167,6 +168,7 @@ MonoBehaviour:
   moveSpeed: 0.2
   attackSpeed: 0.1
   attackBounce: 0.25
+  fadeTime: 0.15
   spriteRender: {fileID: 0}
   minimapRender: {fileID: 0}
   defaultSprite: {fileID: 21300000, guid: 0a6deec37725fba46a1d92015265e3b9, type: 3}
@@ -187,6 +189,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seekerPos: {x: 0, y: 0, z: 0}
   targetPos: {x: 0, y: 0, z: 0}
+--- !u!114 &6545697549668967699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7925753457780426094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7cfd5fe37456484da136534149780bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7925753458431618291
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +246,7 @@ GameObject:
   - component: {fileID: 7925753459758389334}
   - component: {fileID: 7925753459758389321}
   - component: {fileID: 8176777160483921235}
+  - component: {fileID: 9165112187514434130}
   m_Layer: 9
   m_Name: Sprite
   m_TagString: Untagged
@@ -340,3 +355,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9165112187514434130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7925753459758389332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdcde1e5b7e1d86468363c3d6283fbf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

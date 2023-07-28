@@ -220,6 +220,8 @@ public class GameState : MonoBehaviour
 
 
 
+        player.transform.Find("Main Camera").GetComponent<ObjectShake>().DoShake(damage);
+
 
 
         if (playerHealth > playerMaxAbsoluteHealth || playerHealth < playerMaxAbsoluteHealth * -1)
@@ -228,6 +230,7 @@ public class GameState : MonoBehaviour
             print("Threshhold broken! Game over!");
             GameObject.Find("Player").GetComponent<PlayerController>().enabled = false;
         }
+
 
     }
 
