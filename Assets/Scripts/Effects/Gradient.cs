@@ -12,6 +12,9 @@ public class Gradient : MonoBehaviour
     private int multipleY = 1;
     private float camWidth;
 
+    public float waveFrequency;
+    public float waveAmplitude;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +36,14 @@ public class Gradient : MonoBehaviour
     void LateUpdate()
     {
 
-        if (stateObject.polarity == 0) return;
+        transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + (Mathf.Sin(Time.timeSinceLevelLoad * waveFrequency) * waveAmplitude), transform.localPosition.z);
+
+        if (stateObject.polarity == 0)
+        {
+            return;
+        }
+
+
 
 
         Vector2 offset = new Vector2(1.5f * Time.deltaTime * stateObject.GetGradientSpeed() * (Mathf.Sign(stateObject.polarity)), 0.0f);
@@ -54,6 +64,8 @@ public class Gradient : MonoBehaviour
                 newVec.x = bgRenderer.sprite.bounds.size.x * multipleX;
             }
         }
+
+        
 
         bgRenderer.size = newVec;
 
