@@ -17,6 +17,7 @@ public class PolarityBarTicker : MonoBehaviour
     // An int value between -4 and 4.
     private int targetPolarity, prevPolarity;
     private GameObject gradient;
+    private GameObject miniCircle;
 
     // Right now the values for where the ticker should be are hard-coded.
     // In the future, I'm going to change these to be scaled values of the 
@@ -47,6 +48,19 @@ public class PolarityBarTicker : MonoBehaviour
         {  4,  -31f }
     };
 
+    private Dictionary<int, float> rotationSpeeds = new Dictionary<int, float>()
+    {
+        { -4, 180f },
+        { -3, 50f },
+        { -2, 19f },
+        { -1, 5f },
+        {  0,  0f },
+        {  1,  -5f },
+        {  2,  -19f },
+        {  3,  -50f },
+        {  4,  -180f }
+    };
+
     private Dictionary<int, Color> fogColors = new Dictionary<int, Color>()
     {
         { -4, new Color(60f/255f, 59f/255f, 60f/255f, 1f) },
@@ -66,6 +80,7 @@ public class PolarityBarTicker : MonoBehaviour
     {
         stateObject = GameObject.Find("Game World Manager").GetComponent<GameState>();
         gradient = GameObject.Find("BG");
+        miniCircle = GameObject.Find("MinimapCircle");
     }
 
     // Update is called once per frame
@@ -93,12 +108,15 @@ public class PolarityBarTicker : MonoBehaviour
             gradient.transform.localPosition = new Vector3(gradient.transform.localPosition.x, gradientPositions[stateObject.polarity], gradient.transform.localPosition.z);
             RenderSettings.fogColor = fogColors[stateObject.polarity];
         }
+        miniCircle.transform.Rotate(new Vector3(0f, 0f, rotationSpeeds[stateObject.polarity] * Time.deltaTime));
+
     }
 
     public void SetTickerOffset(int delta, bool interpolate = true)
     {
         if (delta == 0 || isLerping) return;
         SpriteRenderer bgSprite = gradient.GetComponent<SpriteRenderer>();
+
         //if (stateObject.polarity == 0)
         //{
         //    bgSprite.size = new Vector2(Mathf.Abs(bgSprite.size.x) * Mathf.Sign(delta), bgSprite.size.y);

@@ -6413,6 +6413,7 @@ GameObject:
   - component: {fileID: 605458795}
   - component: {fileID: 605458797}
   - component: {fileID: 605458796}
+  - component: {fileID: 605458798}
   m_Layer: 11
   m_Name: NullBarBG
   m_TagString: Untagged
@@ -6448,7 +6449,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 605458794}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -6479,6 +6480,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 605458794}
   m_CullTransparentMesh: 1
+--- !u!114 &605458798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605458794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1404fe5a392b0714fa128f217acef4ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &614385290 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7925753457780426082, guid: 538b3cae2910fda41a948370c6e0cfe2, type: 3}
@@ -21032,6 +21045,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segment: {fileID: 6737841268711061645, guid: c3f442cf0a9180c4e86ca3c987cb0900, type: 3}
   segments: []
+  fadeInTime: 0.2
+  fadeOutTime: 0.2
 --- !u!1001 &1887441048
 PrefabInstance:
   m_ObjectHideFlags: 0

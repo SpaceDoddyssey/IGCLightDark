@@ -218,9 +218,9 @@ public class GameState : MonoBehaviour
             case 2:
                 return 1.3f;
             case 3:
-                return 1.4f;
+                return 2f;
             case 4:
-                return 1.6f;
+                return 3f;
             default:
                 return 1f;
         }
