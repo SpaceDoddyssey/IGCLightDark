@@ -23,7 +23,9 @@ public class EffectShake : MonoBehaviour
             {
                 float randomScalarX = Random.Range(-1.3f, 1.3f);
                 float randomScalarY = Random.Range(-1.3f, 1.3f);
-                transform.localPosition = new Vector3(oldPos.x + (fadeAffector * randomScalarX * 0.0002f * damage), oldPos.y + (fadeAffector * randomScalarY * 0.0002f * damage), oldPos.z);
+                float randomScalarZ = Random.Range(-1.3f, 1.3f);
+                // TODO: Fix this because enemies' positions are being moved I think, not their sprite billboards
+                transform.localPosition = new Vector3(oldPos.x + (fadeAffector * randomScalarX * 0.0002f * damage), oldPos.y + (fadeAffector * randomScalarY * 0.0002f * damage), oldPos.z +(fadeAffector * randomScalarZ * 0.0002f * damage));
 
 
             }
