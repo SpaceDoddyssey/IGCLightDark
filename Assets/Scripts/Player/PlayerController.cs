@@ -165,16 +165,6 @@ public class PlayerController : MonoBehaviour
                 other.gameObject.GetComponent<EnemyScript>().TakeDamage((int)(gameState.GetDamageToEnemy() * UnityEngine.Random.Range(0.90f, 1.10f)));
                 (targetGridPos, prevTargetGridPos) = (prevTargetGridPos, targetGridPos);
             }
-        } else if(other.gameObject.tag == "Item"){
-            if(gameState.curHeldItemPrefab != null){
-                Instantiate(gameState.curHeldItemPrefab, other.gameObject.transform);
-            }
-            Item item = other.gameObject.GetComponent<Item>();
-            gameState.curHeldItem = item.itemType;
-            gameState.curHeldItemPrefab = item.itemPrefab;
-            gameState.curHeldItemSprite.enabled = true;
-            gameState.curHeldItemSprite.sprite = item.itemSprite;
-            GameObject.Destroy(other.gameObject);
-        }
+        } 
     }
 }

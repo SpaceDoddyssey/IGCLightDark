@@ -52,6 +52,8 @@ public class EnemyScript : MonoBehaviour
 
     public AStarNode nodeOfIntent { get; private set; }
 
+    private int itemChance = 15; // 0 <= itemChance <= 100. The percent chance of the enemy dropping an item
+
     void Start() 
     {
         
@@ -123,6 +125,10 @@ public class EnemyScript : MonoBehaviour
         if (health <= 0){
             Debug.Log("The imp dies!");
             fade.FadeOut(true, 0.3f);
+            int dieroll = UnityEngine.Random.Range(1, 101);
+            if(dieroll <= itemChance){
+                stateObject.AcquireRandItem();
+            }
         }
     }
 

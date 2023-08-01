@@ -11,8 +11,9 @@ public class GameState : MonoBehaviour
     public PolarityBarTicker ticker;
     public int playerHealth = 0;
     public ItemType curHeldItem = ItemType.None;
-    public GameObject curHeldItemPrefab = null;
     public Image curHeldItemSprite;
+    public Sprite[] itemSprites; //Make sure to add to this if you add a new item
+
     public GameObject player;
 
     public int playerMaxAbsoluteHealth = 100;
@@ -74,6 +75,8 @@ public class GameState : MonoBehaviour
         polarityBar = GameObject.Find("PolarityBar");
         healthBar = GameObject.Find("HealthBar");
         minimap = GameObject.Find("MinimapMask");
+        curHeldItemSprite = GameObject.Find("ItemSlot").GetComponent<Image>();
+        curHeldItemSprite.enabled = false;
 
         grid = GetComponent<AStarGrid>();
         
@@ -136,7 +139,6 @@ public class GameState : MonoBehaviour
             } else {
                 if(Item.Use(curHeldItem)){ //If the item is successfully used
                     curHeldItem = ItemType.None;
-                    curHeldItemPrefab = null;
                     curHeldItemSprite.enabled = false;
                 }
             } 
@@ -273,6 +275,15 @@ public class GameState : MonoBehaviour
 
 
     }
+
+    public void AcquireRandItem(){
+        if(curHeldItem != ItemType.None) { return; }
+        var itemType = Item.RandomItemData();
+        curHeldItem = itemType; 
+        curHeldItemSprite.enabled = true;
+        curHeldItemSprite.sprite = itemSprites[(int)itemType];
+    }
+
 
     public string findGoodWords()
     {
