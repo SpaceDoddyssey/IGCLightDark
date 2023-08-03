@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
 public class GameState : MonoBehaviour
 {
-    public bool isDebug = true;
+    public bool isDebug;
     public ClockHand hand;
     public PolarityBarTicker ticker;
     public int playerHealth = 0;
@@ -95,7 +96,7 @@ public class GameState : MonoBehaviour
         curHeldItemSprite.enabled = false;
 
         grid = GetComponent<AStarGrid>();
-        
+
 
         if (!isDebug)
         {
@@ -111,12 +112,10 @@ public class GameState : MonoBehaviour
 
     }
 
-    private void FixedUpdate()  
-    {
 
-    }
     void Update()
     {
+
 
         if (CheckSharedGridPosition(player.transform, minimapEnableSpot))
         {
@@ -172,6 +171,11 @@ public class GameState : MonoBehaviour
             finalTutorialBlock.SetActive(true);
             darkEnemies.SetActive(true);
             lightEnemies.SetActive(true);
+        }
+
+        if (Input.GetKeyDown("r"))
+        {
+            SceneManager.LoadScene("Level1");
         }
 
 
@@ -373,7 +377,7 @@ public class GameState : MonoBehaviour
         print("Threshhold broken! Game over!");
         GameObject.Find("Player").GetComponent<PlayerController>().enabled = false;
         GameObject.Find("Player").GetComponent<PlayerInput>().enabled = false;
-        Time.timeScale = 0f;
+        SceneManager.LoadScene("Level1");
     }
 
     void PauseGame() {
