@@ -19,11 +19,14 @@ public class EnemiesLeft : MonoBehaviour
         int count = 0;
 
         GameObject list = isDark ? GameObject.Find("Dark Enemies") : GameObject.Find("Light Enemies");
-        foreach (EnemyScript g in list.transform.GetComponentsInChildren<EnemyScript>())
+        if (list != null)
         {
-            count++;
+            foreach (EnemyScript g in list.transform.GetComponentsInChildren<EnemyScript>())
+            {
+                count++;
+            }
+            text.text = count.ToString();
         }
-        text.text = count.ToString();
 
         if (count == 0) { text.color = Color.red; }
     }

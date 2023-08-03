@@ -32,9 +32,24 @@ public class GameState : MonoBehaviour
     private GameObject polarityBar;
     private GameObject healthBar;
     private GameObject minimap;
+    private GameObject nullBar;
 
     private GameObject darkEnemies;
     private GameObject lightEnemies;
+
+    [SerializeField] private GameObject finalTutorialBlock;
+
+
+    //TUTORIAL STUFF
+    [SerializeField]
+    private Transform
+        minimapEnableSpot,
+        PolarityBarEnableSpot,
+        healthBarEnableSpot,
+        clockEnableSpot,
+        NullBarEnableSpot,
+        finalEnableSpot;
+
 
     private string[] goodWords =
     {
@@ -75,6 +90,7 @@ public class GameState : MonoBehaviour
         polarityBar = GameObject.Find("PolarityBar");
         healthBar = GameObject.Find("HealthBar");
         minimap = GameObject.Find("MinimapMask");
+        nullBar = GameObject.Find("NullBarBG");
         curHeldItemSprite = GameObject.Find("ItemSlot").GetComponent<Image>();
         curHeldItemSprite.enabled = false;
 
@@ -89,6 +105,7 @@ public class GameState : MonoBehaviour
             minimap.SetActive(false);
             darkEnemies.SetActive(false);
             lightEnemies.SetActive(false);
+            nullBar.SetActive(false);
         }
 
 
@@ -101,29 +118,60 @@ public class GameState : MonoBehaviour
     void Update()
     {
 
-        if (grid.AStartNodeFromWorldPoint(player.transform.position).gridX == 10 && grid.AStartNodeFromWorldPoint(player.transform.position).gridY == 11)
+        if (CheckSharedGridPosition(player.transform, minimapEnableSpot))
         {
             if (minimap.activeSelf == false) 
                 minimap.SetActive(true);
         }
 
-        if (grid.AStartNodeFromWorldPoint(player.transform.position).gridX == 1 && grid.AStartNodeFromWorldPoint(player.transform.position).gridY == 8)
+        if (CheckSharedGridPosition(player.transform, PolarityBarEnableSpot))
         {
             if (polarityBar.activeSelf == false)
                 polarityBar.SetActive(true);
         }
 
 
-        if (GameObject.Find("TutRoom1Enemies").transform.childCount == 0)
+        if (GameObject.Find("TutRoom1Enemies").transform.childCount == 0 && GameObject.Find("PolarityTutDoor").GetComponent<DoorScript>().IsOpen == false)
         {
             GameObject.Find("PolarityTutDoor").GetComponent<DoorScript>().Open();
         }
+    
 
-
-        if (grid.AStartNodeFromWorldPoint(player.transform.position).gridX == 3 && grid.AStartNodeFromWorldPoint(player.transform.position).gridY == 14)
+        if (CheckSharedGridPosition(player.transform, healthBarEnableSpot))
         {
             if (healthBar.activeSelf == false)
                 healthBar.SetActive(true);
+        }
+
+        if (CheckSharedGridPosition(player.transform, healthBarEnableSpot))
+        {
+            if (healthBar.activeSelf == false)
+                healthBar.SetActive(true);
+        }
+
+
+        if (CheckSharedGridPosition(player.transform, clockEnableSpot))
+        {
+            if (clock.activeSelf == false)
+                clock.SetActive(true);
+        }
+
+        if (CheckSharedGridPosition(player.transform, NullBarEnableSpot))
+        {
+            if (nullBar.activeSelf == false)
+            {
+                nullBar.SetActive(true);
+            }
+
+        }
+
+
+        if ((CheckSharedGridPosition(player.transform, finalEnableSpot) && GameObject.Find("FinalTutDoor").GetComponent<DoorScript>().IsOpen == false))
+        {
+            GameObject.Find("FinalTutDoor").GetComponent<DoorScript>().Open();
+            finalTutorialBlock.SetActive(true);
+            darkEnemies.SetActive(true);
+            lightEnemies.SetActive(true);
         }
 
 
@@ -143,6 +191,8 @@ public class GameState : MonoBehaviour
                 }
             } 
         }
+
+
 
 
 
@@ -342,6 +392,11 @@ public class GameState : MonoBehaviour
     void CloseDialogueWindow(GameObject dialogueWindow) {
         UnPauseGame();
         dialogueWindow.SetActive(false);
+    }
+
+    bool CheckSharedGridPosition(Transform a, Transform b)
+    {
+        return (grid.AStartNodeFromWorldPoint(a.position) == grid.AStartNodeFromWorldPoint(b.position));
     }
 
 }

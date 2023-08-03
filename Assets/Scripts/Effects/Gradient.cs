@@ -36,15 +36,12 @@ public class Gradient : MonoBehaviour
     void LateUpdate()
     {
 
-        transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + (Mathf.Sin(Time.timeSinceLevelLoad * waveFrequency) * waveAmplitude), transform.localPosition.z);
-
         if (stateObject.polarity == 0)
         {
             return;
         }
 
-
-
+        transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + (Mathf.Sin(Time.timeSinceLevelLoad * waveFrequency) * waveAmplitude), transform.localPosition.z);
 
         Vector2 offset = new Vector2(1.5f * Time.deltaTime * stateObject.GetGradientSpeed() * (Mathf.Sign(stateObject.polarity)), 0.0f);
         bgRenderer.size += offset;

@@ -34,7 +34,8 @@ public class PlayerController : MonoBehaviour
 
         if (!gameState.isDebug)
         {
-            transform.position = GameObject.Find("ReleaseSpawn").transform.position;
+            transform.position = GameObject.Find("TutorialStart").transform.localPosition;
+            Vector3Int.RoundToInt(transform.position);
         }
 
         targetGridPos = Vector3Int.RoundToInt(transform.position);

@@ -10,6 +10,8 @@ public class NullBar : MonoBehaviour
     private GameState stateObject;
     private int maxNumElements = 4;
     private Vector3 originalPos;
+    private Vector3 originalCameraPos;
+    private GameObject camera;
 
     public float fadeInTime = 0.2f;
     public float fadeOutTime = 0.2f;
@@ -20,7 +22,9 @@ public class NullBar : MonoBehaviour
     void Start()
     {
         stateObject = GameObject.Find("Game World Manager").GetComponent<GameState>();
+        camera = GameObject.Find("Main Camera");
         originalPos = transform.parent.transform.localPosition;
+        originalCameraPos = camera.transform.localPosition;
         parentBorder = transform.parent.gameObject;
     }
 
@@ -37,6 +41,8 @@ public class NullBar : MonoBehaviour
         if (segments.Count > 2 && Mathf.CeilToInt(Time.renderedFrameCount % 8) == 0 && Time.timeScale != 0)
         {
             transform.parent.transform.localPosition = new Vector3(originalPos.x + Random.Range(2f, 5f), originalPos.y + Random.Range(2f, 5f), 0f);
+            camera.transform.localPosition = new Vector3(originalCameraPos.x + (Random.Range(2f, 5f) * 0.01f), originalCameraPos.y + (Random.Range(2f, 5f) * 0.01f), originalCameraPos.z + (Random.Range(2f, 5f) * 0.01f));
+
         }
     }
 

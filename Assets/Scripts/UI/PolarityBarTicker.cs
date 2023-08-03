@@ -86,6 +86,14 @@ public class PolarityBarTicker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float nullFogDensity = .4f;
+        float regularFogDensity = .18f;
+
+        float oldFog, newFog;
+        oldFog = (Mathf.Abs(prevPolarity) == 0) ? nullFogDensity : regularFogDensity;
+        newFog = (Mathf.Abs(targetPolarity) == 0) ? nullFogDensity : regularFogDensity;
+
+
         if (isLerping)
         {
             // If currently in a lerp, add to the lerp and divide it by how quickly the lerp should happen.
@@ -94,6 +102,7 @@ public class PolarityBarTicker : MonoBehaviour
             transform.localPosition = new Vector3(Mathf.Lerp(screenTickPositions[prevPolarity], screenTickPositions[targetPolarity], lerpAmt), 0, 0);
             gradient.transform.localPosition = new Vector3(0, Mathf.SmoothStep(gradientPositions[prevPolarity], gradientPositions[targetPolarity], lerpAmt), gradient.transform.localPosition.z);
             RenderSettings.fogColor = Color.Lerp(fogColors[prevPolarity], fogColors[targetPolarity], lerpAmt);
+            RenderSettings.fogDensity = Mathf.Lerp(oldFog, newFog, lerpAmt);
 
             // If the lerp is done, reset everything.
             if (lerpAmt > 1f)
@@ -107,6 +116,7 @@ public class PolarityBarTicker : MonoBehaviour
             transform.localPosition = new Vector3(screenTickPositions[stateObject.polarity], 0, 0);
             gradient.transform.localPosition = new Vector3(gradient.transform.localPosition.x, gradientPositions[stateObject.polarity], gradient.transform.localPosition.z);
             RenderSettings.fogColor = fogColors[stateObject.polarity];
+            RenderSettings.fogDensity = newFog;
         }
         miniCircle.transform.Rotate(new Vector3(0f, 0f, rotationSpeeds[stateObject.polarity] * Time.deltaTime));
 

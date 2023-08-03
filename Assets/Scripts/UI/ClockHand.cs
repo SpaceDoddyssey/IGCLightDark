@@ -46,12 +46,11 @@ public class ClockHand : MonoBehaviour
             // Currently this doesn't catch if a player's actions are so big that they go beyond multiples of -360, like -720,
             // requiring the clock to strike twice.
 
-            print("Clock strikes twelve!");
-            OnClockStrikesEvent.Invoke();
-
             Animator clock = transform.parent.GetComponent<Animator>();
             clock.Play("clock_glow");
-            
+
+            print("Clock strikes twelve!");
+            OnClockStrikesEvent.Invoke();
 
         }
     }
