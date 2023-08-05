@@ -8,7 +8,11 @@ public class EffectShake : MonoBehaviour
 
    public void DoShake(int damage, bool player = false)
    {
-        oldPos = transform.localPosition;
+        if (!player)
+            oldPos = new Vector3(0, transform.localPosition.z, 0);
+        else
+            oldPos = transform.localPosition;
+
         StartCoroutine(Shake(damage, player));
    }
 

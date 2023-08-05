@@ -82,7 +82,11 @@ public class AStarPathfinding : MonoBehaviour
 
         int index = path.FindIndex(a => a.Equals(nodeOfImportance));
 
+        // If you can't find anything, return false.
+
         AStarNode randomNodeAlongPath = path[Random.Range(0, index)];
+
+        if (randomNodeAlongPath == null) return false;
 
         Vector3 newTarget = grid.BFS(randomNodeAlongPath).worldPosition;
 

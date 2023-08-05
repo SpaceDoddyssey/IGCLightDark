@@ -13,7 +13,7 @@ public class EnemyScript : MonoBehaviour
     public int baseDamage = 15;
     public HomeWorld homeWorld = HomeWorld.Light;
     public float moveSpeed = 0.5f;
-    public float attackSpeed = 0.1f;
+    public float averageAttackSpeed = 0.1f;
     public float attackBounce;
     public float fadeTime;
     public enum HomeWorld
@@ -22,6 +22,17 @@ public class EnemyScript : MonoBehaviour
         Dark,
         Null,
         Both
+    }
+
+    private float AttackSpeed
+    {
+        get
+        {
+            float random = UnityEngine.Random.Range(averageAttackSpeed - (averageAttackSpeed / 2), averageAttackSpeed + (averageAttackSpeed / 2));
+            print(random);
+            return random;
+        }
+
     }
 
 
@@ -65,6 +76,9 @@ public class EnemyScript : MonoBehaviour
         animator = spritechild.transform.GetChild(0).gameObject.GetComponent<Animator>();
         pathfinding = GetComponent<AStarPathfinding>();
         fade = GetComponent<EffectFade>();
+
+
+        spriteRender.enabled = false;
 
         
 
@@ -244,7 +258,7 @@ public class EnemyScript : MonoBehaviour
         Vector3 difference = targetPos - spriteRender.transform.position;
 
         // Start an interp here.
-        attackInterp = new QuickInterpVec3(spriteRender.transform.position, targetPos - (difference.normalized) + (difference.normalized * attackBounce), attackSpeed, true);
+        attackInterp = new QuickInterpVec3(spriteRender.transform.position, targetPos - (difference.normalized) + (difference.normalized * attackBounce), AttackSpeed, true);
     }
 
     private void AttackInterp()
@@ -280,7 +294,7 @@ public class EnemyScript : MonoBehaviour
                         {
                             // Attack the player. Damage direction indicates whether the damage is positive or negative
                             int damageDirection = (homeWorld == HomeWorld.Light ? 1 : -1);
-                            stateObject.DamagePlayer((int)(baseDamage * damageDirection * (stateObject.GetDamageModifier()) * UnityEngine.Random.Range(0.95f, 1.05f)), name);
+                            stateObject.DamagePlayer((int)(baseDamage * damageDirection * (stateObject.GetDamageModifier()) * UnityEngine.Random.Range(0.90f, 1.05f)), name);
 
                         }
 
@@ -288,7 +302,7 @@ public class EnemyScript : MonoBehaviour
 
                     // Reverse it with a new attack interp here, overriding the other one.
                     retreating = true;
-                    attackInterp = new QuickInterpVec3(spriteRender.transform.position, prevPosition, attackSpeed, true);
+                    attackInterp = new QuickInterpVec3(spriteRender.transform.position, prevPosition, AttackSpeed, true);
 
                 }
             }

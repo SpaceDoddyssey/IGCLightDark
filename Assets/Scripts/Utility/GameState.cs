@@ -214,12 +214,17 @@ public class GameState : MonoBehaviour
             SceneManager.LoadScene("Level1");
         }
 
-
-        if (Input.GetKeyDown("o")) {
-            DisplayDialogueWindow(dialogueWindow);
-        } else if (Input.GetKeyDown("p")) {
-            CloseDialogueWindow(dialogueWindow);
+        if (Input.GetKey("c") && clock.activeSelf)
+        {
+            hand.RotateClockHand(0.2f * Time.deltaTime);
         }
+
+
+        //if (Input.GetKeyDown("o")) {
+        //    DisplayDialogueWindow(dialogueWindow);
+        //} else if (Input.GetKeyDown("p")) {
+        //    CloseDialogueWindow(dialogueWindow);
+        //}
 
         if (Input.GetKeyDown("j")){
             if(curHeldItem == ItemType.None){

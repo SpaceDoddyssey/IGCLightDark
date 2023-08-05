@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LeverScript : MonoBehaviour
 {
-    public DoorScript connectedDoor;
+    public List<DoorScript> connectedDoors;
     SpriteRenderer spriteRend;
     bool beenPulled = false;
     public Sprite unpulledSprite, pulledSprite;
@@ -16,7 +16,11 @@ public class LeverScript : MonoBehaviour
     public void Pull(){
         if(!beenPulled){
             spriteRend.sprite = pulledSprite;
-            connectedDoor.Open();
+            foreach (DoorScript d  in connectedDoors) 
+            {
+               d.Open();
+            }
+            
         }
     }   
 }

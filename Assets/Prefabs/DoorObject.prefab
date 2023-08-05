@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9197637424776604290}
   - component: {fileID: 4969390203821781357}
   - component: {fileID: 7093675555561397091}
+  - component: {fileID: 9126890817219291173}
   m_Layer: 9
   m_Name: Sprite
   m_TagString: Untagged
@@ -92,12 +93,33 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 706833783978166854}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8582eeb276c06a4dae7d69433f54b92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   miniMap: 0
+--- !u!95 &9126890817219291173
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706833783978166854}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 52dcacfc86e844240a2cdff8497e49ce, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &940103328886225150
 GameObject:
   m_ObjectHideFlags: 0

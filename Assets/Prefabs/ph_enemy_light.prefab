@@ -199,7 +199,7 @@ MonoBehaviour:
   baseDamage: 25
   homeWorld: 0
   moveSpeed: 0.2
-  attackSpeed: 0.01
+  averageAttackSpeed: 0.02
   attackBounce: 0.25
   fadeTime: 0.15
   spriteRender: {fileID: 0}

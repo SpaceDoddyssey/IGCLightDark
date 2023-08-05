@@ -8,7 +8,7 @@ public class NullBar : MonoBehaviour
     [SerializeField] private GameObject segment;
     [SerializeField] private List<GameObject> segments;
     [SerializeField] private GameState stateObject;
-    private int maxNumElements = 4;
+    private int maxNumElements = 3;
     private Vector3 originalPos;
     private Vector3 originalCameraPos;
     private new GameObject camera;
@@ -32,13 +32,13 @@ public class NullBar : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (segments.Count == 2)
+        if (segments.Count == 1)
         {
             transform.parent.transform.localPosition = new Vector3(originalPos.x + Random.Range(1f, 3f), originalPos.y + Random.Range(1f, 3f), 0f);
 
         }
 
-        if (segments.Count > 2 && Time.frameCount % 2 == 0)
+        if (segments.Count > 1 && Time.frameCount % 2 == 0)
         {
             transform.parent.transform.localPosition = new Vector3(originalPos.x + Random.Range(2f, 5f), originalPos.y + Random.Range(2f, 5f), 0f);
             camera.transform.localPosition = new Vector3(originalCameraPos.x + (Random.Range(2f, 5f) * 0.01f), originalCameraPos.y + (Random.Range(2f, 5f) * 0.01f), originalCameraPos.z + (Random.Range(2f, 5f) * 0.01f));
