@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class GameState : MonoBehaviour
 {
-    public bool isDebug;
+    public bool skipTutorial;
     public ClockHand hand;
     public PolarityBarTicker ticker;
     public int playerHealth = 0;
@@ -24,6 +24,11 @@ public class GameState : MonoBehaviour
 
     public GameObject ActionTextPrefab;
     public GameObject dialogueWindow;
+
+    [SerializeField] private GameObject glass1;
+    [SerializeField] private GameObject glass2;
+
+    private EffectFadeToFromBlack fade;
 
     private AStarGrid grid;
 
@@ -81,9 +86,27 @@ public class GameState : MonoBehaviour
         "NEUTRALIZES",
     };
 
-    void Start(){
+
+    void Awake()
+    {
+        Application.targetFrameRate = 60;
         //curHeldItemSprite = GameObject.Find("ItemSprite").GetComponent<Image>();
         //curHeldItemSprite.enabled = false;
+
+        fade = GameObject.Find("FadeToFromBlack").GetComponent<EffectFadeToFromBlack>();
+        fade.SetAlpha(1.0f);
+        fade.StartCoroutine(fade.Fade(0.7f, 0.0f));
+
+
+        if (PlayerPrefs.GetInt("SkipTutorial") == 0) 
+        {
+            skipTutorial = false;
+        }
+        else
+        {
+            skipTutorial = true;
+        }
+
 
         darkEnemies = GameObject.Find("Dark Enemies");
         lightEnemies = GameObject.Find("Light Enemies");
@@ -98,17 +121,22 @@ public class GameState : MonoBehaviour
         grid = GetComponent<AStarGrid>();
 
 
-        if (!isDebug)
+        if (!skipTutorial)
         {
             clock.SetActive(false);
+            minimap.SetActive(false);
             polarityBar.SetActive(false);
             healthBar.SetActive(false);
-            minimap.SetActive(false);
             darkEnemies.SetActive(false);
             lightEnemies.SetActive(false);
             nullBar.SetActive(false);
-        }
 
+            player.transform.position = GameObject.Find("TutorialStart").transform.localPosition;
+        }
+        else
+        {
+            hand.LinkEvents();
+        }
 
     }
 
@@ -171,10 +199,18 @@ public class GameState : MonoBehaviour
             finalTutorialBlock.SetActive(true);
             darkEnemies.SetActive(true);
             lightEnemies.SetActive(true);
+            hand.LinkEvents();
         }
 
         if (Input.GetKeyDown("r"))
         {
+            PlayerPrefs.SetInt("SkipTutorial", 1);
+            SceneManager.LoadScene("Level1");
+        }
+
+        if (Input.GetKeyDown("x"))
+        {
+            PlayerPrefs.SetInt("SkipTutorial", 0);
             SceneManager.LoadScene("Level1");
         }
 
@@ -285,9 +321,14 @@ public class GameState : MonoBehaviour
 
     public void ShiftPolarity(int offset)
     {
-        ticker.SetTickerOffset(offset);
-
-        hand.RotateClockHand(0.20f * Mathf.Abs(offset));
+        if (ticker != null && ticker.enabled && polarityBar.activeSelf)
+        {
+            ticker.SetTickerOffset(offset);
+        }
+        if (hand != null && hand.enabled)
+        {
+            hand.RotateClockHand(0.20f * Mathf.Abs(offset));
+        }
     }
 
     public void TurnClock(float amount)
@@ -303,28 +344,30 @@ public class GameState : MonoBehaviour
 
         // Put this on the text on the screen.
 
-        Transform textSpot = GameObject.Find("TextSpot").transform;
-        GameObject findExistingText = GameObject.Find("ActionText(Clone)");
-        if (findExistingText != null)
-        {
-            string existingText = findExistingText.GetComponent<ActionText>().Text;
-            existingText = existingText.Insert(0, desiredString + "\n");
-            findExistingText.GetComponent<ActionText>().Text = existingText;
-        }
-        else
-        {
-            GameObject text = Instantiate(ActionTextPrefab, textSpot);
-            text.GetComponent<ActionText>().Text = desiredString;
-        }
+        //Transform textSpot = GameObject.Find("TextSpot").transform;
+        //GameObject findExistingText = GameObject.Find("ActionText(Clone)");
+        //if (findExistingText != null)
+        //{
+        //    string existingText = findExistingText.GetComponent<ActionText>().Text;
+        //    existingText = existingText.Insert(0, desiredString + "\n");
+        //    findExistingText.GetComponent<ActionText>().Text = existingText;
+        //}
+        //else
+        //{
+        //    GameObject text = Instantiate(ActionTextPrefab, textSpot);
+        //    text.GetComponent<ActionText>().Text = desiredString;
+        //}
 
         player.transform.Find("Main Camera").GetComponent<EffectShake>().DoShake(damage, true);
 
+        //float ratio = (0f + (float)Mathf.Abs(playerHealth) / (float)Mathf.Abs(playerMaxAbsoluteHealth)) * -2f;
+       //healthBar.transform.localRotation = Quaternion.Euler(0f, 0f, 0f + ratio);
 
 
         if (playerHealth > playerMaxAbsoluteHealth || playerHealth < playerMaxAbsoluteHealth * -1)
         {
             playerHealth = Mathf.Clamp(playerHealth, playerMaxAbsoluteHealth * -1, playerMaxAbsoluteHealth);
-            PlayerDeath();
+            StartCoroutine("PlayerDeath");
         }
 
 
@@ -370,14 +413,29 @@ public class GameState : MonoBehaviour
         }
     }
 
-    //
-
-    public void PlayerDeath()
+    IEnumerator PlayerDeath()
     {
         print("Threshhold broken! Game over!");
+
+        GameObject glass;
+
+        if (Random.Range(0f, 1f) < .5f) glass = glass1;
+        else glass = glass2;
+
+        GameObject glassObj = GameObject.Instantiate(glass, polarityBar.transform.GetChild(0));
+        glassObj.transform.localPosition = new Vector3(Random.Range(-70f, 70f), glassObj.transform.localPosition.y, glassObj.transform.localPosition.z);
+
+
         GameObject.Find("Player").GetComponent<PlayerController>().enabled = false;
         GameObject.Find("Player").GetComponent<PlayerInput>().enabled = false;
-        SceneManager.LoadScene("Level1");
+
+        PlayerPrefs.SetInt("SkipTutorial", 1);
+
+        yield return new WaitForSecondsRealtime(1f);
+        yield return fade.Fade(1.0f, 1.0f);
+        yield return new WaitForSecondsRealtime(0.5f);
+        
+        yield return SceneManager.LoadSceneAsync("Level1");
     }
 
     void PauseGame() {

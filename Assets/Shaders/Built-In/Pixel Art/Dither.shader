@@ -38,19 +38,19 @@ Shader "Hidden/Dither" {
             float _Spread;
             int _RedColorCount, _GreenColorCount, _BlueColorCount , _BayerLevel;
 
-            static const int bayer2[2 * 2] = {
+            static const uint bayer2[2 * 2] = {
                 0, 2,
                 3, 1
             };
 
-            static const int bayer4[4 * 4] = {
+            static const uint bayer4[4 * 4] = {
                 0, 8, 2, 10,
                 12, 4, 14, 6,
                 3, 11, 1, 9,
                 15, 7, 13, 5
             };
 
-            static const int bayer8[8 * 8] = {
+            static const uint bayer8[8 * 8] = {
                 0, 32, 8, 40, 2, 34, 10, 42,
                 48, 16, 56, 24, 50, 18, 58, 26,  
                 12, 44,  4, 36, 14, 46,  6, 38, 

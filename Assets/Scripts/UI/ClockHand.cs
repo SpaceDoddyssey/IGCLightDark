@@ -9,22 +9,17 @@ public class ClockHand : MonoBehaviour
     public float idleSpeed = 0.02f;
     public UnityEvent OnClockStrikesEvent;
 
-    private GameState stateObject;
     private bool isTicking = false;
     private QuickInterp handInterp;
 
     [SerializeField] private GameObject nullBarController;
+    [SerializeField] private GameState stateObject;
 
     // Start is called before the first frame update
     private void Start()
     {
-        stateObject = GameObject.Find("Game World Manager").GetComponent<GameState>();
         ToggleTick();
-        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
-        {
-            OnClockStrikesEvent.AddListener(g.GetComponent<EnemyScript>().OnClockTwelve);
-        }
-        OnClockStrikesEvent.AddListener(nullBarController.GetComponent<NullBar>().OnClockTwelve);
+
     }
 
     // Update is called once per frame
@@ -68,9 +63,18 @@ public class ClockHand : MonoBehaviour
         // gone past 12 o' clock in the update function.
         stateObject.clockRotation.z += -360f * fraction;
         Animator hand = GetComponent<Animator>();
-        hand.Play("hand_glow");
+        if (hand.isActiveAndEnabled)
+            hand.Play("hand_glow");
     }
 
+    public void LinkEvents()
+    {
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
+        {
+            OnClockStrikesEvent.AddListener(g.GetComponent<EnemyScript>().OnClockTwelve);
+        }
+        OnClockStrikesEvent.AddListener(nullBarController.GetComponent<NullBar>().OnClockTwelve);
+    }
 
     // When the clock is rotated by any amount, there should be a "target" rotation.
     // If that target rotation is less than -360 degrees,then add 360 degrees to both the clock's current rotation AND the target rotation,

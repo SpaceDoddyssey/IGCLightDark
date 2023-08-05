@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public float attackCost = 0.6f;
 
     private bool isMoving;
+    [SerializeField] private GameObject blockedText;
 
     //Private variables
     Vector3 targetGridPos, prevTargetGridPos, targetRotation;
@@ -32,11 +33,7 @@ public class PlayerController : MonoBehaviour
         //    Debug.Log(tileArray[index]);
         //}
 
-        if (!gameState.isDebug)
-        {
-            transform.position = GameObject.Find("TutorialStart").transform.localPosition;
-            Vector3Int.RoundToInt(transform.position);
-        }
+        Vector3Int.RoundToInt(transform.position);
 
         targetGridPos = Vector3Int.RoundToInt(transform.position);
 
@@ -64,10 +61,25 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
+    private bool MoveCheck(Vector3 direction)
+    {
+        //return true;
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, direction, 2.0f);
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.collider.gameObject.layer == 8 && hit.collider.tag != "Lever")
+                return false;
+        }
+        return true;
+    }
+
+
     private float scalar = 2; //Right now the grid is scaled such that the player should move 2 unity units. That may change.
     //All move functions store where you were coming from so you can move back there if you hit an obstacle, and then set your target to the appropriate location
     public void MoveForward(){
         if (AtRest) {
+            if (!MoveCheck(transform.forward)) return;
             prevTargetGridPos = targetGridPos; 
             targetGridPos += transform.forward * scalar;
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
@@ -75,7 +87,8 @@ public class PlayerController : MonoBehaviour
         }
     }
     public void MoveBackward(){
-        if (AtRest) { 
+        if (AtRest) {
+            if (!MoveCheck(transform.forward * -1)) return;
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.forward * scalar;
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
@@ -83,7 +96,8 @@ public class PlayerController : MonoBehaviour
         }
     }
     public void MoveLeft(){
-        if (AtRest) { 
+        if (AtRest) {
+            if (!MoveCheck(transform.right * -1)) return;
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.right * scalar;
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
@@ -93,6 +107,7 @@ public class PlayerController : MonoBehaviour
     public void MoveRight(){
         if (AtRest) { 
             prevTargetGridPos = targetGridPos;
+            if (!MoveCheck(transform.right)) return;
             targetGridPos += transform.right * scalar;
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
             isMoving = true;
@@ -117,7 +132,10 @@ public class PlayerController : MonoBehaviour
 
     public void AttemptShiftPolarity(int offset)
     {
-        if (Mathf.Abs(gameState.polarity) >= 4 && (Mathf.Sign(gameState.polarity) == Mathf.Sign(offset))) return;
+        if (Mathf.Abs(gameState.polarity) >= 4 && (Mathf.Sign(gameState.polarity) == Mathf.Sign(offset)))
+        {
+            return;
+        }
 
         RaycastHit[] hits = Physics.RaycastAll(transform.position, Vector3.down, 2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal);
         foreach (RaycastHit hit in hits)
@@ -126,10 +144,13 @@ public class PlayerController : MonoBehaviour
             if (e != null && gameState.polarity == 0)
             {
                 if ((offset > 0 && e.homeWorld == EnemyScript.HomeWorld.Light) || (offset < 0 && e.homeWorld == EnemyScript.HomeWorld.Dark))
-                // If you're standing in the same spot as an enemy, then don't shift polarity
-                //if (e.inPlayerDimension)
-                return;
+                {
+                    Instantiate(blockedText, GameObject.Find("Canvas").transform);
+                    return;
+
+                }
             }
+
 
         }
 
@@ -140,7 +161,7 @@ public class PlayerController : MonoBehaviour
         get {
             //Note to future self: Worry that allowing some variance here may cause the player to get slightly misaligned with the grid.
             //If that becomes an issue, start here to find a fix.
-            if((Vector3.Distance(transform.position, targetGridPos) < 0.05f) &&
+                if((Vector3.Distance(transform.position, targetGridPos) < 0.05f) &&
                (Vector3.Distance(transform.eulerAngles, targetRotation) < 0.05f)) {
                 return true;
                } else { 

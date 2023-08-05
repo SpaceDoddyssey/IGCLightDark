@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Item
+  - Lever
   layers:
   - Default
   - TransparentFX

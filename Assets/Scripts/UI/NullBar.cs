@@ -7,11 +7,11 @@ public class NullBar : MonoBehaviour
 {
     [SerializeField] private GameObject segment;
     [SerializeField] private List<GameObject> segments;
-    private GameState stateObject;
+    [SerializeField] private GameState stateObject;
     private int maxNumElements = 4;
     private Vector3 originalPos;
     private Vector3 originalCameraPos;
-    private GameObject camera;
+    private new GameObject camera;
 
     public float fadeInTime = 0.2f;
     public float fadeOutTime = 0.2f;
@@ -29,7 +29,7 @@ public class NullBar : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
         if (segments.Count == 2)
@@ -38,7 +38,7 @@ public class NullBar : MonoBehaviour
 
         }
 
-        if (segments.Count > 2 && Mathf.CeilToInt(Time.renderedFrameCount % 8) == 0 && Time.timeScale != 0)
+        if (segments.Count > 2 && Time.frameCount % 2 == 0)
         {
             transform.parent.transform.localPosition = new Vector3(originalPos.x + Random.Range(2f, 5f), originalPos.y + Random.Range(2f, 5f), 0f);
             camera.transform.localPosition = new Vector3(originalCameraPos.x + (Random.Range(2f, 5f) * 0.01f), originalCameraPos.y + (Random.Range(2f, 5f) * 0.01f), originalCameraPos.z + (Random.Range(2f, 5f) * 0.01f));
@@ -48,6 +48,8 @@ public class NullBar : MonoBehaviour
 
     public void OnClockTwelve()
     {
+        if (!isActiveAndEnabled) return;
+
         if (stateObject.polarity == 0)
         {
             if (segments.Count == 0)
@@ -61,7 +63,7 @@ public class NullBar : MonoBehaviour
 
 
                 if (segments.Count > maxNumElements - 1)
-                    stateObject.PlayerDeath();
+                    stateObject.StartCoroutine("PlayerDeath");
                 else
                     currentSegment.GetComponent<EffectFadeNonEnemy>().FadeIn(fadeInTime);
             }

@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 4514295916995339876}
   m_Layer: 8
   m_Name: LeverObject
-  m_TagString: Untagged
+  m_TagString: Lever
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 3209116574995211918}
   - component: {fileID: 5750630313303680095}
   - component: {fileID: 7149438078455163307}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: MinimapSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

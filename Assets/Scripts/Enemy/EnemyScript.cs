@@ -52,7 +52,7 @@ public class EnemyScript : MonoBehaviour
 
     public AStarNode nodeOfIntent { get; private set; }
 
-    private int itemChance = 15; // 0 <= itemChance <= 100. The percent chance of the enemy dropping an item
+    private int itemChance = 5; // 0 <= itemChance <= 100. The percent chance of the enemy dropping an item
 
     void Start() 
     {
@@ -66,6 +66,7 @@ public class EnemyScript : MonoBehaviour
         pathfinding = GetComponent<AStarPathfinding>();
         fade = GetComponent<EffectFade>();
 
+        
 
         // var outline = gameObject.AddComponent<Outline>();
 
@@ -120,9 +121,10 @@ public class EnemyScript : MonoBehaviour
 
         health -= amount;
         Debug.Log("The imp takes " + amount + " damage!");
-        stateObject.PrintEnemyDamageText(amount, name);
+        //stateObject.PrintEnemyDamageText(amount, name);
         transform.GetChild(0).GetChild(0).GetComponent<EffectShake>().DoShake(amount * 2, false);
         if (health <= 0){
+            GetComponent<BoxCollider>().enabled = false;
             Debug.Log("The imp dies!");
             fade.FadeOut(true, 0.3f);
             int dieroll = UnityEngine.Random.Range(1, 101);

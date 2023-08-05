@@ -26,8 +26,25 @@ public class EnemiesLeft : MonoBehaviour
                 count++;
             }
             text.text = count.ToString();
+
+            if (count == 0)
+            {
+                text.text = "";
+            }
+        }
+        else
+        {
+            text.text = "";
         }
 
         if (count == 0) { text.color = Color.red; }
+        else
+        {
+            if (isDark) { text.color = Color.black; }
+            else
+            {
+                text.color = Color.white;
+            }
+        }
     }
 }
