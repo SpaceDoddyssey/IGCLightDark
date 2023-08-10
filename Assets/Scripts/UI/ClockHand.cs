@@ -46,6 +46,7 @@ public class ClockHand : MonoBehaviour
 
             print("Clock strikes twelve!");
             OnClockStrikesEvent.Invoke();
+            FMODUnity.RuntimeManager.PlayOneShot("event:/World/Clock/clk_strike");
 
         }
     }
@@ -65,6 +66,7 @@ public class ClockHand : MonoBehaviour
         Animator hand = GetComponent<Animator>();
         if (hand.isActiveAndEnabled)
             hand.Play("hand_glow");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/World/Clock/clk_tick");
     }
 
     public void LinkEvents()

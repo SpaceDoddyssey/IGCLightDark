@@ -29,7 +29,6 @@ public class EnemyScript : MonoBehaviour
         get
         {
             float random = UnityEngine.Random.Range(averageAttackSpeed - (averageAttackSpeed / 2), averageAttackSpeed + (averageAttackSpeed / 2));
-            print(random);
             return random;
         }
 

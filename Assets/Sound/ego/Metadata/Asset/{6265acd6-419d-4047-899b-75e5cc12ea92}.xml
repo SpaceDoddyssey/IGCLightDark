@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{6265acd6-419d-4047-899b-75e5cc12ea92}">
+		<property name="assetPath">
+			<value>World/Polarity/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{50e13f8e-3803-4883-bd79-ac93c5dc68e2}</destination>
+		</relationship>
+	</object>
+</objects>

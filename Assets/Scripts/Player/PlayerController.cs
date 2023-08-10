@@ -84,6 +84,7 @@ public class PlayerController : MonoBehaviour
             targetGridPos += transform.forward * scalar;
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
             isMoving = true;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Move/pl_move");
         }
     }
     public void MoveBackward(){
@@ -92,6 +93,7 @@ public class PlayerController : MonoBehaviour
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.forward * scalar;
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Move/pl_move");
             isMoving = true;
         }
     }
@@ -101,6 +103,7 @@ public class PlayerController : MonoBehaviour
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.right * scalar;
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Move/pl_move");
             isMoving = true;
         }
     }
@@ -110,6 +113,7 @@ public class PlayerController : MonoBehaviour
             if (!MoveCheck(transform.right)) return;
             targetGridPos += transform.right * scalar;
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Move/pl_move");
             isMoving = true;
         }
     }
@@ -186,6 +190,7 @@ public class PlayerController : MonoBehaviour
             {
                 other.gameObject.GetComponent<EnemyScript>().TakeDamage((int)(gameState.GetDamageToEnemy() * UnityEngine.Random.Range(0.90f, 1.10f)));
                 (targetGridPos, prevTargetGridPos) = (prevTargetGridPos, targetGridPos);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Attack/pl_atk");
             }
         } 
     }

@@ -1,5 +1,7 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Scripting;
@@ -17,6 +19,15 @@ public class PolarityBarTicker : MonoBehaviour
     private int targetPolarity, prevPolarity;
     private GameObject gradient;
     private GameObject miniCircle;
+
+    // SOUND STUFF
+
+    private FMOD.Studio.EventInstance shiftUpSound;
+    private FMOD.Studio.EventInstance shiftDownSound;
+
+    public EventReference shiftUpRef;
+    public EventReference shiftDownRef;
+
 
     // Right now the values for where the ticker should be are hard-coded.
     // In the future, I'm going to change these to be scaled values of the 
@@ -85,6 +96,11 @@ public class PolarityBarTicker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // SOUND STUFF
+        shiftUpSound = FMODUnity.RuntimeManager.CreateInstance(shiftUpRef);
+        shiftDownSound = FMODUnity.RuntimeManager.CreateInstance(shiftDownRef);
+
+
         float nullFogDensity = .4f;
         float regularFogDensity = .18f;
 
@@ -141,6 +157,20 @@ public class PolarityBarTicker : MonoBehaviour
         }
         else
         {
+            float e = stateObject.polarity;
+            shiftUpSound.setParameterByName("Polarity", e);
+            shiftDownSound.setParameterByName("Polarity", e);
+            shiftUpSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            shiftDownSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            if (delta == 1)
+            {
+                shiftUpSound.start();
+            }
+            else if (delta == -1)
+            {
+                shiftDownSound.start();
+            }
+
             targetPolarity = stateObject.polarity + delta;
             prevPolarity = stateObject.polarity;
             stateObject.polarity = targetPolarity;

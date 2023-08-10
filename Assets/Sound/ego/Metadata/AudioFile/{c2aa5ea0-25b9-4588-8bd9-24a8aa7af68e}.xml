@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{c2aa5ea0-25b9-4588-8bd9-24a8aa7af68e}">
+		<property name="assetPath">
+			<value>Player/Attack/pl_atk_2.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.8461451247165532</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{50e13f8e-3803-4883-bd79-ac93c5dc68e2}</destination>
+		</relationship>
+	</object>
+</objects>

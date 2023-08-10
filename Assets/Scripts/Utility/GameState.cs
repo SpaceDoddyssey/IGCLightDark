@@ -1,8 +1,10 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
 
 
 public class GameState : MonoBehaviour
@@ -27,6 +29,7 @@ public class GameState : MonoBehaviour
 
     [SerializeField] private GameObject glass1;
     [SerializeField] private GameObject glass2;
+    [SerializeField] private new ParticleSystem particleSystem;
 
     private EffectFadeToFromBlack fade;
 
@@ -46,7 +49,7 @@ public class GameState : MonoBehaviour
     [SerializeField] private GameObject finalTutorialBlock;
 
 
-    //TUTORIAL STUFF
+    // TUTORIAL STUFF
     [SerializeField]
     private Transform
         minimapEnableSpot,
@@ -55,6 +58,9 @@ public class GameState : MonoBehaviour
         clockEnableSpot,
         NullBarEnableSpot,
         finalEnableSpot;
+
+    // SOUND STUFF
+    private FMOD.Studio.EventInstance deathSound;
 
 
     private string[] goodWords =
@@ -89,6 +95,10 @@ public class GameState : MonoBehaviour
 
     void Awake()
     {
+        
+
+
+        deathSound = FMODUnity.RuntimeManager.CreateInstance("event:/Player/Death/pl_dth");
         Application.targetFrameRate = 60;
         //curHeldItemSprite = GameObject.Find("ItemSprite").GetComponent<Image>();
         //curHeldItemSprite.enabled = false;
@@ -238,6 +248,15 @@ public class GameState : MonoBehaviour
         }
 
 
+        if (polarity == 0 && !particleSystem.isPaused)
+        {
+            particleSystem.Pause();
+        }
+        else if (polarity != 0 && particleSystem.isPaused)
+        {
+            particleSystem.Play();
+        }
+
 
 
 
@@ -301,6 +320,25 @@ public class GameState : MonoBehaviour
                 return 1.1f;
             default:
                 return 1f;
+        }
+    }
+
+    public float GetParticleNoiseScale()
+    {
+        switch (Mathf.Abs(polarity))
+        {
+            case 0:
+                return .66f;
+            case 1:
+                return .04f;
+            case 2:
+                return .09f;
+            case 3:
+                return .15f;
+            case 4:
+                return .2f;
+            default:
+                return .04f;
         }
     }
 
@@ -421,6 +459,7 @@ public class GameState : MonoBehaviour
     IEnumerator PlayerDeath()
     {
         print("Threshhold broken! Game over!");
+        deathSound.start();
 
         GameObject glass;
 
