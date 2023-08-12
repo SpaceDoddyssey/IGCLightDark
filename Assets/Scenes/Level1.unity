@@ -41140,6 +41140,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4161175176872324181, guid: a8768e953189c034f9e548fd6dc6b5b9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4858262925637156352, guid: a8768e953189c034f9e548fd6dc6b5b9, type: 3}
       propertyPath: addDark
       value: 274
