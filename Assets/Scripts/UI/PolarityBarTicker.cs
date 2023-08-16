@@ -1,6 +1,8 @@
+using FMOD.Studio;
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,9 +26,16 @@ public class PolarityBarTicker : MonoBehaviour
 
     private FMOD.Studio.EventInstance shiftUpSound;
     private FMOD.Studio.EventInstance shiftDownSound;
+    private FMOD.Studio.EventInstance dimensionSound;
+
 
     public EventReference shiftUpRef;
     public EventReference shiftDownRef;
+    public EventReference dimensionRef;
+
+
+
+   
 
 
     // Right now the values for where the ticker should be are hard-coded.
@@ -91,14 +100,21 @@ public class PolarityBarTicker : MonoBehaviour
         stateObject = GameObject.Find("Game World Manager").GetComponent<GameState>();
         gradient = GameObject.Find("BG");
         miniCircle = GameObject.Find("MinimapCircle");
+
+        // SOUND STUFF
+        shiftUpSound = FMODUnity.RuntimeManager.CreateInstance(shiftUpRef);
+        shiftDownSound = FMODUnity.RuntimeManager.CreateInstance(shiftDownRef);
+        dimensionSound = FMODUnity.RuntimeManager.CreateInstance(dimensionRef);
+        dimensionSound.start();
+
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        // SOUND STUFF
-        shiftUpSound = FMODUnity.RuntimeManager.CreateInstance(shiftUpRef);
-        shiftDownSound = FMODUnity.RuntimeManager.CreateInstance(shiftDownRef);
+
 
 
         float nullFogDensity = .4f;
@@ -157,21 +173,32 @@ public class PolarityBarTicker : MonoBehaviour
         }
         else
         {
-            float e = stateObject.polarity;
-            shiftUpSound.setParameterByName("Polarity", e);
-            shiftDownSound.setParameterByName("Polarity", e);
-            shiftUpSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            shiftDownSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+
+
             if (delta == 1)
             {
+                shiftDownSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                 shiftUpSound.start();
             }
             else if (delta == -1)
             {
+                shiftUpSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                 shiftDownSound.start();
             }
 
+            shiftUpSound.setParameterByName("Polarity", stateObject.polarity);
+            shiftDownSound.setParameterByName("Polarity", stateObject.polarity);
+
+
             targetPolarity = stateObject.polarity + delta;
+
+
+            dimensionSound.setParameterByName("Polarity", targetPolarity);
+
+
+
+
+
             prevPolarity = stateObject.polarity;
             stateObject.polarity = targetPolarity;
             //Debug.Log("Target:" + targetPolarity + "  prev:" + prevPolarity + "  pol:"+ stateObject.polarity);
@@ -246,6 +273,7 @@ public class PolarityBarTicker : MonoBehaviour
 
         }
     }
+
 
 
 }

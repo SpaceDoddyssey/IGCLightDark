@@ -22,10 +22,10 @@ public class EffectFadeToFromBlack : MonoBehaviour
 
         while (fadeTime >= 0)
         {
-            fadeTime -= 1 * Time.deltaTime;
+            fadeTime -= 1 * Time.unscaledDeltaTime;
             float lerped = Mathf.Lerp(targetAlpha, baseAlpha, fadeTime / fadeDuration);
             SetAlpha(lerped);
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForSecondsRealtime(1 / Application.targetFrameRate);
         }
         SetAlpha(targetAlpha);
     }

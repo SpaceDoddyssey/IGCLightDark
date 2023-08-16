@@ -23,6 +23,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 111755105862132099}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.7821094, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,7 +32,6 @@ Transform:
   - {fileID: 7925753459758389335}
   - {fileID: 5163641110322821170}
   m_Father: {fileID: 7925753457780426082}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2938052383033823158
 GameObject:
@@ -57,13 +57,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2938052383033823158}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 4.2978907, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5237551785798725873}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &5243064880661817387
 SpriteRenderer:
@@ -145,6 +145,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7925753457780426094}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.33033767, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -152,7 +153,6 @@ Transform:
   m_Children:
   - {fileID: 5237551785798725873}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7925753457780426083
 MeshFilter:
@@ -208,6 +208,27 @@ MonoBehaviour:
   outlineSprite: {fileID: 0}
   pathfinding: {fileID: -2596188944360712596}
   inPlayerDimension: 1
+  hurtSoundRef:
+    Guid:
+      Data1: 978015258
+      Data2: 1191184054
+      Data3: -179403083
+      Data4: -2101466160
+    Path: event:/Enemies/Light/en_lt_hurt
+  attackSoundRef:
+    Guid:
+      Data1: -794807081
+      Data2: 1300373465
+      Data3: 133420929
+      Data4: 583319114
+    Path: event:/Enemies/Light/en_lt_atk
+  moveSoundRef:
+    Guid:
+      Data1: 1248601642
+      Data2: 1306305077
+      Data3: -1408230502
+      Data4: 1874158229
+    Path: event:/Enemies/Light/en_lt_move
 --- !u!114 &-2596188944360712596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,13 +282,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7925753459758389332}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.20789063, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5237551785798725873}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7925753459758389334
 SpriteRenderer:

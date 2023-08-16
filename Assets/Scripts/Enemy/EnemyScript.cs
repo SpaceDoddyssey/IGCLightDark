@@ -64,10 +64,13 @@ public class EnemyScript : MonoBehaviour
 
     private int itemChance = 5; // 0 <= itemChance <= 100. The percent chance of the enemy dropping an item
 
+
     void Start() 
     {
-        
-        currentState = State.Idle;
+
+
+
+        currentState = State.Idle;  
         stateObject = GameObject.Find("Game World Manager").GetComponent<GameState>();
         GameObject spritechild = gameObject.transform.GetChild(0).gameObject;
         spriteRender = spritechild.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
@@ -133,12 +136,21 @@ public class EnemyScript : MonoBehaviour
     public void TakeDamage(int amount){
 
         health -= amount;
-        Debug.Log("The imp takes " + amount + " damage!");
+        Debug.Log("The enemy takes " + amount + " damage!");
+
+        if (this.homeWorld == HomeWorld.Dark)
+        {
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Enemies/Dark/en_drk_hurt", gameObject);
+        }
+        else
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Enemies/Light/en_lt_hurt", gameObject);
+       
+
         //stateObject.PrintEnemyDamageText(amount, name);
         transform.GetChild(0).GetChild(0).GetComponent<EffectShake>().DoShake(amount * 2, false);
         if (health <= 0){
             GetComponent<BoxCollider>().enabled = false;
-            Debug.Log("The imp dies!");
+            Debug.Log("The enemy dies!");
             fade.FadeOut(true, 0.3f);
             int dieroll = UnityEngine.Random.Range(1, 101);
             if(dieroll <= itemChance){
@@ -191,6 +203,13 @@ public class EnemyScript : MonoBehaviour
                 movementInterp = new QuickInterpVec3(transform.position, pathfinding.path[0].worldPosition, moveSpeed, true);
                 currentState = State.Moving;
                 animator.Play("enemy_move");
+                if (this.homeWorld == HomeWorld.Dark)
+                {
+                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Enemies/Dark/en_drk_move", gameObject);
+                }
+                else
+                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Enemies/Light/en_lt_move", gameObject);
+
             }
             // This is kind of a buggy check to see if the enemy is right next to the player.
             else if (pathfinding.path.Count == 1)
@@ -205,6 +224,7 @@ public class EnemyScript : MonoBehaviour
         // If an interp has been made, do stuff with it.
         if (movementInterp != null)
         {
+
 
             RaycastHit hit = new RaycastHit();
 
@@ -250,6 +270,7 @@ public class EnemyScript : MonoBehaviour
         currentState = State.Attacking;
         animator.Play("enemy_bite");
 
+
         //This is a fix for a glitch involving origins.
         targetPos.y += 1f;
 
@@ -294,6 +315,20 @@ public class EnemyScript : MonoBehaviour
                             // Attack the player. Damage direction indicates whether the damage is positive or negative
                             int damageDirection = (homeWorld == HomeWorld.Light ? 1 : -1);
                             stateObject.DamagePlayer((int)(baseDamage * damageDirection * (stateObject.GetDamageModifier()) * UnityEngine.Random.Range(0.90f, 1.05f)), name);
+
+                            if (this.homeWorld == HomeWorld.Dark)
+                            {
+                                FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Enemies/Dark/en_drk_atk", gameObject);
+                            }
+                            else
+                                FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Enemies/Light/en_lt_atk", gameObject);
+
+                            if (Mathf.Abs(stateObject.polarity) == 3)
+                                FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Attack/atk_med", gameObject);
+
+                            if (Mathf.Abs(stateObject.polarity) == 4)
+                                FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Attack/atk_heavy", gameObject);
+
 
                         }
 

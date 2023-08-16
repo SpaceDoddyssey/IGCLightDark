@@ -22,13 +22,16 @@ public class PlayerInput : MonoBehaviour
     }
 
     private void Update(){
+        // Quick fix
+        if (Time.timeScale == 0) return;
+
+
         if (Input.GetKeyDown(forward))  { controller.MoveForward();  }
         if (Input.GetKeyDown(back))     { controller.MoveBackward(); }
         if (Input.GetKeyDown(left))     { controller.MoveLeft();     }
         if (Input.GetKeyDown(right))    { controller.MoveRight();    }
         if (Input.GetKeyDown(turnLeft)) { controller.RotateLeft();   }
         if (Input.GetKeyDown(turnRight)){ controller.RotateRight();  }
-
         if (Input.GetKeyDown(addDark)) controller.AttemptShiftPolarity(-1);
         if (Input.GetKeyDown(addLight)) controller.AttemptShiftPolarity(1);
     }

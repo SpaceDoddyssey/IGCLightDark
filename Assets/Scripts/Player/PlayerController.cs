@@ -123,6 +123,7 @@ public class PlayerController : MonoBehaviour
             targetRotation -= Vector3.up * 90f;
             gameState.TurnClock(turnCost * gameState.GetSlowdownFactor());
             isMoving = true;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Turn/pl_turn");
         }
     }
     public void RotateRight(){
@@ -131,6 +132,7 @@ public class PlayerController : MonoBehaviour
             targetRotation += Vector3.up * 90f;
             gameState.TurnClock(turnCost * gameState.GetSlowdownFactor());
             isMoving = true;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Turn/pl_turn");
         }
     }
 
@@ -150,6 +152,7 @@ public class PlayerController : MonoBehaviour
                 if ((offset > 0 && e.homeWorld == EnemyScript.HomeWorld.Light) || (offset < 0 && e.homeWorld == EnemyScript.HomeWorld.Dark))
                 {
                     Instantiate(blockedText, GameObject.Find("Canvas").transform);
+                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Player/Blocked/pl_blocked", gameObject);
                     return;
 
                 }
@@ -186,11 +189,19 @@ public class PlayerController : MonoBehaviour
             lever.Pull();
         }
         else if(other.gameObject.tag == "Enemy"){
-            if (other.gameObject.GetComponent<EnemyScript>().inPlayerDimension)
+            EnemyScript e = other.gameObject.GetComponent<EnemyScript>();
+            if (e.inPlayerDimension)
             {
-                other.gameObject.GetComponent<EnemyScript>().TakeDamage((int)(gameState.GetDamageToEnemy() * UnityEngine.Random.Range(0.90f, 1.10f)));
+                e.TakeDamage((int)(gameState.GetDamageToEnemy() * UnityEngine.Random.Range(0.90f, 1.10f)));
                 (targetGridPos, prevTargetGridPos) = (prevTargetGridPos, targetGridPos);
-                FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Attack/pl_atk");
+                if (e.homeWorld == EnemyScript.HomeWorld.Dark)
+                {
+                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Player/Attack/pl_atk", gameObject);
+                }
+                else if (e.homeWorld == EnemyScript.HomeWorld.Light)
+                {
+                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Player/Attack/pl_atk_lt", gameObject);
+                }
             }
         } 
     }

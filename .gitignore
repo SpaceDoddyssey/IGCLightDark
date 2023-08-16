@@ -503,3 +503,16 @@ Assets/Plugins/FMOD/src/StudioListener.cs
 Assets/Plugins/FMOD/src/StudioListener.cs.meta
 Assets/Plugins/FMOD/src/StudioParameterTrigger.cs
 Assets/Plugins/FMOD/src/StudioParameterTrigger.cs.meta
+Assets/Plugins/FMOD/src/Editor/CodeGeneration.cs.meta
+Assets/Plugins/FMOD/src/Editor/CodeGeneration.cs
+Assets/Plugins/FMOD/platforms/android/lib/x86_64/libresonanceaudio.so.meta
+Assets/Plugins/FMOD/platforms/android/lib/x86_64/libresonanceaudio.so
+Assets/Plugins/FMOD/platforms/android/lib/x86_64/libfmodstudioL.so.meta
+Assets/Plugins/FMOD/platforms/android/lib/x86_64/libfmodstudioL.so
+Assets/Plugins/FMOD/platforms/android/lib/x86_64/libfmodstudio.so.meta
+Assets/Plugins/FMOD/platforms/android/lib/x86_64/libfmodstudio.so
+Assets/Plugins/FMOD/platforms/android/lib/x86_64/libfmodL.so.meta
+Assets/Plugins/FMOD/platforms/android/lib/x86_64/libfmodL.so
+Assets/Plugins/FMOD/platforms/android/lib/x86_64/libfmod.so.meta
+Assets/Plugins/FMOD/platforms/android/lib/x86_64/libfmod.so
+Assets/Plugins/FMOD/platforms/android/lib/x86_64.meta

@@ -61,6 +61,7 @@ public class GameState : MonoBehaviour
 
     // SOUND STUFF
     private FMOD.Studio.EventInstance deathSound;
+    private FMOD.Studio.EventInstance testSound;
 
 
     private string[] goodWords =
@@ -95,8 +96,9 @@ public class GameState : MonoBehaviour
 
     void Awake()
     {
-        
 
+
+        Time.timeScale = 1f;
 
         deathSound = FMODUnity.RuntimeManager.CreateInstance("event:/Player/Death/pl_dth");
         Application.targetFrameRate = 60;
@@ -214,6 +216,9 @@ public class GameState : MonoBehaviour
 
         if (Input.GetKeyDown("r"))
         {
+            FMOD.Studio.Bus mainBus = RuntimeManager.GetBus("bus:/");
+            mainBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            deathSound.release();
             PlayerPrefs.SetInt("SkipTutorial", 1);
             SceneManager.LoadScene("Level1");
         }
@@ -228,7 +233,6 @@ public class GameState : MonoBehaviour
         {
             hand.RotateClockHand(0.2f * Time.deltaTime);
         }
-
 
         //if (Input.GetKeyDown("o")) {
         //    DisplayDialogueWindow(dialogueWindow);
@@ -458,6 +462,10 @@ public class GameState : MonoBehaviour
 
     IEnumerator PlayerDeath()
     {
+        FMOD.Studio.Bus mainBus = RuntimeManager.GetBus("bus:/");
+        mainBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        
+
         print("Threshhold broken! Game over!");
         deathSound.start();
 
@@ -466,20 +474,24 @@ public class GameState : MonoBehaviour
         if (Random.Range(0f, 1f) < .5f) glass = glass1;
         else glass = glass2;
 
+        yield return new WaitForSecondsRealtime(0.09f);
+
         GameObject glassObj = GameObject.Instantiate(glass, polarityBar.transform.GetChild(0));
         glassObj.transform.localPosition = new Vector3(Random.Range(-70f, 70f), glassObj.transform.localPosition.y, glassObj.transform.localPosition.z);
 
-
+        Time.timeScale = 0f;
         GameObject.Find("Player").GetComponent<PlayerController>().enabled = false;
         GameObject.Find("Player").GetComponent<PlayerInput>().enabled = false;
 
         PlayerPrefs.SetInt("SkipTutorial", 1);
 
+
         yield return new WaitForSecondsRealtime(1f);
-        yield return fade.Fade(1.0f, 1.0f);
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return fade.Fade(5.0f, 0.9f);
+
         
-        yield return SceneManager.LoadSceneAsync("Level1");
+
+
     }
 
     void PauseGame() {
