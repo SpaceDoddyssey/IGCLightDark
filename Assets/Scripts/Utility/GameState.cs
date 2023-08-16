@@ -31,6 +31,8 @@ public class GameState : MonoBehaviour
     [SerializeField] private GameObject glass2;
     [SerializeField] private new ParticleSystem particleSystem;
 
+    [SerializeField] private GameObject deathScreen;
+
     private EffectFadeToFromBlack fade;
 
     private AStarGrid grid;
@@ -313,15 +315,15 @@ public class GameState : MonoBehaviour
         switch(Mathf.Abs(polarity))
         {
             case 0:
-                return .66f;
-            case 1:
-                return .75f;
-            case 2:
-                return .9f;
-            case 3:
                 return 1f;
+            case 1:
+                return .9f;
+            case 2:
+                return .8f;
+            case 3:
+                return .75f;
             case 4:
-                return 1.1f;
+                return .7f;
             default:
                 return 1f;
         }
@@ -483,13 +485,16 @@ public class GameState : MonoBehaviour
         GameObject.Find("Player").GetComponent<PlayerController>().enabled = false;
         GameObject.Find("Player").GetComponent<PlayerInput>().enabled = false;
 
+
+
         PlayerPrefs.SetInt("SkipTutorial", 1);
-
-
         yield return new WaitForSecondsRealtime(1f);
-        yield return fade.Fade(5.0f, 0.9f);
+        StartCoroutine(fade.Fade(4f, .95f));
+        yield return new WaitForSecondsRealtime(2f);
+        GameObject death = GameObject.Instantiate(deathScreen, GameObject.Find("Canvas").transform);
+        death.transform.SetAsLastSibling();
 
-        
+
 
 
     }
