@@ -10640,7 +10640,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 129.00003, y: -3.8}
+  m_AnchoredPosition: {x: 129.00006, y: -3.8}
   m_SizeDelta: {x: 256, y: 768}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &605458796
@@ -19851,6 +19851,7 @@ GameObject:
   - component: {fileID: 1132858462}
   - component: {fileID: 1132858465}
   - component: {fileID: 1132858464}
+  - component: {fileID: 1132858466}
   m_Layer: 5
   m_Name: HealthBarTicker
   m_TagString: Untagged
@@ -19915,6 +19916,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132858461}
   m_CullTransparentMesh: 1
+--- !u!95 &1132858466
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132858461}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1135280599
 PrefabInstance:
   m_ObjectHideFlags: 0
