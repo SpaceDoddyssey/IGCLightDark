@@ -1,6 +1,7 @@
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -50,6 +51,10 @@ public class GameState : MonoBehaviour
 
     [SerializeField] private GameObject finalTutorialBlock;
 
+    public bool isPlayerDead = false;
+    public bool nullDeath = false;
+    private bool isPlayerDying = false;
+
 
     // TUTORIAL STUFF
     [SerializeField]
@@ -63,7 +68,9 @@ public class GameState : MonoBehaviour
 
     // SOUND STUFF
     private FMOD.Studio.EventInstance deathSound;
-    private FMOD.Studio.EventInstance testSound;
+
+    [SerializeField]
+    private List<string> tips;
 
 
     private string[] goodWords =
@@ -109,7 +116,7 @@ public class GameState : MonoBehaviour
 
         fade = GameObject.Find("FadeToFromBlack").GetComponent<EffectFadeToFromBlack>();
         fade.SetAlpha(1.0f);
-        fade.StartCoroutine(fade.Fade(0.7f, 0.0f));
+        fade.StartCoroutine(fade.Fade(1.2f, 0.0f));
 
 
         if (PlayerPrefs.GetInt("SkipTutorial") == 0) 
@@ -121,6 +128,7 @@ public class GameState : MonoBehaviour
             skipTutorial = true;
         }
 
+        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Player/Spawn/pl_spawn", gameObject);
 
         darkEnemies = GameObject.Find("Dark Enemies");
         lightEnemies = GameObject.Find("Light Enemies");
@@ -157,7 +165,11 @@ public class GameState : MonoBehaviour
 
     void Update()
     {
-
+        if (isPlayerDead && !isPlayerDying)
+        {
+            StartCoroutine("PlayerDeath", nullDeath);
+            isPlayerDying = true;
+        }
 
         if (CheckSharedGridPosition(player.transform, minimapEnableSpot))
         {
@@ -231,10 +243,7 @@ public class GameState : MonoBehaviour
             SceneManager.LoadScene("Level1");
         }
 
-        if (Input.GetKey("c") && clock.activeSelf)
-        {
-            hand.RotateClockHand(0.2f * Time.deltaTime);
-        }
+
 
         //if (Input.GetKeyDown("o")) {
         //    DisplayDialogueWindow(dialogueWindow);
@@ -268,84 +277,49 @@ public class GameState : MonoBehaviour
 
     }
 
+    [SerializeField]
+    private List<float> damageModifiers = new List<float>()
+    {
+        0f,
+        50f,
+        75f,
+        125f,
+        200f
+    };
+
     public float GetDamageModifier()
     {
-        switch(Mathf.Abs(polarity))
-        {
-            case 0:
-                return 0;
-            case 1:
-                return .5f;
-            case 2:
-                return .75f;
-            case 3:
-                return 1.25f;
-            case 4:
-                return 2f;
-            default:
-                return 1f;
-        }
-
-
+        return damageModifiers[Mathf.Abs(polarity)] * 0.01f;
     }
+
+    [SerializeField]
+    private List<float> damageToEnemyValues = new List<float>()
+    {
+        0f,
+        15f,
+        20f,
+        30f,
+        60f
+    };
 
     public float GetDamageToEnemy()
     {
-        switch (Mathf.Abs(polarity))
-        {
-            case 0:
-                return 0;
-            case 1:
-                return 15f;
-            case 2:
-                return 20f;
-            case 3:
-                return 30f;
-            case 4:
-                return 60;
-            default:
-                return 1f;
-        }
-
-
+        return damageToEnemyValues[Mathf.Abs(polarity)];
     }
+
+    [SerializeField]
+    private List<float> slowdownFactors = new List<float>()
+    {
+        100f,
+        100f,
+        90f,
+        80f,
+        75f,
+    };
 
     public float GetSlowdownFactor()
     {
-        switch(Mathf.Abs(polarity))
-        {
-            case 0:
-                return 1f;
-            case 1:
-                return .9f;
-            case 2:
-                return .8f;
-            case 3:
-                return .75f;
-            case 4:
-                return .7f;
-            default:
-                return 1f;
-        }
-    }
-
-    public float GetParticleNoiseScale()
-    {
-        switch (Mathf.Abs(polarity))
-        {
-            case 0:
-                return .66f;
-            case 1:
-                return .04f;
-            case 2:
-                return .09f;
-            case 3:
-                return .15f;
-            case 4:
-                return .2f;
-            default:
-                return .04f;
-        }
+        return slowdownFactors[Mathf.Abs(polarity)] * 0.1f;
     }
 
     public float GetGradientSpeed()
@@ -380,10 +354,10 @@ public class GameState : MonoBehaviour
         }
     }
 
-    public void TurnClock(float amount)
+    public void TurnClock(float amount, bool advancing = false)
     {
         if (hand.isActiveAndEnabled)
-            hand.RotateClockHand(amount);
+            hand.RotateClockHand(amount, advancing);
     }
 
     public void DamagePlayer(int damage, string name)
@@ -410,13 +384,17 @@ public class GameState : MonoBehaviour
         player.transform.Find("Main Camera").GetComponent<EffectShake>().DoShake(damage, true);
 
         //float ratio = (0f + (float)Mathf.Abs(playerHealth) / (float)Mathf.Abs(playerMaxAbsoluteHealth)) * -2f;
-       //healthBar.transform.localRotation = Quaternion.Euler(0f, 0f, 0f + ratio);
+        //healthBar.transform.localRotation = Quaternion.Euler(0f, 0f, 0f + ratio);
 
+        if (Mathf.Abs(polarity) >= 3)
+            healthBar.transform.GetChild(0).GetComponent<Animator>().Play("damage2");
+        else
+            healthBar.transform.GetChild(0).GetComponent<Animator>().Play("damage1");
 
         if (playerHealth > playerMaxAbsoluteHealth || playerHealth < playerMaxAbsoluteHealth * -1)
         {
             playerHealth = Mathf.Clamp(playerHealth, playerMaxAbsoluteHealth * -1, playerMaxAbsoluteHealth);
-            StartCoroutine("PlayerDeath");
+            isPlayerDead = true;
         }
 
 
@@ -462,8 +440,10 @@ public class GameState : MonoBehaviour
         }
     }
 
-    IEnumerator PlayerDeath()
+    IEnumerator PlayerDeath(bool nullDeath)
     {
+
+        
         FMOD.Studio.Bus mainBus = RuntimeManager.GetBus("bus:/");
         mainBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
         
@@ -486,17 +466,25 @@ public class GameState : MonoBehaviour
         GameObject.Find("Player").GetComponent<PlayerInput>().enabled = false;
 
 
-
         PlayerPrefs.SetInt("SkipTutorial", 1);
         yield return new WaitForSecondsRealtime(1f);
         StartCoroutine(fade.Fade(4f, .95f));
         yield return new WaitForSecondsRealtime(2f);
-        GameObject death = GameObject.Instantiate(deathScreen, GameObject.Find("Canvas").transform);
+        GameObject death = Instantiate(deathScreen, GameObject.Find("Canvas").transform);
         death.transform.SetAsLastSibling();
+        if (nullDeath)
+            death.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text += tips[0];
+        else
+            death.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text += GetTip();
 
 
 
 
+    }
+
+    string GetTip()
+    {
+        return tips[Random.Range(0, tips.Count)];
     }
 
     void PauseGame() {

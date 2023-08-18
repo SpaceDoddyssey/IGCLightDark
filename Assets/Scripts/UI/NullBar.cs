@@ -18,19 +18,25 @@ public class NullBar : MonoBehaviour
 
     private GameObject parentBorder;
 
+    // Sound stuff
+    private FMOD.Studio.EventInstance boilSound;
+
     // Start is called before the first frame update
     void Start()
     {
+        boilSound = FMODUnity.RuntimeManager.CreateInstance("event:/World/Nullbar/nullb_boil");
         stateObject = GameObject.Find("Game World Manager").GetComponent<GameState>();
         camera = GameObject.Find("Main Camera");
         originalPos = transform.parent.transform.localPosition;
         originalCameraPos = camera.transform.localPosition;
         parentBorder = transform.parent.gameObject;
+        boilSound.start();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        FMOD.RESULT r = boilSound.setParameterByName("BoilStrength", segments.Count);
 
         if (segments.Count == 1)
         {
@@ -63,7 +69,10 @@ public class NullBar : MonoBehaviour
 
 
                 if (segments.Count > maxNumElements - 1)
-                    stateObject.StartCoroutine("PlayerDeath");
+                {
+                    stateObject.isPlayerDead = true;
+                    stateObject.nullDeath = true;
+                }
                 else
                     currentSegment.GetComponent<EffectFadeNonEnemy>().FadeIn(fadeInTime);
             }
@@ -83,5 +92,10 @@ public class NullBar : MonoBehaviour
                 parentBorder.GetComponent<EffectFadeNonEnemy>().FadeOut(false, fadeOutTime);
             }
         }
+    }
+
+    private void OnDisable()
+    {
+        boilSound.release();
     }
 }

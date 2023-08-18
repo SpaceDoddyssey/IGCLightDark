@@ -12,6 +12,7 @@ public class PlayerInput : MonoBehaviour
 
     public KeyCode addDark = KeyCode.Alpha1;
     public KeyCode addLight = KeyCode.Alpha3;
+    public KeyCode advanceClock = KeyCode.C;
 
     PlayerController controller;
     GameState gameWorldManager;
@@ -34,5 +35,6 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyDown(turnRight)){ controller.RotateRight();  }
         if (Input.GetKeyDown(addDark)) controller.AttemptShiftPolarity(-1);
         if (Input.GetKeyDown(addLight)) controller.AttemptShiftPolarity(1);
+        if (Input.GetKey(advanceClock)) { controller.AdvanceClock(); } 
     }
 }

@@ -58,7 +58,7 @@ public class ClockHand : MonoBehaviour
 
     // Rotates the clock hand instantly by a certain fraction.
     // Should ONLY be used by the world manager.
-    public void RotateClockHand(float fraction)
+    public void RotateClockHand(float fraction, bool advancing = false)
     {
         // This gives the player a single frame before the clock recognizes it's potentially
         // gone past 12 o' clock in the update function.
@@ -66,7 +66,8 @@ public class ClockHand : MonoBehaviour
         Animator hand = GetComponent<Animator>();
         if (hand.isActiveAndEnabled)
             hand.Play("hand_glow");
-        FMODUnity.RuntimeManager.PlayOneShot("event:/World/Clock/clk_tick");
+        if (!advancing)
+            FMODUnity.RuntimeManager.PlayOneShot("event:/World/Clock/clk_tick");
     }
 
     public void LinkEvents()

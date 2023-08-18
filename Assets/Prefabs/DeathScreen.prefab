@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 39.839996}
-  m_SizeDelta: {x: 438, y: 50}
+  m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7720809653362722535
 CanvasRenderer:
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Tip: use bombs wisely. You never know when you may need them.'
+  m_text: 'Tip: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 271672dbd050e5545a5d27be0fb5237a, type: 2}
   m_sharedMaterial: {fileID: -4626830594586972233, guid: 271672dbd050e5545a5d27be0fb5237a, type: 2}
@@ -92,12 +92,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.3
+  m_fontSize: 24.69
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 15.8
-  m_fontSizeMax: 33.2
+  m_fontSizeMax: 24.69
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -145,8 +145,8 @@ GameObject:
   - component: {fileID: 89217443992338136}
   - component: {fileID: 1630538111338861653}
   - component: {fileID: 1295601671270388354}
-  - component: {fileID: 1938695142409141120}
   - component: {fileID: 817166607679602965}
+  - component: {fileID: 7586099618814859375}
   m_Layer: 5
   m_Name: DeathScreen
   m_TagString: Untagged
@@ -171,7 +171,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 20.48}
   m_SizeDelta: {x: 700, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1630538111338861653
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6594596445313287296}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -212,18 +212,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1938695142409141120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6594596445313287296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15c37ea2c5080384cbbd262f2429c684, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &817166607679602965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,3 +225,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waverAmount: 1.47
+--- !u!114 &7586099618814859375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6594596445313287296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1404fe5a392b0714fa128f217acef4ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

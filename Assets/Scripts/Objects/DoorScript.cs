@@ -21,11 +21,14 @@ public class DoorScript : MonoBehaviour
     }
 
     public void Open(){
-        
+
+        if (IsOpen) return;
+
         anim.Play("fade");
         gameObject.layer = LayerMask.NameToLayer("Default");
         minimap.color = new Color(0f, 0, 0f, 0f);
         IsOpen = true;
+        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/World/Door/dr_open", gameObject);
     }
 
     public void Close(){

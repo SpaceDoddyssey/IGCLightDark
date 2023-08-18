@@ -151,6 +151,7 @@ public class EnemyScript : MonoBehaviour
         if (health <= 0){
             GetComponent<BoxCollider>().enabled = false;
             Debug.Log("The enemy dies!");
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/Enemies/en_death", gameObject);
             fade.FadeOut(true, 0.3f);
             int dieroll = UnityEngine.Random.Range(1, 101);
             if(dieroll <= itemChance){

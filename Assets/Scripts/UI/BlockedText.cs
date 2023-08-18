@@ -22,7 +22,7 @@ public class BlockedText : MonoBehaviour
         
 
 
-        yield return fade.StartCoroutine(fade.Fade(0.3f, 0f));
+        yield return fade.StartCoroutine(fade.Fade(0.6f, 0f));
         Destroy(gameObject);
         yield return null;
     }

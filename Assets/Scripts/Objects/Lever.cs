@@ -14,13 +14,17 @@ public class LeverScript : MonoBehaviour
     }
 
     public void Pull(){
+        if (beenPulled) return;
         if(!beenPulled){
             spriteRend.sprite = pulledSprite;
             foreach (DoorScript d  in connectedDoors) 
             {
                d.Open();
+                FMODUnity.RuntimeManager.PlayOneShotAttached("event:/World/Lever/lever", gameObject);
             }
             
         }
+
+        beenPulled=true;
     }   
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,10 +23,10 @@ public class EffectFadeNonEnemy : MonoBehaviour
         float alpha;
         while ((time / totalTime) < 1f)
         {
-            time += Time.fixedDeltaTime;
+            time += Time.unscaledDeltaTime;
             alpha = Mathf.Clamp01(time / totalTime);
             image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForSecondsRealtime(1 / Application.targetFrameRate);
         }
 
         yield return null;

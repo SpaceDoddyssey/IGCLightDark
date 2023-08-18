@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.XR;
 
 public class PlayerController : MonoBehaviour
 {
@@ -54,13 +55,19 @@ public class PlayerController : MonoBehaviour
 
         if(!smoothTransition){
             transform.position = targetPosition;
+            // Rotation
             transform.rotation = Quaternion.Euler(targetRotation);
         } else {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * transitionSpeed);
+            // Rotation
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(targetRotation), Time.deltaTime * transitionRotationSpeed);
         }
     }
 
+    public void AdvanceClock()
+    {
+        gameState.TurnClock(.5f * Time.deltaTime, true);
+    }
 
     private bool MoveCheck(Vector3 direction)
     {
