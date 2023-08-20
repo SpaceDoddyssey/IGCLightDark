@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.XR;
@@ -89,6 +88,7 @@ public class PlayerController : MonoBehaviour
             if (!MoveCheck(transform.forward)) return;
             prevTargetGridPos = targetGridPos; 
             targetGridPos += transform.forward * scalar;
+            if (CheckForEnemy(targetGridPos - transform.position)) gameState.TurnClock(attackCost * gameState.GetSlowdownFactor());
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
             isMoving = true;
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Move/pl_move");
@@ -99,6 +99,7 @@ public class PlayerController : MonoBehaviour
             if (!MoveCheck(transform.forward * -1)) return;
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.forward * scalar;
+            if (CheckForEnemy(targetGridPos - transform.position)) gameState.TurnClock(attackCost * gameState.GetSlowdownFactor());
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Move/pl_move");
             isMoving = true;
@@ -109,6 +110,7 @@ public class PlayerController : MonoBehaviour
             if (!MoveCheck(transform.right * -1)) return;
             prevTargetGridPos = targetGridPos;
             targetGridPos -= transform.right * scalar;
+            if (CheckForEnemy(targetGridPos - transform.position)) gameState.TurnClock(attackCost * gameState.GetSlowdownFactor());
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Move/pl_move");
             isMoving = true;
@@ -119,6 +121,7 @@ public class PlayerController : MonoBehaviour
             prevTargetGridPos = targetGridPos;
             if (!MoveCheck(transform.right)) return;
             targetGridPos += transform.right * scalar;
+            if (CheckForEnemy(targetGridPos - transform.position)) gameState.TurnClock(attackCost * gameState.GetSlowdownFactor());
             gameState.TurnClock(movementCost * gameState.GetSlowdownFactor());
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Move/pl_move");
             isMoving = true;
@@ -143,6 +146,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private bool CheckForEnemy(Vector3 direction)
+    {
+        RaycastHit hit;
+        Vector3 newDir = direction + (Vector3.down);
+        Debug.DrawRay(transform.position, newDir, Color.white, 2f);
+        Physics.Raycast(transform.position, newDir, out hit, scalar * 2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.UseGlobal);
+        if (hit.collider != null)
+        {
+            Debug.Log("Collider found!");
+            if (hit.collider.gameObject.GetComponent<EnemyScript>() != null)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
     public void AttemptShiftPolarity(int offset)
     {
         if (Mathf.Abs(gameState.polarity) >= 4 && (Mathf.Sign(gameState.polarity) == Mathf.Sign(offset)))
@@ -199,7 +220,8 @@ public class PlayerController : MonoBehaviour
             EnemyScript e = other.gameObject.GetComponent<EnemyScript>();
             if (e.inPlayerDimension)
             {
-                e.TakeDamage((int)(gameState.GetDamageToEnemy() * UnityEngine.Random.Range(0.90f, 1.10f)));
+                e.TakeDamage((gameState.GetDamageToEnemy()));
+
                 (targetGridPos, prevTargetGridPos) = (prevTargetGridPos, targetGridPos);
                 if (e.homeWorld == EnemyScript.HomeWorld.Dark)
                 {

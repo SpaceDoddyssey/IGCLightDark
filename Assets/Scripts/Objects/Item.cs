@@ -54,7 +54,7 @@ public static class Item
         GameState stateScript = GameObject.Find("Game World Manager").GetComponent<GameState>();
 
         //The potion brings you up to "healAmount" closer to the center of the health bar
-        int damage = System.Math.Abs(stateScript.playerHealth);
+        float damage = System.Math.Abs(stateScript.playerHealth);
         if(damage == 0){
             //Does not use up the item if you're already at 0 damage
             Debug.Log("No damage to heal!");

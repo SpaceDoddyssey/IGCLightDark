@@ -162,11 +162,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf5e8158cd39cff44820ce8c299b409b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 60
-  baseDamage: 25
+  health: 5
+  baseDamage: 1.1
   homeWorld: 1
   moveSpeed: 0.2
-  averageAttackSpeed: 0.02
+  averageAttackSpeed: 0.01
   attackBounce: 0.25
   fadeTime: 0.15
   spriteRender: {fileID: 0}
@@ -175,27 +175,6 @@ MonoBehaviour:
   outlineSprite: {fileID: 0}
   pathfinding: {fileID: -2596188944360712596}
   inPlayerDimension: 1
-  hurtSoundRef:
-    Guid:
-      Data1: -679013663
-      Data2: 1239131004
-      Data3: 704509616
-      Data4: 1099017
-    Path: event:/Enemies/Light/en_lt_idle
-  attackSoundRef:
-    Guid:
-      Data1: -679013663
-      Data2: 1239131004
-      Data3: 704509616
-      Data4: 1099017
-    Path: event:/Enemies/Light/en_lt_idle
-  moveSoundRef:
-    Guid:
-      Data1: -679013663
-      Data2: 1239131004
-      Data3: 704509616
-      Data4: 1099017
-    Path: event:/Enemies/Light/en_lt_idle
 --- !u!114 &-2596188944360712596
 MonoBehaviour:
   m_ObjectHideFlags: 0

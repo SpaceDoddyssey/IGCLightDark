@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: IGC Club -- Ben, Cameron, Avery, Kira
-  productName: IGC LightDark Game Playtest Build 1
+  companyName: IGC Club
+  productName: Ego's Labyrinth
   defaultCursor: {fileID: 2800000, guid: ac20cd3d765238a47a9f45c80f51c970, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -133,7 +133,7 @@ PlayerSettings:
   vulkanEnableLateAcquireNextImage: 0
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
-  bundleVersion: Test Build 1
+  bundleVersion: Prerelease (Test Build 2)
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0

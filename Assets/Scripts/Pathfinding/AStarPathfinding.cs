@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -62,6 +63,7 @@ public class AStarPathfinding : MonoBehaviour
 
     private bool FindOpenSpace()
     {
+        Vector3 newTarget;
         // This function only runs if an enemy can't find a path to the player by treating enemies as unwalkable.
 
         // for each node in the path,
@@ -85,12 +87,17 @@ public class AStarPathfinding : MonoBehaviour
         // If you can't find anything, return false.
         if (index < 0 || path == null) Debug.Break();
 
-        AStarNode randomNodeAlongPath = path[Random.Range(0, index)];
+        AStarNode randomNodeAlongPath = path[UnityEngine.Random.Range(0, index)];
 
         if (randomNodeAlongPath == null || grid == null) return false;
 
+        AStarNode closestOpenNode = grid.BFS(randomNodeAlongPath);
 
-        Vector3 newTarget = grid.BFS(randomNodeAlongPath).worldPosition;
+        // If you can't find an open node, give up.
+        if (closestOpenNode == null) return false;
+
+
+        newTarget = grid.BFS(randomNodeAlongPath).worldPosition;
 
         if (newTarget != null)
         {

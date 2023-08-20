@@ -6,21 +6,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-
-
 public class GameState : MonoBehaviour
 {
     public bool skipTutorial;
     public ClockHand hand;
     public PolarityBarTicker ticker;
-    public int playerHealth = 0;
+    public float playerHealth = 0;
     public ItemType curHeldItem = ItemType.None;
     public Image curHeldItemSprite;
     public Sprite[] itemSprites; //Make sure to add to this if you add a new item
 
     public GameObject player;
 
-    public int playerMaxAbsoluteHealth = 100;
+    public float playerMaxAbsoluteHealth;
     public int polarity;
 
     public Vector3 clockRotation = new Vector3(0f, 0f, 0f);
@@ -33,6 +31,7 @@ public class GameState : MonoBehaviour
     [SerializeField] private new ParticleSystem particleSystem;
 
     [SerializeField] private GameObject deathScreen;
+    [SerializeField] private GameObject endScreen;
 
     private EffectFadeToFromBlack fade;
 
@@ -55,6 +54,9 @@ public class GameState : MonoBehaviour
     public bool nullDeath = false;
     private bool isPlayerDying = false;
 
+    private bool allEnemiesDead = false;
+
+    private bool gameClear = false;
 
     // TUTORIAL STUFF
     [SerializeField]
@@ -64,7 +66,8 @@ public class GameState : MonoBehaviour
         healthBarEnableSpot,
         clockEnableSpot,
         NullBarEnableSpot,
-        finalEnableSpot;
+        finalEnableSpot,
+        gameClearSpot;
 
     // SOUND STUFF
     private FMOD.Studio.EventInstance deathSound;
@@ -173,14 +176,20 @@ public class GameState : MonoBehaviour
 
         if (CheckSharedGridPosition(player.transform, minimapEnableSpot))
         {
-            if (minimap.activeSelf == false) 
+            if (minimap.activeSelf == false)
+            {
+                FMODUnity.RuntimeManager.PlayOneShot("event:/World/Clock/clk_strike");
                 minimap.SetActive(true);
+            }
         }
 
         if (CheckSharedGridPosition(player.transform, PolarityBarEnableSpot))
         {
             if (polarityBar.activeSelf == false)
+            {
+                FMODUnity.RuntimeManager.PlayOneShot("event:/World/Clock/clk_strike");
                 polarityBar.SetActive(true);
+            }
         }
 
 
@@ -193,27 +202,30 @@ public class GameState : MonoBehaviour
         if (CheckSharedGridPosition(player.transform, healthBarEnableSpot))
         {
             if (healthBar.activeSelf == false)
+            {
                 healthBar.SetActive(true);
-        }
+                FMODUnity.RuntimeManager.PlayOneShot("event:/World/Clock/clk_strike");
+            }
 
-        if (CheckSharedGridPosition(player.transform, healthBarEnableSpot))
-        {
-            if (healthBar.activeSelf == false)
-                healthBar.SetActive(true);
         }
 
 
         if (CheckSharedGridPosition(player.transform, clockEnableSpot))
         {
             if (clock.activeSelf == false)
+            {
                 clock.SetActive(true);
+            }
+
         }
 
         if (CheckSharedGridPosition(player.transform, NullBarEnableSpot))
         {
             if (nullBar.activeSelf == false)
             {
+                polarityBar.transform.Find("PolarityBarTicker").GetComponent<PolarityBarTicker>().SetTickerOffset(polarity * -1);
                 nullBar.SetActive(true);
+                clock.transform.Find("ClockHand").GetComponent<ClockHand>().OnClockStrikesEvent.AddListener(nullBar.transform.GetChild(0).GetComponent<NullBar>().OnClockTwelve);
             }
 
         }
@@ -239,6 +251,9 @@ public class GameState : MonoBehaviour
 
         if (Input.GetKeyDown("x"))
         {
+            FMOD.Studio.Bus mainBus = RuntimeManager.GetBus("bus:/");
+            mainBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            deathSound.release();
             PlayerPrefs.SetInt("SkipTutorial", 0);
             SceneManager.LoadScene("Level1");
         }
@@ -262,6 +277,12 @@ public class GameState : MonoBehaviour
             } 
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+            
+        }
+
 
         if (polarity == 0 && !particleSystem.isPaused)
         {
@@ -273,12 +294,28 @@ public class GameState : MonoBehaviour
         }
 
 
+        if (!allEnemiesDead && darkEnemies.transform.childCount == 0 && lightEnemies.transform.childCount == 0)
+        {
+            allEnemiesDead = true;
+            GameObject.Find("RedDoor").GetComponent<DoorScript>().Open();
+        }
+
+        if (CheckSharedGridPosition(player.transform, gameClearSpot) && gameClear == false)
+        {
+            gameClear = true;
+            Time.timeScale = 0;
+
+            StartCoroutine(GameClear());
+        }
+
 
 
     }
 
+
+
     [SerializeField]
-    private List<float> damageModifiers = new List<float>()
+    private List<float> enemyDamageModifiers = new List<float>()
     {
         0f,
         50f,
@@ -289,7 +326,7 @@ public class GameState : MonoBehaviour
 
     public float GetDamageModifier()
     {
-        return damageModifiers[Mathf.Abs(polarity)] * 0.01f;
+        return enemyDamageModifiers[Mathf.Abs(polarity)];
     }
 
     [SerializeField]
@@ -319,7 +356,7 @@ public class GameState : MonoBehaviour
 
     public float GetSlowdownFactor()
     {
-        return slowdownFactors[Mathf.Abs(polarity)] * 0.1f;
+        return slowdownFactors[Mathf.Abs(polarity)] / 10f;
     }
 
     public float GetGradientSpeed()
@@ -360,7 +397,7 @@ public class GameState : MonoBehaviour
             hand.RotateClockHand(amount, advancing);
     }
 
-    public void DamagePlayer(int damage, string name)
+    public void DamagePlayer(float damage, string name)
     {
         playerHealth += damage;
         string desiredString = name + " " + (name == "Lightener" ? findGoodWords() : findBadWords()) + " Player for " + damage + " damage!";
@@ -443,25 +480,28 @@ public class GameState : MonoBehaviour
     IEnumerator PlayerDeath(bool nullDeath)
     {
 
-        
+        yield return new WaitForSeconds(0.1f);
         FMOD.Studio.Bus mainBus = RuntimeManager.GetBus("bus:/");
         mainBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        
+
+        Time.timeScale = 0f;
 
         print("Threshhold broken! Game over!");
+
         deathSound.start();
+        yield return new WaitForSecondsRealtime(0.03f);
+
 
         GameObject glass;
 
         if (Random.Range(0f, 1f) < .5f) glass = glass1;
         else glass = glass2;
 
-        yield return new WaitForSecondsRealtime(0.09f);
+        player.transform.Find("Main Camera").GetComponent<EffectShake>().DoShake(3, true);
 
         GameObject glassObj = GameObject.Instantiate(glass, polarityBar.transform.GetChild(0));
         glassObj.transform.localPosition = new Vector3(Random.Range(-70f, 70f), glassObj.transform.localPosition.y, glassObj.transform.localPosition.z);
 
-        Time.timeScale = 0f;
         GameObject.Find("Player").GetComponent<PlayerController>().enabled = false;
         GameObject.Find("Player").GetComponent<PlayerInput>().enabled = false;
 
@@ -477,6 +517,24 @@ public class GameState : MonoBehaviour
         else
             death.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text += GetTip();
 
+    }
+
+
+    private IEnumerator GameClear()
+    {
+        Time.timeScale = 0;
+        FMOD.Studio.Bus mainBus = RuntimeManager.GetBus("bus:/");
+        mainBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+
+        yield return new WaitForSecondsRealtime(2f);
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/mus_theme_rev");
+
+        StartCoroutine(fade.Fade(5f, 1f));
+        yield return new WaitForSecondsRealtime(5f);
+
+        GameObject end = Instantiate(endScreen, GameObject.Find("Canvas").transform);
+        end.transform.SetAsLastSibling();
 
 
 

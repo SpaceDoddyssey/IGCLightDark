@@ -5,21 +5,26 @@ using UnityEngine;
 public class EffectShake : MonoBehaviour
 {
    private Vector3 oldPos;
+   private GameState stateObject;
 
-   public void DoShake(int damage, bool player = false)
+    private void Start()
+    {
+        stateObject = GameObject.Find("Game World Manager").GetComponent<GameState>();
+    }
+
+    public void DoShake(float damage, bool player = false)
    {
         if (!player)
-            oldPos = new Vector3(0, transform.localPosition.z, 0);
+            oldPos = new Vector3(0, transform.localPosition.y, 0);
         else
-            oldPos = transform.localPosition;
+            oldPos = new Vector3(0, 0, -.781f);
 
         StartCoroutine(Shake(damage, player));
    }
 
-    private IEnumerator Shake(int damage, bool player = false)
+    private IEnumerator Shake(float damage, bool player = false)
     {
-        oldPos = transform.localPosition;
-        damage /= 7;
+
         float fadeAffector = 20f;
         while (fadeAffector > 2)
         {
@@ -29,7 +34,22 @@ public class EffectShake : MonoBehaviour
                 float randomScalarY = Random.Range(-1.3f, 1.3f);
                 float randomScalarZ = Random.Range(-1.3f, 1.3f);
                 // TODO: Fix this because enemies' positions are being moved I think, not their sprite billboards
-                transform.localPosition = new Vector3(oldPos.x + (fadeAffector * randomScalarX * 0.0008f * damage), oldPos.y + (fadeAffector * randomScalarY * 0.0008f * damage), oldPos.z +(fadeAffector * randomScalarZ * 0.0008f * damage));
+                if (player)
+                {
+                    float playerScalar = 800f;
+                    transform.localPosition = new Vector3(
+                        oldPos.x + (fadeAffector * randomScalarX * damage   / playerScalar), 
+                        oldPos.y + (fadeAffector * randomScalarY * damage   / playerScalar), 
+                        oldPos.z + (fadeAffector * randomScalarZ * damage   / playerScalar));
+                }
+                else
+                {
+                    float enemyScalar = 70f;
+                    transform.localPosition = new Vector3(
+                        oldPos.x + (fadeAffector * randomScalarX / enemyScalar),
+                        oldPos.y + (fadeAffector * randomScalarY / enemyScalar),
+                        oldPos.z + (fadeAffector * randomScalarZ / enemyScalar));
+                }
 
 
             }
@@ -40,14 +60,7 @@ public class EffectShake : MonoBehaviour
 
         }
 
-        if (player)
-        {
-            transform.localPosition = new Vector3(0, 0, transform.localPosition.z);
-        }
-        else
-        {
-            transform.localPosition = oldPos;
-        }
+        transform.localPosition = oldPos;
 
     }
 }

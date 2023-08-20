@@ -9,8 +9,8 @@ using System;
 public class EnemyScript : MonoBehaviour
 {
 
-    public int health = 50;
-    public int baseDamage = 15;
+    public float health = 50;
+    public float baseDamage = 15;
     public HomeWorld homeWorld = HomeWorld.Light;
     public float moveSpeed = 0.5f;
     public float averageAttackSpeed = 0.1f;
@@ -133,7 +133,7 @@ public class EnemyScript : MonoBehaviour
 
 
 
-    public void TakeDamage(int amount){
+    public void TakeDamage(float amount){
 
         health -= amount;
         Debug.Log("The enemy takes " + amount + " damage!");
@@ -315,7 +315,7 @@ public class EnemyScript : MonoBehaviour
                         {
                             // Attack the player. Damage direction indicates whether the damage is positive or negative
                             int damageDirection = (homeWorld == HomeWorld.Light ? 1 : -1);
-                            stateObject.DamagePlayer((int)(baseDamage * damageDirection * (stateObject.GetDamageModifier()) * UnityEngine.Random.Range(0.90f, 1.05f)), name);
+                            stateObject.DamagePlayer((baseDamage * damageDirection * (stateObject.GetDamageModifier()) * UnityEngine.Random.Range(0.90f, 1.05f)), name);
 
                             if (this.homeWorld == HomeWorld.Dark)
                             {

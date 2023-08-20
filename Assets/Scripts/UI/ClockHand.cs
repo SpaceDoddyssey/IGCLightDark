@@ -15,6 +15,8 @@ public class ClockHand : MonoBehaviour
     [SerializeField] private GameObject nullBarController;
     [SerializeField] private GameState stateObject;
 
+    float clockFractionQueue = 0f;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -22,15 +24,30 @@ public class ClockHand : MonoBehaviour
 
     }
 
+    private void FixedUpdate()
+    {
+        int e = 2;   
+    }
+
     // Update is called once per frame
     private void Update()
     {
-        // Rotate clock hand
+        // Rotate clock hand (active)
+        if (clockFractionQueue > 0.0001f)
+        {
+            stateObject.clockRotation.z += -360f * clockFractionQueue;
+            CheckClockOverflow();
+        }
+
+        // Rotate clock hand (passive)
+
         stateObject.clockRotation.z += idleSpeed * Time.deltaTime * -360f * stateObject.GetSlowdownFactor();
         CheckClockOverflow();
 
         transform.localRotation = Quaternion.Euler(stateObject.clockRotation);
-        
+
+
+        clockFractionQueue = 0f;
     }
 
     private void CheckClockOverflow()
@@ -60,9 +77,10 @@ public class ClockHand : MonoBehaviour
     // Should ONLY be used by the world manager.
     public void RotateClockHand(float fraction, bool advancing = false)
     {
+        clockFractionQueue += fraction;
         // This gives the player a single frame before the clock recognizes it's potentially
         // gone past 12 o' clock in the update function.
-        stateObject.clockRotation.z += -360f * fraction;
+
         Animator hand = GetComponent<Animator>();
         if (hand.isActiveAndEnabled)
             hand.Play("hand_glow");
@@ -76,7 +94,10 @@ public class ClockHand : MonoBehaviour
         {
             OnClockStrikesEvent.AddListener(g.GetComponent<EnemyScript>().OnClockTwelve);
         }
+        OnClockStrikesEvent.RemoveListener(nullBarController.GetComponent<NullBar>().OnClockTwelve);
         OnClockStrikesEvent.AddListener(nullBarController.GetComponent<NullBar>().OnClockTwelve);
+
+
     }
 
     // When the clock is rotated by any amount, there should be a "target" rotation.
@@ -84,5 +105,5 @@ public class ClockHand : MonoBehaviour
     // then set the interp. But to the target, ADD the time that would have been added from ticking, and only re-enable ticking when the lerp is done.
 
     // Gotta be a better way to do this.
-    
+
 }

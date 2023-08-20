@@ -9,6 +9,7 @@ public class TitleButton : MonoBehaviour
     public float fadeOutTime;
     private QuickInterp interp;
     private Image black;
+    private bool pressed;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,11 @@ public class TitleButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.anyKeyDown && !pressed)
+        {
+            OnClick();
+        }
+
         if (interp != null)
         {
             interp.InterpUpdate();
@@ -32,5 +38,6 @@ public class TitleButton : MonoBehaviour
         interp = new QuickInterp(0.0f, 1.0f, fadeOutTime, true);
         gameObject.GetComponent<Button>().interactable = false;
         black.enabled = true;
+        pressed = true;
     }
 }
