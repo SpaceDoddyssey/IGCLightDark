@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 9
-  baseDamage: 0.9
+  baseDamage: 0.625
   homeWorld: 0
   moveSpeed: 0.3
   averageAttackSpeed: 0.02

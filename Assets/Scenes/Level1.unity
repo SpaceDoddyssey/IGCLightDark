@@ -15301,12 +15301,14 @@ MonoBehaviour:
     have more heatlh, but are weaker.
   - Levers are marked on your map with an I/O icon. They open doors.
   - The exit is in the north.
+  - Most of the time, the enemy will attack you before you can move -- towards OR
+    away -- from it. But you can get lucky.
   enemyDamageModifiers:
   - 0
   - 1
+  - 1.5
   - 2
-  - 2.5
-  - 3
+  - 3.5
   damageToEnemyValues:
   - 0
   - 2
@@ -15314,7 +15316,7 @@ MonoBehaviour:
   - 4
   - 5
   slowdownFactors:
-  - 9
+  - 8
   - 12
   - 11.5
   - 10.5

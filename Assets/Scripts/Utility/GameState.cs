@@ -57,6 +57,7 @@ public class GameState : MonoBehaviour
     private bool allEnemiesDead = false;
 
     private bool gameClear = false;
+    private bool deathCooldown;
 
     // TUTORIAL STUFF
     [SerializeField]
@@ -242,6 +243,7 @@ public class GameState : MonoBehaviour
 
         if (Input.GetKeyDown("r"))
         {
+            if (isPlayerDead && !deathCooldown) return;
             FMOD.Studio.Bus mainBus = RuntimeManager.GetBus("bus:/");
             mainBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
             deathSound.release();
@@ -505,7 +507,6 @@ public class GameState : MonoBehaviour
         GameObject.Find("Player").GetComponent<PlayerController>().enabled = false;
         GameObject.Find("Player").GetComponent<PlayerInput>().enabled = false;
 
-
         PlayerPrefs.SetInt("SkipTutorial", 1);
         yield return new WaitForSecondsRealtime(1f);
         StartCoroutine(fade.Fade(4f, .95f));
@@ -517,6 +518,8 @@ public class GameState : MonoBehaviour
         else
             death.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text += GetTip();
 
+        yield return new WaitForSecondsRealtime(2f);
+        deathCooldown = true;
     }
 
 
