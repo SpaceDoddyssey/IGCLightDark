@@ -26,7 +26,7 @@ public class ClockHand : MonoBehaviour
 
     private void FixedUpdate()
     {
-        int e = 2;   
+
     }
 
     // Update is called once per frame

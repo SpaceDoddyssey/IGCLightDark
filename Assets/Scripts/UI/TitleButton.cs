@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using FMODUnity;
+using Unity.VisualScripting;
 
 public class TitleButton : MonoBehaviour
 {
     public float fadeOutTime;
-    private QuickInterp interp;
-    private Image black;
+    private GameObject black;
     private bool pressed;
+
+    [DoNotSerialize]
+    public bool introSkip = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        black = GameObject.Find("FadeToBlack").GetComponent<Image>();
+        black = GameObject.Find("FadeToBlack");
     }
 
     // Update is called once per frame
@@ -22,22 +26,41 @@ public class TitleButton : MonoBehaviour
     {
         if (Input.anyKeyDown && !pressed)
         {
-            OnClick();
-        }
+            if (introSkip)
+            {
+                OnClick();
+            }
+            else
+            {
+                FMOD.Studio.Bus mainBus = RuntimeManager.GetBus("bus:/");
+                mainBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                introSkip = true;
+                black.GetComponent<Animator>().Play("idle");
+                black.GetComponent<TitleAnimationEnable>().EnableAllAnims();
+                black.GetComponent<TitleAnimationEnable>().PlayDaMusic();
+            }
 
-        if (interp != null)
-        {
-            interp.InterpUpdate();
-            black.color = new Color(black.color.r, black.color.g, black.color.b, interp.status);
-            if (interp.isDone) SceneManager.LoadScene("Level1");
+
+
         }
     }
 
     public void OnClick()
     {
-        interp = new QuickInterp(0.0f, 1.0f, fadeOutTime, true);
-        gameObject.GetComponent<Button>().interactable = false;
-        black.enabled = true;
         pressed = true;
+        black.GetComponent<Animator>().Play("FadeToBlack");
+        black.GetComponent<TitleAnimationEnable>().decreasing = true;
+
+        StartCoroutine("Timer");
     }
+
+    IEnumerator Timer()
+    {
+
+        yield return new WaitForSeconds(7f);
+        black.GetComponent<TitleAnimationEnable>().KillInstances();
+        SceneManager.LoadScene("Level1");
+    }
+
+
 }

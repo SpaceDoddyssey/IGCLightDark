@@ -251,14 +251,14 @@ public class GameState : MonoBehaviour
             SceneManager.LoadScene("Level1");
         }
 
-        if (Input.GetKeyDown("x"))
-        {
-            FMOD.Studio.Bus mainBus = RuntimeManager.GetBus("bus:/");
-            mainBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            deathSound.release();
-            PlayerPrefs.SetInt("SkipTutorial", 0);
-            SceneManager.LoadScene("Level1");
-        }
+        //if (Input.GetKeyDown("x"))
+        //{
+        //    FMOD.Studio.Bus mainBus = RuntimeManager.GetBus("bus:/");
+        //    mainBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        //    deathSound.release();
+        //    PlayerPrefs.SetInt("SkipTutorial", 0);
+        //    SceneManager.LoadScene("Level1");
+        //}
 
 
 

@@ -15305,9 +15305,9 @@ MonoBehaviour:
     away -- from it. But you can get lucky.
   enemyDamageModifiers:
   - 0
-  - 1
-  - 1.5
-  - 2
+  - 1.25
+  - 1.8
+  - 2.3
   - 3.5
   damageToEnemyValues:
   - 0
