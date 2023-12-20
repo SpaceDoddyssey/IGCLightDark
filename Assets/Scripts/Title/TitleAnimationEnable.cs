@@ -33,10 +33,12 @@ public class TitleAnimationEnable : MonoBehaviour
         GameObject.Find("LabyrinthType").GetComponent<Animator>().enabled = true;
         GameObject.Find("CopyrightText").GetComponent<Animator>().enabled = true;
         GameObject.Find("PressAnyKeyText").GetComponent<Animator>().enabled = true;
+        GameObject.Find("Maze").GetComponent<TitleButton>().introSkip = true;
     }
 
     public void PlayDaMusic()
     {
+        intro.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         PLAYBACK_STATE state;
         song.getPlaybackState(out state);
         if (!(state == PLAYBACK_STATE.PLAYING))

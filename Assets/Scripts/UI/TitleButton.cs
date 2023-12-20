@@ -32,9 +32,6 @@ public class TitleButton : MonoBehaviour
             }
             else
             {
-                FMOD.Studio.Bus mainBus = RuntimeManager.GetBus("bus:/");
-                mainBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
-                introSkip = true;
                 black.GetComponent<Animator>().Play("idle");
                 black.GetComponent<TitleAnimationEnable>().EnableAllAnims();
                 black.GetComponent<TitleAnimationEnable>().PlayDaMusic();

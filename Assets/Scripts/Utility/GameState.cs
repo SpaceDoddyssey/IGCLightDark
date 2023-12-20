@@ -59,6 +59,8 @@ public class GameState : MonoBehaviour
     private bool gameClear = false;
     private bool deathCooldown;
 
+    private bool canRestart = false;
+
     // TUTORIAL STUFF
     [SerializeField]
     private Transform
@@ -107,9 +109,15 @@ public class GameState : MonoBehaviour
     };
 
 
+    IEnumerator RestartTimer()
+    {
+        yield return new WaitForSecondsRealtime(1);
+        canRestart = true;
+    }
+
     void Awake()
     {
-
+        StartCoroutine(RestartTimer());
 
         Time.timeScale = 1f;
 
@@ -244,6 +252,7 @@ public class GameState : MonoBehaviour
         if (Input.GetKeyDown("r"))
         {
             if (isPlayerDead && !deathCooldown) return;
+            if (!canRestart) return;
             FMOD.Studio.Bus mainBus = RuntimeManager.GetBus("bus:/");
             mainBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
             deathSound.release();
@@ -282,7 +291,6 @@ public class GameState : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
-            
         }
 
 
@@ -518,7 +526,7 @@ public class GameState : MonoBehaviour
         else
             death.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text += GetTip();
 
-        yield return new WaitForSecondsRealtime(2f);
+        yield return new WaitForSecondsRealtime(1f);
         deathCooldown = true;
     }
 
